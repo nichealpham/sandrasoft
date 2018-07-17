@@ -6,6 +6,7 @@
 		"init": "npm i",
 		"build": "tsc",
 		"deploy": "cd ./build && serverless deploy",
+		"deploy-ts": "cd ./src && serverless deploy",
 		"remove": "cd ./build && serverless remove",
 		"test-local": "node ./build/tests/local.js",
 		"test-release": "node ./build/tests/release.js"
@@ -15,15 +16,10 @@
 		"url": "git+https://github.com/nichealpham/Serverless-Boilerplate.git"
 	},
 	"keywords": [
+		"tensorflow.js",
 		"serverless",
 		"nodejs",
-		"webpack",
-		"typescript",
-		"eslint",
-		"starter-template",
-		"boilerplate",
-		"design-pattern",
-		"microservices"
+		"ts"
 	],
 	"author": "Nicheal Pham",
 	"license": "MIT",
@@ -40,7 +36,6 @@
 	},
 	"devDependencies": {
 		"@types/node": "^10.5.2",
-		"serverless-plugin-typescript": "^1.1.5",
 		"typescript": "^2.9.2",
 		"typescript-eslint-parser": "^16.0.1"
 	}
