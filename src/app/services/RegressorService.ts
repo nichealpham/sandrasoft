@@ -1,21 +1,16 @@
 import * as http from 'http';
 import * as https from 'https';
-import * as fs from 'fs';
-import * as timer from 'node-simple-timer';
+import * as parser from 'csv-parse';
 import * as LinearRegressor from '../libs/regressor/LinearRegressor';
-import DataHelper from '../libs/helper/DataHelper';
 
 export class RegressorService {
     static LinearModel = {
-        async trainFromCSV(filePath: string, config?: LinearRegressor.ModelConfig) {
-            let totalTimer = new timer.Timer();
-            totalTimer.start();
-            let destDirName = `${__dirname}/tmp`;
-            DataHelper.createDir(destDirName);
-            await downloadFileFromUrl(filePath, destDirName);
-            let data = await DataHelper.readNumericsFromCsv(`${destDirName}/${getFileNameFromUrl(filePath)}`);
+        async trainFromCSV(fileUrl: string, config?: LinearRegressor.ModelConfig) {
+            // Initiate variables
             let labels_data: any[] = [];
             let features_data: any[] = [];
+            // Read data from url
+            let data = await readCsvFromUrl(fileUrl);
             data.forEach(row => {
                 if (!row || !row.length || !row[0])
                     return;
@@ -28,14 +23,11 @@ export class RegressorService {
             await model.train(features_data, labels_data, (i, cost) => {
                 console.log(`Epoch ${i} loss is: ${cost}`);
             });
-            totalTimer.end();
-            DataHelper.removeDir(destDirName);
             return {
                 loss: model.loss,
                 bias: model.bias,
                 config: model.config,
                 weights: model.weights,
-                executionTime: totalTimer.seconds().toFixed(2)
             }
         }
     }
@@ -44,18 +36,23 @@ export class RegressorService {
     }
 }
 
-function getFileNameFromUrl(url: string): string {
-    return url.substring(url.lastIndexOf('/') + 1, url.indexOf('.') < 0 ? url.length : url.lastIndexOf('.'));
-}
-async function downloadFileFromUrl(url, destDirName: string = './tmp') {
+function readCsvFromUrl(fileUrl): Promise<any[]> {
     return new Promise((resolve, reject) => {
-        let writeStream = fs.createWriteStream(`${destDirName}/${getFileNameFromUrl(url)}`);
-        console.log(`Downloading and Writing ${getFileNameFromUrl(url)} to ${destDirName}`);
-        function callback(res) {
-            res.pipe(writeStream);
-            res.on('end', () => {resolve()})
+        let data: any = [];
+        if (fileUrl.includes('https')) {
+            console.log(`Reading file from url ${fileUrl} ...`);
+            https.get(fileUrl, async (res) => {
+                res.pipe(parser({delimiter: ','})).on('data', (row: any[]) => {
+                    row = row.map(data => Number(data));
+                    data.push(row);
+                }).on('end', () => {
+                    return resolve(data);
+                }).on('error', (err) => {
+                    return reject(err);
+                });
+            });
         }
-        if (url.includes('https')) https.get(url, async(res) => {callback(res)}).on('error', (e) => {reject(e)});
-        else http.get(url, async(res) => {callback(res)}).on('error', (e) => {reject(e)});
+        else
+            return resolve(data);
     });
 }

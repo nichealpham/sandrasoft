@@ -21,6 +21,11 @@ export async function trainLinearModelFromCSV (event, context, callback) {
         callback(null, response);
         return;
     }
+    if (!event.body.file_url.contain('https')) {
+        response = HandlerHelper.createErrorResponse(400, 'Only accept https origin!');
+        callback(null, response);
+        return;
+    }
     let result = await RegressorService.LinearModel.trainFromCSV(event.body.file_url, event.body.config);
     response = HandlerHelper.createSuccessResponse(200, result);
     callback(null, response);

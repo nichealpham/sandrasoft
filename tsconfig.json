@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "typeRoots": ["node_modules/@types"],
-        "target": "es2015",
+        "target": "es2017",
         "module": "commonjs",
         "lib": [
             "es5",

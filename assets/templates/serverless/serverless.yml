@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: myservice
+service: ezTensorflow
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -19,11 +19,13 @@ service: myservice
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs8.10
 
 # you can overwrite defaults here
   stage: dev
   region: ap-southeast-1
+  memorySize: 1024   # Overwrite the default memory size. Default is 1024
+  timeout: 300       # The default is 6 seconds. Note: API Gateway current maximum is 30 seconds
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -48,8 +50,8 @@ provider:
 # you can add packaging information here
 package:
   include:
-    - ./system/**
-    - ./services/**
+    - ./app/**
+    - ./config/**
     - ../node_modules/**
 #    - include-me.js
 #  exclude:
@@ -57,6 +59,16 @@ package:
 #    - exclude-me-dir/**
 
 functions:
+  trainLinearModel:
+    handler: handler.trainLinearModelFromCSV
+
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+    events:
+      - http:
+          path: services/regressor/train-linear-from-csv
+          method: post
   hello:
     handler: handler.hello
 
@@ -65,7 +77,7 @@ functions:
 #    Check the event documentation for details
     events:
       - http:
-          path: users/create
+          path: services/hello
           method: get
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
