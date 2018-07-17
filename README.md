@@ -1,13 +1,13 @@
-# Serverless-Boilerplate
-A boilerplate system design pattern to get started with Serverless
+# ezTensorflowService
+A serverless service for Tensorflow.js with AWS Lambda
 
 ### Key Features
 
-* Serverless Pattern
-* Nodejs Modules
+* Serverless Framework
+* Nodejs backend
+* Tensorflow.js
 * Typescript
-* Webpack
-* AWS Lambda
+* AWSLambda
 
 ### The MIT License (MIT)
 
