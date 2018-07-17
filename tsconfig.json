@@ -1,12 +1,20 @@
 {
     "compilerOptions": {
+        "typeRoots": ["node_modules/@types"],
+        "target": "es2015",
+        "module": "commonjs",
+        "lib": [
+            "es5",
+            "es2015",
+            "es2017",
+            "dom",
+            "scripthost"
+        ],
         "rootDir": "./src",
         "outDir": "./build", 
         "preserveConstEnums": true, 
         "strictNullChecks": true, 
-        "target": "es5", 
         "moduleResolution": "node", 
-        "lib": ["es2015"], 
         "allowJs": true,
         "removeComments": true,
     },

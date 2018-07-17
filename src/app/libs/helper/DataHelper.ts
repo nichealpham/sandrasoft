@@ -3,6 +3,7 @@ import * as zlib from 'zlib';
 import * as http from 'http';
 import * as https from 'https';
 import * as parse from 'csv-parse';
+import * as rimraf from 'rimraf';
 import {ConsoleColor} from '../../model/common/ConsoleColor';
 
 class FileReaderConfig {
@@ -21,6 +22,26 @@ let defaultFileReaderConfig: FileReaderConfig = {
 }
 
 class DataHelper {
+    static createDir(path: string) {
+        if (!fs.existsSync(path)) fs.mkdirSync(path);
+    }
+
+    static async removeDir(path) {
+        return new Promise((resolve, reject) => {
+            if (fs.existsSync(path)) {
+                try {
+                    rimraf(path, () => {
+                        return resolve();
+                    });
+                }
+                catch (error) {
+                    return reject(error);
+                }
+            }
+            resolve();
+        })
+    }
+
     static async readNumericsFromCsv(path: string): Promise<any[]> {
         let csvData: any[] = [];
         return new Promise<any>((resolve, reject) => {
@@ -51,7 +72,7 @@ class DataHelper {
     }
 
     static async downloadFilesFromUrls(urls: string[], destDirName: string = './tmp'): Promise<any> {
-        if (!fs.existsSync(destDirName)) fs.mkdirSync(destDirName)
+        if (!fs.existsSync(destDirName)) fs.mkdirSync(destDirName);
         for (let index = 0; index < urls.length; index++) {
             try {await this.downloadFileFromUrl(urls[index], destDirName)}
             catch (e) {console.log(ConsoleColor.Red, `Failed with error ${e}`)}

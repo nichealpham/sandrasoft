@@ -30,7 +30,14 @@
 	},
 	"homepage": "https://github.com/nichealpham/Serverless-Boilerplate#readme",
 	"dependencies": {
-		"csv-parse": "^2.5.0"
+		"@tensorflow/tfjs": "^0.12.2",
+		"csv-parse": "^2.5.0",
+		"node-simple-timer": "^0.1.1",
+		"rimraf": "^2.6.2",
+		"ts-node": "^6.1.0",
+		"typescript": "^2.9.1",
+		"typescript-eslint-parser": "^16.0.0",
+		"zlib": "^1.0.5"
 	},
 	"devDependencies": {
 		"@types/node": "^10.1.2",

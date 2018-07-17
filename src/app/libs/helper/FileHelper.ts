@@ -1,7 +1,18 @@
 import * as path from 'path';
 import * as fs from 'fs';
+import {URL} from 'url';
 
 class FileHelper {
+    static async getFromUrl(url: string) {
+        let fileUrl = new URL(url);
+        return new Promise((resolve, reject) => {
+            fs.readFile(fileUrl, (error, data) => {
+                if (error) return reject(error);
+                resolve(data);
+            });
+        });
+    }
+
     static getDirectories = function(sourcePath: string): Promise<string[]> {
         return new Promise<string[]>((resolve, reject) => {
             fs.readdir(sourcePath, (err, list) => {
