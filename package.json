@@ -1,0 +1,42 @@
+{
+	"name": "serverless-boilerplate",
+	"version": "1.0.0",
+	"description": "A boilerplate system design pattern to get started with Serverless",
+	"scripts": {
+		"init": "npm i",
+		"build": "tsc",
+		"deploy": "cd ./build && serverless deploy",
+		"remove": "cd ./build && serverless remove"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nichealpham/Serverless-Boilerplate.git"
+	},
+	"keywords": [
+		"serverless",
+		"nodejs",
+		"webpack",
+		"typescript",
+		"eslint",
+		"starter-template",
+		"boilerplate",
+		"design-pattern",
+		"microservices"
+	],
+	"author": "Nicheal Pham",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/nichealpham/Serverless-Boilerplate/issues"
+	},
+	"homepage": "https://github.com/nichealpham/Serverless-Boilerplate#readme",
+	"dependencies": {
+		"csv-parse": "^2.5.0"
+	},
+	"devDependencies": {
+		"@types/node": "^10.1.2",
+		"ts-loader": "^4.4.2",
+		"ts-node": "^6.0.5",
+		"typescript": "^2.9.2",
+		"typescript-eslint-parser": "^15.0.0"
+	}
+}

@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./build", 
+        "preserveConstEnums": true, 
+        "strictNullChecks": true, 
+        "target": "es5", 
+        "moduleResolution": "node", 
+        "lib": ["es2015"], 
+        "allowJs": true,
+        "removeComments": true,
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "**/*.map.js",
+    ]
+}
