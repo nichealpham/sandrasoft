@@ -3,7 +3,7 @@ import * as zlib from 'zlib';
 import * as http from 'http';
 import * as https from 'https';
 import * as parse from 'csv-parse';
-import {ConsoleColor} from '../model/common/ConsoleColor';
+import {ConsoleColor} from '../../model/common/ConsoleColor';
 
 class FileReaderConfig {
     path: string; 
@@ -21,12 +21,6 @@ let defaultFileReaderConfig: FileReaderConfig = {
 }
 
 class DataHelper {
-    static applyTemplate(template, ...params) {
-        return template.replace(/{(\d+)}/g, (match, number) => {
-            return params[number] || match;
-        });
-    }
-
     static async readNumericsFromCsv(path: string): Promise<any[]> {
         let csvData: any[] = [];
         return new Promise<any>((resolve, reject) => {

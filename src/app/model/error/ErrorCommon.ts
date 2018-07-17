@@ -31,8 +31,6 @@ export class ErrorCommonData {
     static COM203 = '{0} is greater than {1}!';
 };
 
-import DataHelper from '../../helper/DataHelper';
-
 export class BaseError {
     code: string;
     message?: string;
@@ -49,7 +47,7 @@ export class BaseError {
 
     applyParams(params) {
         if (this.message && params && params.length > 0)
-            this.message = DataHelper.applyTemplate(this.message, ...params);
+            this.message = applyTemplate(this.message, ...params);
     }
 };
 
@@ -66,4 +64,10 @@ function zeroFill(number, width ) {
     if (width > 0 )
         return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
     return number + "";
+}
+
+function applyTemplate(template, ...params) {
+    return template.replace(/{(\d+)}/g, (match, number) => {
+        return params[number] || match;
+    });
 }

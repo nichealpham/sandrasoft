@@ -1,4 +1,4 @@
-import {ErrorCommon} from '../model/error/ErrorCommon';
+import {ErrorCommon} from '../../model/error/ErrorCommon';
 
 export class HandlerHelper {
     static handleRequestPromise(promise): Promise<any> {
