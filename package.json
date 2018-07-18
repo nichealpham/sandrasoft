@@ -2,15 +2,6 @@
 	"name": "serverless-boilerplate",
 	"version": "1.0.0",
 	"description": "A boilerplate system design pattern to get started with Serverless",
-	"scripts": {
-		"init": "npm i",
-		"build": "tsc",
-		"deploy": "cd ./build && serverless deploy",
-		"deploy-ts": "cd ./src && serverless deploy",
-		"remove": "cd ./build && serverless remove",
-		"test-local": "node ./build/tests/local.js",
-		"test-release": "node ./build/tests/release.js"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/nichealpham/Serverless-Boilerplate.git"
@@ -27,13 +18,7 @@
 		"url": "https://github.com/nichealpham/Serverless-Boilerplate/issues"
 	},
 	"homepage": "https://github.com/nichealpham/Serverless-Boilerplate#readme",
-	"dependencies": {
-		"@tensorflow/tfjs": "^0.12.2",
-		"csv-parse": "^2.5.0",
-		"node-simple-timer": "^0.1.1",
-		"rimraf": "^2.6.2",
-		"zlib": "^1.0.5"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@types/node": "^10.5.2",
 		"typescript": "^2.9.2",

@@ -4,7 +4,6 @@ import * as http from 'http';
 import * as https from 'https';
 import * as parse from 'csv-parse';
 import * as rimraf from 'rimraf';
-import {ConsoleColor} from '../../model/common/ConsoleColor';
 
 class FileReaderConfig {
     path: string; 
@@ -61,7 +60,7 @@ class DataHelper {
         return new Promise((resolve, reject) => {
             let unzip = zlib.createGunzip();
             let writeStream = fs.createWriteStream(`${destDirName}/${getFileNameFromUrl(url)}`);
-            console.log(ConsoleColor.Green, `Downloading and Writing ${getFileNameFromUrl(url)} to ${destDirName}`);
+            console.log(`Downloading and Writing ${getFileNameFromUrl(url)} to ${destDirName}`);
             function callback(res) {
                 res.pipe(unzip).pipe(writeStream);
                 unzip.on('end', () => {resolve()});
@@ -75,7 +74,7 @@ class DataHelper {
         if (!fs.existsSync(destDirName)) fs.mkdirSync(destDirName);
         for (let index = 0; index < urls.length; index++) {
             try {await this.downloadFileFromUrl(urls[index], destDirName)}
-            catch (e) {console.log(ConsoleColor.Red, `Failed with error ${e}`)}
+            catch (e) {console.log(`Failed with error ${e}`)}
         }
     }
 

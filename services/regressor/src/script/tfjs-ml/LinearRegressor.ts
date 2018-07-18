@@ -1,19 +1,50 @@
 import * as tf from '@tensorflow/tfjs';
 
-export class ModelConfig {
+export class LinearRegressorModelConfig {
     trials?: number;
     shuffle?: boolean;
     optimizer?: string;
     learningRate?: number;
 }
 
-export class Model {
+import * as https from 'https';
+import * as parser from 'csv-parse';
+
+export class LinearRegressorService {
+    static async trainFromCSV(fileUrl: string, config?: LinearRegressorModel) {
+        // Initiate variables
+        let labels_data: any[] = [];
+        let features_data: any[] = [];
+        // Read data from url
+        let data = await readCsvFromUrl(fileUrl);
+        data.forEach(row => {
+            if (!row || !row.length || !row[0])
+                return;
+            else {
+                labels_data.push(Math.floor(row[row.length - 2] / 1000));
+                features_data.push([row[3] / 1000, row[4] / 1000, row[6] / 200]);
+            }
+        });
+        let model = new LinearRegressorModel(config);
+        await model.train(features_data, labels_data, (i, cost) => {
+            console.log(`Epoch ${i} loss is: ${cost}`);
+        });
+        return {
+            loss: model.loss,
+            bias: model.bias,
+            config: model.config,
+            weights: model.weights,
+        }
+    }
+}
+
+export class LinearRegressorModel {
     public loss: any;
     public bias: any;
+    public config: any;
     public weights: any;
-    public config: ModelConfig;
 
-    constructor(config?: ModelConfig) {
+    constructor(config?: LinearRegressorModel) {
         this.config = {trials: 100, shuffle: true, optimizer: 'sgd', learningRate: 0.005};
         if (config)
             this.config = {...this.config, ...config};
@@ -61,4 +92,25 @@ function predict(X: tf.Tensor, weights: tf.Variable, bias: tf.Variable): tf.Tens
 
 function cost(predicts: tf.Tensor, labels: tf.Tensor): tf.Tensor {
     return predicts.sub(labels).square().mean();
+}
+
+function readCsvFromUrl(fileUrl): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+        let data: any = [];
+        if (fileUrl.includes('https')) {
+            console.log(`Reading file from url ${fileUrl} ...`);
+            https.get(fileUrl, async (res) => {
+                res.pipe(parser({delimiter: ','})).on('data', (row: any[]) => {
+                    row = row.map(data => Number(data));
+                    data.push(row);
+                }).on('end', () => {
+                    return resolve(data);
+                }).on('error', (err) => {
+                    return reject(err);
+                });
+            });
+        }
+        else
+            return resolve(data);
+    });
 }

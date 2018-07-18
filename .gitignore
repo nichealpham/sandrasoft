@@ -41,6 +41,9 @@ release/
 node_modules/
 jspm_packages/
 
+# Serverless directories
+.serverless
+
 # Typescript v1 declaration files
 typings/
 

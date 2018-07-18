@@ -1,5 +1,5 @@
 import {exec} from 'child_process';
-import {ConsoleColor} from '../app/model/common/ConsoleColor';
+import {ConsoleColor} from '../src/model/common/ConsoleColor';
 
 async function testTrainLinearModelFromCSV () {
     exec(`curl  
