@@ -1,7 +1,7 @@
 import * as http from 'http';
 import * as https from 'https';
 import * as parser from 'csv-parse';
-import * as LinearRegressor from '../libs/regressor/LinearRegressor';
+import * as LinearRegressor from '../lib/regressor/LinearRegressor';
 
 export class RegressorService {
     static LinearModel = {

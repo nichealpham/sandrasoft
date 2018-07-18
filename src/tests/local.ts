@@ -1,4 +1,4 @@
-import {RegressorService} from '../app/services/RegressorService';
+import {RegressorService} from '../app/service/RegressorService';
 import {ConsoleColor} from '../app/model/common/ConsoleColor';
 
 async function testTrainLinearModelFromCSV () {

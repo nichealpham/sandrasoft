@@ -1,7 +1,7 @@
-import {Greeting} from './app/services/GreetingService';
-import {RegressorService} from './app/services/RegressorService';
+import {Greeting} from './app/service/GreetingService';
+import {RegressorService} from './app/service/RegressorService';
 
-import {HandlerHelper} from './app/libs/helper/HandlerHelper';
+import {HandlerHelper} from './app/lib/helper/HandlerHelper';
 
 export async function hello (event, context, callback) {
     let greeting = new Greeting('Welcome to ezTensorflow Service !!!');
