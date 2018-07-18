@@ -51,18 +51,19 @@ provider:
 
 
 package:
-  excludeDevDependencies: true
-  individually: true
+#  excludeDevDependencies: true
   include:
     - src/**
+    - ../node_modules/**
   exclude:
     - test/**
 #    - ./tests/**
 #    - ./server.js
 #    - node_modules/** # no need to add this yourself, this plugin does it for you
 
-plugins:
-  - serverless-plugin-typescript
+#Pluggin nay nhu cac, khong compile tat ca file
+#plugins:
+#  - serverless-plugin-typescript
 
 #custom:
 #  includeDependencies:

@@ -1,4 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
+import * as timer from 'node-simple-timer';
 
 export class LinearRegressorModelConfig {
     trials?: number;
@@ -12,6 +13,8 @@ import * as parser from 'csv-parse';
 
 export class LinearRegressorService {
     static async trainFromCSV(fileUrl: string, config?: LinearRegressorModel) {
+        let totalTimer = new timer.Timer();
+        totalTimer.start();
         // Initiate variables
         let labels_data: any[] = [];
         let features_data: any[] = [];
@@ -29,11 +32,13 @@ export class LinearRegressorService {
         await model.train(features_data, labels_data, (i, cost) => {
             console.log(`Epoch ${i} loss is: ${cost}`);
         });
+        totalTimer.end();
         return {
             loss: model.loss,
             bias: model.bias,
             config: model.config,
             weights: model.weights,
+            executionTime: `${totalTimer.seconds().toFixed(2)}s`
         }
     }
 }
@@ -45,7 +50,7 @@ export class LinearRegressorModel {
     public weights: any;
 
     constructor(config?: LinearRegressorModel) {
-        this.config = {trials: 100, shuffle: true, optimizer: 'sgd', learningRate: 0.005};
+        this.config = {trials: 50, shuffle: true, optimizer: 'sgd', learningRate: 0.005};
         if (config)
             this.config = {...this.config, ...config};
     }

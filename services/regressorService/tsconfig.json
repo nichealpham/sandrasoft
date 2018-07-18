@@ -19,10 +19,10 @@
         "removeComments": true,
     },
     "include": [
-        "./src/**/*",
-        "./test/**/*"
+        "./handler.ts"
     ],
     "exclude": [
         "./**/*.map.js",
+        "./test/**/*"
     ]
 }

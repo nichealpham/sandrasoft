@@ -3,10 +3,9 @@
 	"version": "1.0.0",
 	"description": "A boilerplate system design pattern to get started with Serverless",
 	"scripts": {
-		"init": "npm i",
-		"build": "tsc",
-		"deploy": "serverless deploy",
-		"remove": "serverless remove",
+		"sync": "cp .gitignore build/ && cp package.json build/ && cp serverless.yml build/",
+		"deploy": "tsc && npm run sync && cd build && serverless deploy && cd ../ && rm -R build",
+		"remove": "cd build && serverless remove",
 		"test-local": "ts-node ./test/Local.ts",
 		"test-release": "ts-node ./test/Release.ts"
 	},
