@@ -3,6 +3,11 @@ import {HandlerHelper} from './src/script/helper/HandlerHelper';
 
 export async function trainLinearModelFromCSV (event, context, callback) {
     let response, result;
+    if (!event.headers || !event.headers['API_KEY']) {
+        response = HandlerHelper.createErrorResponse(400, 'API KEY is missing !');
+        callback(null, response);
+        return;
+    }
     let body = JSON.parse(event.body);
     if (!body || !body.file_url) {
         response = HandlerHelper.createErrorResponse(400, 'Request must contain file_url!');
@@ -20,7 +25,12 @@ export async function trainLinearModelFromCSV (event, context, callback) {
         return;
     }
     try {
-        result = await LinearRegressorService.trainFromCSV(body.file_url, body.config);
+        let apiKey = event.headers['API_KEY'];
+        let option = {
+            config: body.config,
+            fileUrl: body.file_url,
+        };
+        result = await LinearRegressorService.trainFromCSV(apiKey, option);
         response = HandlerHelper.createSuccessResponse(200, result, 'Model create and training completed !');
     }
     catch (err) {

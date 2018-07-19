@@ -1,6 +1,7 @@
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-node';
 import * as timer from 'node-simple-timer';
+import * as WebSocket  from 'ws';
 
 export class LinearRegressorModelConfig {
     trials?: number;
@@ -16,49 +17,63 @@ import * as https from 'https';
 import * as parser from 'csv-parse';
 
 export class LinearRegressorService {
-    static async trainFromCSV(fileUrl: string, config?: LinearRegressorModelConfig) {
+    static async trainFromCSV(apiKey: number, option: {fileUrl: string, config?: LinearRegressorModelConfig}) {
         let totalTimer = new timer.Timer();
         totalTimer.start();
+        // Create a WebSocket server for publishing updates
+        let wsServer = new WebSocket.Server({
+            port: apiKey
+        });
         // Initiate variables
         let labels_data: any[] = [];
         let features_data: any[] = [];
         // Read data from url
-        let data = await readCsvFromUrl(fileUrl);
-        if (!config) {
-            config = {};
+        let data = await readCsvFromUrl(option.fileUrl);
+        if (!option.config) {
+            option.config = {};
         }
-        if (!config.indexFeatures || !config.indexLabel) {
+        if (!option.config.indexFeatures || !option.config.indexLabel) {
             let firstRow = data[0];
             let indexFeatures:  number[] = [];
-            config.indexLabel = firstRow.length - 1;
+            option.config.indexLabel = firstRow.length - 1;
             for (let i = 0; i < firstRow.length - 1; i++) {
                 indexFeatures.push(i);
             };
-            config.indexFeatures = indexFeatures;
+            option.config.indexFeatures = indexFeatures;
         }
         data.forEach(row => {
             if (!row || !row.length || !row[0])
                 return;
             else {
                 let feature_row: any[] = [];
-                config!.indexFeatures!.forEach(index => {
+                option.config!.indexFeatures!.forEach(index => {
                     feature_row.push(row[index])
                 });
                 features_data.push(feature_row);
-                labels_data.push(row[config!.indexLabel!]);
+                labels_data.push(row[option.config!.indexLabel!]);
             }
         });
-        if (config.normalize) {
+        if (option.config.normalize) {
             let {features, labels} = normalizeDataset(features_data, labels_data);
             features_data = features;
             labels_data = labels;
         }
-        let model = new LinearRegressorModel(config);
+        let model = new LinearRegressorModel(option.config);
         await model.train(features_data, labels_data, (i, cost) => {
+            let socketData = {
+                service: 'services/regressor/train-linear-model',
+                status: 'processing', 
+                data: {iteration: i, loss: cost}
+            };
+            wsServer.clients.forEach(client => {
+                if (client && client.readyState === WebSocket.OPEN) {
+                    client.send(socketData);
+                }
+            });
             console.log(`Epoch ${i} loss is: ${cost}`);
         });
         totalTimer.end();
-        return {
+        let result = {
             loss: model.loss,
             model: {
                 weights: model.weights,
@@ -66,7 +81,19 @@ export class LinearRegressorService {
             },
             config: model.config,
             executionTime: `${totalTimer.seconds().toFixed(2)}s`
-        }
+        };
+        let socketData = {
+            service: 'services/regressor/train-linear-model',
+            status: 'completed', 
+            data: result
+        };
+        wsServer.clients.forEach(client => {
+            if (client && client.readyState === WebSocket.OPEN) {
+                client.send(socketData);
+            }
+        });
+        wsServer.close();
+        return result;
     }
 }
 
