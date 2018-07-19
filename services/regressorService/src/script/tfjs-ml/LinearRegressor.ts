@@ -1,18 +1,22 @@
 import * as tf from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-node';
 import * as timer from 'node-simple-timer';
 
 export class LinearRegressorModelConfig {
     trials?: number;
     shuffle?: boolean;
     optimizer?: string;
+    normalize?: boolean;
     learningRate?: number;
+    indexLabel?: number;
+    indexFeatures?: number[];
 }
 
 import * as https from 'https';
 import * as parser from 'csv-parse';
 
 export class LinearRegressorService {
-    static async trainFromCSV(fileUrl: string, config?: LinearRegressorModel) {
+    static async trainFromCSV(fileUrl: string, config?: LinearRegressorModelConfig) {
         let totalTimer = new timer.Timer();
         totalTimer.start();
         // Initiate variables
@@ -20,14 +24,35 @@ export class LinearRegressorService {
         let features_data: any[] = [];
         // Read data from url
         let data = await readCsvFromUrl(fileUrl);
+        if (!config) {
+            config = {};
+        }
+        if (!config.indexFeatures || !config.indexLabel) {
+            let firstRow = data[0];
+            let indexFeatures:  number[] = [];
+            config.indexLabel = firstRow.length - 1;
+            for (let i = 0; i < firstRow.length - 1; i++) {
+                indexFeatures.push(i);
+            };
+            config.indexFeatures = indexFeatures;
+        }
         data.forEach(row => {
             if (!row || !row.length || !row[0])
                 return;
             else {
-                labels_data.push(Math.floor(row[row.length - 2] / 1000));
-                features_data.push([row[3] / 1000, row[4] / 1000, row[6] / 200]);
+                let feature_row: any[] = [];
+                config!.indexFeatures!.forEach(index => {
+                    feature_row.push(row[index])
+                });
+                features_data.push(feature_row);
+                labels_data.push(row[config!.indexLabel!]);
             }
         });
+        if (config.normalize) {
+            let {features, labels} = normalizeDataset(features_data, labels_data);
+            features_data = features;
+            labels_data = labels;
+        }
         let model = new LinearRegressorModel(config);
         await model.train(features_data, labels_data, (i, cost) => {
             console.log(`Epoch ${i} loss is: ${cost}`);
@@ -35,9 +60,11 @@ export class LinearRegressorService {
         totalTimer.end();
         return {
             loss: model.loss,
-            bias: model.bias,
+            model: {
+                weights: model.weights,
+                bias: model.bias,
+            },
             config: model.config,
-            weights: model.weights,
             executionTime: `${totalTimer.seconds().toFixed(2)}s`
         }
     }
@@ -49,8 +76,14 @@ export class LinearRegressorModel {
     public config: any;
     public weights: any;
 
-    constructor(config?: LinearRegressorModel) {
-        this.config = {trials: 50, shuffle: true, optimizer: 'sgd', learningRate: 0.005};
+    constructor(config?: LinearRegressorModelConfig) {
+        this.config = {
+            trials: 50, 
+            shuffle: true, 
+            optimizer: 'sgd',
+            normalize: false, 
+            learningRate: 0.005
+        };
         if (config)
             this.config = {...this.config, ...config};
     }
@@ -118,4 +151,22 @@ function readCsvFromUrl(fileUrl): Promise<any[]> {
         else
             return resolve(data);
     });
+}
+
+function normalizeDataset(features: any[], labels: any[]) {
+    let maxLabel = 0;
+    labels.forEach(label => {
+        if (label > maxLabel) maxLabel = label;
+    });
+    labels = labels.map(label => label / maxLabel);
+    for (let i = 0; i < features[0].length; i++) {
+        let maxColumn = 0;
+        features.forEach(featureRow => {
+            if (featureRow[i] > maxColumn) maxColumn = featureRow[i];
+        });
+        for (let j = 0; j < features.length; j++) {
+            features[j][i] = features[j][i] / maxColumn;
+        }
+    };
+    return {features, labels};
 }

@@ -54,7 +54,7 @@ package:
 #  excludeDevDependencies: true
   include:
     - src/**
-    - ../node_modules/**
+    - node_modules/**
   exclude:
     - test/**
 #    - ./tests/**
