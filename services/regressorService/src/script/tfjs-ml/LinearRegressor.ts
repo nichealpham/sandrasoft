@@ -22,8 +22,11 @@ export class LinearRegressorService {
         totalTimer.start();
         // Create a WebSocket server for publishing updates
         let wsServer = new WebSocket.Server({
-            port: apiKey
+            path: apiKey,
+            port: 8080,
+            domain: apiKey,
         });
+        console.log(wsServer)
         // Initiate variables
         let labels_data: any[] = [];
         let features_data: any[] = [];
@@ -70,7 +73,7 @@ export class LinearRegressorService {
                     client.send(socketData);
                 }
             });
-            console.log(`Epoch ${i} loss is: ${cost}`);
+            // console.log(`Epoch ${i} loss is: ${cost}`);
         });
         totalTimer.end();
         let result = {
