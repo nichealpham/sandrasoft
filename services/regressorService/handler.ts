@@ -26,11 +26,11 @@ export async function trainLinearModelFromCSV (event, context, callback) {
     }
     try {
         let apiKey = event.headers['API_KEY'];
-        let option = {
+        let input = {
             config: body.config,
             fileUrl: body.file_url,
         };
-        result = await LinearRegressorService.trainFromCSV(apiKey, option);
+        result = await LinearRegressorService.trainFromCSV(input);
         response = HandlerHelper.createSuccessResponse(200, result, 'Model create and training completed !');
     }
     catch (err) {

@@ -22,7 +22,6 @@
 		"csv-parse": "^2.5.0",
 		"node-simple-timer": "^0.1.1",
 		"rimraf": "^2.6.2",
-		"ws": "^5.2.2",
 		"zlib": "^1.0.5"
 	},
 	"devDependencies": {
