@@ -5,16 +5,16 @@ async function testTrainLinearModelFromCSV () {
     let input = {
         fileUrl: 'https://raw.githubusercontent.com/eliben/deep-learning-samples/master/linear-regression/CCPP-dataset/data.csv',
         config: {
-            trials: 1000,
+            trials: 100000,
             shuffle: true,
             normalize: true,
-            learningRate: 0.004,
+            learningRate: 0.009,
             indexLabel: 4,
             indexFeatures: [0, 1, 2, 3],
         }
     }
     
-    let apiKey = 'CUSTOMIZED_API_KEY';
+    // let apiKey = 'CUSTOMIZED_API_KEY';
     let result = await LinearRegressorService.trainFromCSV(input);
 
     if (!result || !result.model) {

@@ -15,6 +15,12 @@ export class LinearRegressorModelConfig {
 import * as https from 'https';
 import * as parser from 'csv-parse';
 
+// excute the service as a child-process
+process.on('message', async (input) => {
+    let result = await LinearRegressorService.trainFromCSV(input); 
+    process.send!(result);
+});
+
 export class LinearRegressorService {
     static async trainFromCSV(input: {fileUrl: string, config?: LinearRegressorModelConfig}) {
         let totalTimer = new timer.Timer();
