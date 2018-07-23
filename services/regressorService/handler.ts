@@ -25,7 +25,7 @@ export async function trainLinearModelFromCSV (event, context, callback) {
         return;
     }
     try {
-        let apiKey = event.headers['API_KEY'];
+        // let apiKey = event.headers['API_KEY'];
         let input = {
             config: body.config,
             fileUrl: body.file_url,
