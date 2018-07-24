@@ -1,5 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-node';
+tf.setBackend('tensorflow');
 import * as timer from 'node-simple-timer';
 
 export class LinearRegressorModelConfig {
@@ -61,7 +62,8 @@ export class LinearRegressorService {
         }
         let model = new LinearRegressorModel(input.config);
         await model.train(features_data, labels_data, (i, cost) => {
-            console.log(`Epoch ${i} loss is: ${cost}`);
+            if (i % Math.floor(input.config!.trials! / 100) === 0)
+                console.log(`Epoch ${i} loss is: ${cost}`);
         });
         totalTimer.end();
         return {

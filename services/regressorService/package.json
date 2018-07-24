@@ -25,8 +25,10 @@
 		"zlib": "^1.0.5"
 	},
 	"devDependencies": {
+		"@tensorflow/tfjs-node-gpu": "^0.1.9",
 		"@types/node": "^10.5.2",
 		"serverless-plugin-typescript": "^1.1.5",
+		"ts-node": "^7.0.0",
 		"typescript": "^2.9.2",
 		"typescript-eslint-parser": "^16.0.1"
 	}
