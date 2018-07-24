@@ -73,10 +73,10 @@ package:
 
 functions:
   hello:
-    handler: handler.trainLinearModelFromCSV
+    handler: handler.trainLinearRegressionModel
     events:
       - http:
-          path: services/regressor/train-linear-model
+          path: services/regression/train-linear-model
           method: post
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

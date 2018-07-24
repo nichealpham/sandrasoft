@@ -1,7 +1,7 @@
-import {LinearRegressorService} from './src/script/tfjs-ml/LinearRegressor';
+import {RegressionService} from './src/script/regression/RegressionService';
 import {HandlerHelper} from './src/script/helper/HandlerHelper';
 
-export async function trainLinearModelFromCSV (event, context, callback) {
+export async function trainLinearRegressionModel (event, context, callback) {
     let response, result;
     if (!event.headers || !event.headers['API_KEY']) {
         response = HandlerHelper.createErrorResponse(400, 'API KEY is missing !');
@@ -30,7 +30,7 @@ export async function trainLinearModelFromCSV (event, context, callback) {
             config: body.config,
             fileUrl: body.file_url,
         };
-        result = await LinearRegressorService.trainFromCSV(input);
+        let result = await RegressionService.trainLinearModel(input);
         response = HandlerHelper.createSuccessResponse(200, result, 'Model create and training completed !');
     }
     catch (err) {
