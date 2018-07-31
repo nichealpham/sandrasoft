@@ -59,6 +59,9 @@ export class LinearRegressionService {
             //     nSamples: model.nSamples,
             //     nFeatures: model.nFeatures,
             // },
+            features_data,
+            labels_data,
+            input,
             executionTime: `${totalTimer.seconds().toFixed(2)}s`
         };;
     }
