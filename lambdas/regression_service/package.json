@@ -1,0 +1,23 @@
+{
+	"name": "serverless-template",
+	"version": "1.0.0",
+	"description": "A boilerplate system design pattern to get started with Serverless",
+	"scripts": {
+		"build-ts": "tsc",
+		"sync-node": "cp src/.gitignore build/ && cp src/package.json build/",
+		"sync-svless": "cp src/serverless.yml build/",
+		"sync-all": "npm run sync-node && npm run sync-svless",
+		"build": "npm run build-ts && npm run sync-all",
+		"deploy": "npm run build && cd build && npm install --only=production && serverless deploy && cd ../ && rm -R build",
+		"undeploy": "cd build && serverless remove",
+		"test-local": "ts-node src/testing/Local.ts",
+		"test-release": "ts-node src/testing/Release.ts"
+	},
+	"keywords": [
+		"serverless",
+		"nodejs",
+		"ts"
+	],
+	"author": "Nicheal Pham",
+	"license": "MIT"
+}
