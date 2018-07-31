@@ -41,26 +41,23 @@ export class LinearRegressionService {
             features_data = features;
             labels_data = labels;
         }
-        // // STEP 3: CREATE A LINEAR REGRESSION MODEL
-        // let model = new LinearRegressor(input.config);
-        // // STEP 4: TRAIN THE MODEL
-        // await model.train(features_data, labels_data, (i, cost) => {
-        //     if (i % Math.floor(input.config!.trials! / 100) === 0)
-        //         console.log(`Epoch ${i} loss is: ${cost}`);
-        // });
+        // STEP 3: CREATE A LINEAR REGRESSION MODEL
+        let model = new LinearRegressor();
+        model.configure(input.config);
+        // STEP 4: TRAIN THE MODEL
+        await model.train(features_data, labels_data, (i, cost) => {
+            if (i % Math.floor(input.config!.trials! / 100) === 0)
+                console.log(`Epoch ${i} loss is: ${cost}`);
+        });
         totalTimer.end();
         // STEP 5: RETURN CUSTOMIZED VALUES
         return {
-            // model: {
-            //     weights: model.weights.dataSync(),
-            //     bias: model.bias.dataSync(),
-            //     config: model.config,
-            //     loss: model.loss,
-            //     nSamples: model.nSamples,
-            //     nFeatures: model.nFeatures,
-            // },
-            features_data,
-            labels_data,
+            model: {
+                weights: model.data.weights,
+                bias: model.data.bias,
+                config: model.config,
+                loss: model.loss,
+            },
             input,
             executionTime: `${totalTimer.seconds().toFixed(2)}s`
         };;

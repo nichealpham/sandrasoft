@@ -5,6 +5,7 @@ import {Monica} from '../monica/Monica';
 import {MonicaType} from '../monica/MonicaType';
 import {RegressorData} from './RegressorData';
 import {RegressorConfig} from './RegressorConfig';
+import { MonicaConfig } from '../monica/MonicaConfig';
 
 export class LinearRegressor implements Monica {
     _id?: string;
@@ -26,8 +27,17 @@ export class LinearRegressor implements Monica {
         let nSamples = labels.length;
         let nFeatures = features[0].length;
         // Prepare weights and bias
-        let weights = tf.variable(tf.tensor(this.data.weights).reshape([1, nFeatures]));
-        let bias = tf.variable(tf.scalar(this.data.bias));
+        // For model that does not neccessaryly belongs to a modelDB
+        // Just crreate new instance, sply config and train
+        let weights, bias: tf.Variable;
+        if (this.data && this.data.weights && this.data.bias) {
+            weights = tf.variable(tf.tensor(this.data.weights).reshape([1, nFeatures]));
+            bias = tf.variable(tf.scalar(this.data.bias));
+        }
+        else {
+            weights = tf.variable(tf.randomNormal([1, nFeatures]));
+            bias = tf.variable(tf.scalar(0));
+        }
         // Prepare the dataset
         let xs = tf.tensor(features).reshape([nSamples, nFeatures]);
         let ys = tf.tensor(labels).reshape([nSamples, 1]);
@@ -42,9 +52,11 @@ export class LinearRegressor implements Monica {
                 return loss;
             });
         };
-        this.data.weights = weights.dataSync();
-        this.data.bias = bias.dataSync()[0];
-        this.data.nFeatures = nFeatures;
+        this.data = {
+            weights: weights.dataSync(),
+            bias: bias.dataSync()[0],
+            nFeatures: nFeatures,
+        };
         return true;
     }
 
@@ -91,5 +103,9 @@ export class LinearRegressor implements Monica {
             createdAt: this.createdAt,
             updatedAt: this.updatedAt
         }
+    }
+
+    configure(config: MonicaConfig) {
+        this.config = new RegressorConfig(config);
     }
 }
