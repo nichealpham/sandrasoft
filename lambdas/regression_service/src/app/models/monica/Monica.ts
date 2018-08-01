@@ -18,8 +18,8 @@ export class Monica {
     data: any;
     config: any;
     executionTime: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: number;
+    updatedAt: number;
 
     constructor(monica: IMonica) {
         let model = mergeWithoutExtend(DefaultMonica, monica);
@@ -30,8 +30,22 @@ export class Monica {
         this.data = model.data;
         this.config = model.config;
         this.executionTime = model.executionTime;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+        this.createdAt = new Date().getTime();
+        this.updatedAt = new Date().getTime();
+    }
+
+    export() {
+        return {
+            _id: this._id,
+            name: this.name,
+            type: this.type,
+            loss: this.loss,
+            data: this.data,
+            config: this.config,
+            executionTime: this.executionTime,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+        }
     }
 }
 

@@ -1,4 +1,3 @@
-import * as timer from 'node-simple-timer';
 import { DataHelper } from '../models/helper/DataHelper';
 import { LinearRegressor } from '../models/regression/LinearRegressor';
 import { Monica, IMonica } from '../models/monica/Monica';
@@ -7,14 +6,11 @@ import { Firebase } from '../models/firebase/Firebase';
 export class LinearRegressionService {
     static async createMonica(data: IMonica): Promise<Monica> {
         let firebase = new Firebase();
-        let monicaCreate = new Monica(data);
+        let monicaCreate = new Monica(data).export();
         return await firebase.create('monica', monicaCreate);
     }
 
     static async trainMonicaFromCsv(input: {fileUrl, config}) {
-        let totalTimer = new timer.Timer();
-        totalTimer.start();
-        // Initiate variables
         let labels_data: any[] = [];
         let features_data: any[] = [];
         // STEP 1: READ FILE FROM URL TO RAM
@@ -57,17 +53,9 @@ export class LinearRegressionService {
             if (i % Math.floor(input.config!.trials! / 100) === 0)
                 console.log(`Epoch ${i} loss is: ${cost}`);
         });
-        totalTimer.end();
         // STEP 5: RETURN CUSTOMIZED VALUES
         return {
-            model: {
-                weights: model.data.weights,
-                bias: model.data.bias,
-                config: model.config,
-                loss: model.loss,
-            },
-            input,
-            executionTime: `${totalTimer.seconds().toFixed(2)}s`
+            model: model.export()
         };;
     }
 }

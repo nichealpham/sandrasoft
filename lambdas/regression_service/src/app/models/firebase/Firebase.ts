@@ -1,3 +1,4 @@
+const ServiceAccount = require('../../../system/private_keys/FirebaseServiceAccount.json');
 import {FIREBASE} from '../../../system/private_keys/Firebase';
 import * as admin from 'firebase-admin';
 import * as crypto from 'crypto';
@@ -7,7 +8,7 @@ export class Firebase {
     
     constructor() {
         admin.initializeApp({
-            credential: admin.credential.cert(FIREBASE.privateKey),
+            credential: admin.credential.cert(ServiceAccount),
             databaseURL: FIREBASE.databaseURL
         });
         this.firestore = admin.firestore();

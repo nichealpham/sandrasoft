@@ -1,3 +1,4 @@
 import {LinearRegressionController} from './app/controllers/LinearRegressionController';
 
-exports.trainLinearRegressionModel = LinearRegressionController.trainModel.mainfunc;
+exports.createModel = LinearRegressionController.createModel.mainfunc;
+exports.trainLinearModel = LinearRegressionController.trainModel.mainfunc;

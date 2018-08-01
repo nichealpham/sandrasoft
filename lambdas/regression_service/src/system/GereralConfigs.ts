@@ -13,7 +13,6 @@ export class ServiceConfig {
 
     static FIREBASE: {
         apiKey: string;
-        privateKey: string;
         authDomain: string;
         databaseURL: string;
         projectId: string;

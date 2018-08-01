@@ -73,11 +73,18 @@ package:
 #      - 'config/**' # (optional) always include these globs and their dependencies
 
 functions:
-  hello:
-    handler: handler.trainLinearRegressionModel
+  trainLinearModel:
+    handler: handler.trainLinearModel
     events:
       - http:
           path: services/regression/train-linear-model
+          method: post
+
+  createModel:
+    handler: handler.createModel
+    events:
+      - http:
+          path: services/regression/create-model
           method: post
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

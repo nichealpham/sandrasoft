@@ -1,6 +1,6 @@
-import {HandlerHelper} from './HandlerHelper';
+import {HandlerHelper} from '../app/models/helper/HandlerHelper';
 
-export class ValidatorHelper {
+export class Middleware {
     static ensureExist(event, params): {status: boolean, response} {
         if (!event) {
             return {
@@ -8,6 +8,7 @@ export class ValidatorHelper {
                 response: HandlerHelper.createErrorResponse(400, 'REQUEST cannot be null !')
             }
         }
+        event.body = event.body ? JSON.parse(event.body) : {};
         for (let key in params) {
             if (!event[key]) {
                 return {
@@ -16,10 +17,10 @@ export class ValidatorHelper {
                 }
             }
             for (let i = 0; i < params[key].length; i++) {
-                if (!event[key][params[key][i]]) {
+                if (!(event[key])[(params[key])[i]]) {
                     return {
                         status: false,
-                        response: HandlerHelper.createErrorResponse(400, `${params[key][i].toUpperCase()} is missing in ${key.toUpperCase()} !`)
+                        response: HandlerHelper.createErrorResponse(400, `${(params[key])[i].toUpperCase()} is missing in ${key.toUpperCase()} !`)
                     }
                 }
             }

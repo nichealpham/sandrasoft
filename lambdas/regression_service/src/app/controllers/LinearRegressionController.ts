@@ -1,24 +1,22 @@
 import {LinearRegressionService} from '../views/LinearRegressionService';
 import {HandlerHelper} from '../models/helper/HandlerHelper';
-import {ValidatorHelper} from '../models/helper/ValidatorHelper';
+import {Middleware} from '../../system/Middleware';
 
 export class LinearRegressionController {
     static createModel = {
         routing: '/regression/linear/create-model',
         method: 'POST',
         mainfunc: async (event, context, callback) => {
-            let param = {
+            let params = {
                 headers: ['API_KEY'],
                 body: ['data'],
             }
-            let {status, response} = ValidatorHelper.ensureExist(event, param);
+            let {status, response} = Middleware.ensureExist(event, params);
             if (!status) {
                 callback(null, response);
                 return;
             }
-
-            let body = JSON.parse(event.body);
-            let result = await LinearRegressionService.createMonica(body.data);
+            let result = await LinearRegressionService.createMonica(event.body.data);
             response = HandlerHelper.createSuccessResponse(200, result, 'Model create successful !');
             callback(null, response);
         }
@@ -28,23 +26,21 @@ export class LinearRegressionController {
         routing: '/regression/linear/train-model',
         method: 'POST',
         mainfunc: async (event, context, callback) => {
-            // let param = {
-            //     headers: ['API_KEY'],
-            //     body: ['file_url', 'config']
-            // }
-            // let {status, response} = ValidatorHelper.ensureExist(event, param);
-            // if (!status) {
-            //     callback(null, response);
-            //     return;
-            // }
-
-            let body = JSON.parse(event.body);
+            let params = {
+                headers: ['API_KEY'],
+                body: ['file_url', 'config']
+            }
+            let {status, response} = Middleware.ensureExist(event, params);
+            if (!status) {
+                callback(null, response);
+                return;
+            }
             let input = {
-                fileUrl: body.file_url,
-                config: body.config,
+                fileUrl: event.body.file_url,
+                config: event.body.config,
             };
             let result = await LinearRegressionService.trainMonicaFromCsv(input);
-            let response = HandlerHelper.createSuccessResponse(200, result, 'Model create and training completed !');
+            response = HandlerHelper.createSuccessResponse(200, result, 'Model create and training completed !');
             callback(null, response);
         }
     }

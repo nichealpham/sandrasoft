@@ -1,5 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-node';
+import * as timer from 'node-simple-timer';
 
 import { Monica } from '../monica/Monica';
 import { MonicaType } from '../monica/MonicaType';
@@ -15,8 +16,8 @@ export class LinearRegressor implements Monica {
     data: RegressorData;
     config: RegressorConfig;
     executionTime: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: number;
+    updatedAt: number;
 
     constructor(monica?: Monica) {
         if (monica) 
@@ -24,9 +25,11 @@ export class LinearRegressor implements Monica {
     }
 
     async train(features: number[][], labels: number[], epochsSuccessCallback?: any): Promise<boolean> {
+        let totalTimer = new timer.Timer();
+        totalTimer.start();
+        // Prepare inputs
         let nSamples = labels.length;
         let nFeatures = features[0].length;
-        // Prepare weights and bias
         // For model that does not neccessaryly belongs to a modelDB
         // Just crreate new instance, sply config and train
         let weights, bias: tf.Variable;
@@ -52,6 +55,8 @@ export class LinearRegressor implements Monica {
                 return loss;
             });
         };
+        totalTimer.end();
+        this.executionTime = (this.executionTime | 0) + Number(totalTimer.seconds().toFixed(2));
         this.data = {
             weights: weights.dataSync(),
             bias: bias.dataSync()[0],
@@ -91,7 +96,7 @@ export class LinearRegressor implements Monica {
         this.updatedAt = monica.updatedAt;
     }
 
-    export(): Monica {
+    export() {
         return {
             _id: this._id,
             name: this.name,
