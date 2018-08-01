@@ -13,7 +13,7 @@ async function testTrainLinearRegressionModel () {
             indexFeatures: [0, 1, 2, 3],
         }
     }
-    let result = await LinearRegressionService.trainModelFromCsv(input);
+    let result = await LinearRegressionService.trainMonicaFromCsv(input);
     if (!result) {
         console.log(ConsoleColor.Red, '1. testTrainLinearRegressionModel failed. \n');
         return;

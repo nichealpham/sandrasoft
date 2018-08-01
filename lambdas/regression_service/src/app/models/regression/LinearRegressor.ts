@@ -1,10 +1,10 @@
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-node';
 
-import {Monica} from '../monica/Monica';
-import {MonicaType} from '../monica/MonicaType';
-import {RegressorData} from './RegressorData';
-import {RegressorConfig} from './RegressorConfig';
+import { Monica } from '../monica/Monica';
+import { MonicaType } from '../monica/MonicaType';
+import { RegressorData } from './RegressorData';
+import { RegressorConfig } from './RegressorConfig';
 import { MonicaConfig } from '../monica/MonicaConfig';
 
 export class LinearRegressor implements Monica {

@@ -1,9 +1,17 @@
 import * as timer from 'node-simple-timer';
-import {DataHelper} from '../models/helper/DataHelper';
-import {LinearRegressor} from '../models/regression/LinearRegressor';
+import { DataHelper } from '../models/helper/DataHelper';
+import { LinearRegressor } from '../models/regression/LinearRegressor';
+import { Monica, IMonica } from '../models/monica/Monica';
+import { Firebase } from '../models/firebase/Firebase';
 
 export class LinearRegressionService {
-    static async trainModelFromCsv(input: {fileUrl, config}) {
+    static async createMonica(data: IMonica): Promise<Monica> {
+        let firebase = new Firebase();
+        let monicaCreate = new Monica(data);
+        return await firebase.create('monica', monicaCreate);
+    }
+
+    static async trainMonicaFromCsv(input: {fileUrl, config}) {
         let totalTimer = new timer.Timer();
         totalTimer.start();
         // Initiate variables
