@@ -1,26 +1,9 @@
 {
-	"name": "serverless-boilerplate",
-	"version": "1.0.0",
-	"description": "A boilerplate system design pattern to get started with Serverless",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/nichealpham/Serverless-Boilerplate.git"
-	},
-	"keywords": [
-		"tensorflow.js",
-		"serverless",
-		"nodejs",
-		"ts"
-	],
 	"author": "Nicheal Pham",
 	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/nichealpham/Serverless-Boilerplate/issues"
-	},
-	"homepage": "https://github.com/nichealpham/Serverless-Boilerplate#readme",
-	"dependencies": {},
 	"devDependencies": {
 		"@types/node": "^10.5.2",
+		"ts-node": "^7.0.0",
 		"typescript": "^2.9.2",
 		"typescript-eslint-parser": "^16.0.1"
 	}
