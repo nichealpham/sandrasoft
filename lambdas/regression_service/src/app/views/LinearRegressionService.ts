@@ -5,9 +5,8 @@ import { Firebase } from '../models/firebase/Firebase';
 
 export class LinearRegressionService {
     static async createMonica(data: IMonica): Promise<Monica> {
-        let firebase = new Firebase();
         let monicaCreate = new Monica(data).export();
-        return await firebase.create('monica', monicaCreate);
+        return await Firebase.createDocument('monica', monicaCreate);
     }
 
     static async trainMonicaFromCsv(input: {fileUrl, config}) {

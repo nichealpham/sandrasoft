@@ -44,7 +44,7 @@ async function testTrainLinearRegressionModel() {
         body: JSON.stringify({
             "fileUrl": "https://raw.githubusercontent.com/eliben/deep-learning-samples/master/linear-regression/CCPP-dataset/data.csv",
             "config": {
-                "trials": 1000,
+                "iterations": 1000,
                 "shuffle": true,
                 "normalize": true,
                 "learningRate": 0.009,

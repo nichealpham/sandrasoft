@@ -7,17 +7,18 @@ export class LinearRegressionController {
         routing: '/regression/linear/create-model',
         method: 'POST',
         mainfunc: async (event, context, callback) => {
-            let params = {
-                headers: ['API_KEY'],
-                body: ['data'],
-            }
-            let {status, response} = Middleware.ensureExist(event, params);
-            if (!status) {
-                callback(null, response);
-                return;
-            }
+            // let params = {
+            //     headers: ['API_KEY'],
+            //     body: ['data'],
+            // }
+            // let {status, response} = Middleware.ensureExist(event, params);
+            // if (!status) {
+            //     callback(null, response);
+            //     return;
+            // }
+            event.body = JSON.parse(event.body);
             let result = await LinearRegressionService.createMonica(event.body.data);
-            response = HandlerHelper.createSuccessResponse(200, result, 'Model create successful !');
+            let response = HandlerHelper.createSuccessResponse(200, result, 'Model create successful !');
             callback(null, response);
         }
     };
