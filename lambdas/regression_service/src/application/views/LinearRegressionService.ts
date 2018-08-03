@@ -1,12 +1,12 @@
-import { DataHelper } from '../models/helper/DataHelper';
 import { LinearRegressor } from '../models/regression/LinearRegressor';
 import { Monica, IMonica } from '../models/monica/Monica';
-import { Firebase } from '../models/firebase/Firebase';
+import { FirebaseHelper } from '../../libraries/helper/FirebaseHelper';
+import { DataHelper } from '../../libraries/helper/DataHelper';
 
 export class LinearRegressionService {
     static async createMonica(data: IMonica): Promise<Monica> {
         let monicaCreate = new Monica(data).export();
-        return await Firebase.createDocument('monica', monicaCreate);
+        return await FirebaseHelper.createDocument('monica', monicaCreate);
     }
 
     static async trainMonicaFromCsv(input: {fileUrl, config}) {

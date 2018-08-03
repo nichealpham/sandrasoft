@@ -11,12 +11,12 @@ export class ServiceConfig {
         timeout: 300,
     };
 
-    static FIREBASE: {
-        apiKey: string;
-        authDomain: string;
-        databaseURL: string;
-        projectId: string;
-        storageBucket: string;
-        messagingSenderId: string;
+    static FIREBASE = {
+        apiKey: "AIzaSyABK7xdi-E_GVA005H7Q4NczGVUW_oiUQY",
+        authDomain: "monica-service.firebaseapp.com",
+        databaseURL: "https://monica-service.firebaseio.com",
+        projectId: "monica-service",
+        storageBucket: "",
+        messagingSenderId: "104815442198",
     };
 }

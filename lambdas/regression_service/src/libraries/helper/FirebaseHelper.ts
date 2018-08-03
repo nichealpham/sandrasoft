@@ -1,17 +1,17 @@
-let ServiceAccount = require('../../../system/private_keys/FirebaseServiceAccount.json');
-import {FIREBASE} from '../../../system/private_keys/Firebase';
+let ServiceAccount = require('../../system/keys/FirebaseServiceAccount.json');
+import { ServiceConfig } from '../../system/Config';
 import * as firebase from 'firebase-admin';
 import * as crypto from 'crypto';
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
         credential: firebase.credential.cert(ServiceAccount),
-        databaseURL: FIREBASE.databaseURL
+        databaseURL: ServiceConfig.FIREBASE.databaseURL
     });
 }
 let firestore = firebase.firestore();
 
-export class Firebase {
+export class FirebaseHelper {
     static async createDocument(collection: string, doc: any): Promise<any> {
         doc._id = generateUUID();
         return new Promise((resolve, reject) => {

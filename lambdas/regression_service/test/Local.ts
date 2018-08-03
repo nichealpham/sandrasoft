@@ -1,6 +1,6 @@
-import {LinearRegressionService} from '../app/views/LinearRegressionService'
-import {ConsoleColor} from '../app/models/common/ConsoleColor';
-import {Middleware} from '../system/Middleware';
+import {LinearRegressionService} from '../src/application/views/LinearRegressionService'
+import {ConsoleColor} from '../src/application/models/common/ConsoleColor';
+import {Middleware} from '../src/system/Middleware';
 
 async function main() {
     await testCreateModel();

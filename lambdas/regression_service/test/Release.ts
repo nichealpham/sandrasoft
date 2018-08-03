@@ -1,6 +1,6 @@
 import {exec} from 'child_process';
-import {ServiceConfig} from '../system/GereralConfigs';
-import {ConsoleColor} from '../app/models/common/ConsoleColor';
+import {ServiceConfig} from '../src/system/Config';
+import {ConsoleColor} from '../src/application/models/common/ConsoleColor';
 
 async function testTrainLinearRegressionModel () {
     let apiUrl = `${ServiceConfig.API_BASE}/${ServiceConfig.STAGE}/services/regressor/train-linear-model`;

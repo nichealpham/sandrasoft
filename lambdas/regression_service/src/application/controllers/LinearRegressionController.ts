@@ -1,5 +1,5 @@
 import {LinearRegressionService} from '../views/LinearRegressionService';
-import {HandlerHelper} from '../models/helper/HandlerHelper';
+import {HandlerHelper} from '../../libraries/helper/HandlerHelper';
 import {Middleware} from '../../system/Middleware';
 
 export class LinearRegressionController {
@@ -7,18 +7,17 @@ export class LinearRegressionController {
         routing: '/regression/linear/create-model',
         method: 'POST',
         mainfunc: async (event, context, callback) => {
-            // let params = {
-            //     headers: ['API_KEY'],
-            //     body: ['data'],
-            // }
-            // let {status, response} = Middleware.ensureExist(event, params);
-            // if (!status) {
-            //     callback(null, response);
-            //     return;
-            // }
-            event.body = JSON.parse(event.body);
+            let params = {
+                headers: ['API_KEY'],
+                body: ['data'],
+            }
+            let {status, response} = Middleware.ensureExist(event, params);
+            if (!status) {
+                callback(null, response);
+                return;
+            }
             let result = await LinearRegressionService.createMonica(event.body.data);
-            let response = HandlerHelper.createSuccessResponse(200, result, 'Model create successful !');
+            response = HandlerHelper.createSuccessResponse(200, result, 'Model create successful !');
             callback(null, response);
         }
     };

@@ -53,11 +53,12 @@ provider:
 package:
 #  excludeDevDependencies: true
   include:
-    - app/**
+    - application/**
+    - libraries/**
     - system/**
     - node_modules/**
   exclude:
-    - testing/**
+    - tests/**
 #    - ./tests/**
 #    - ./server.js
 #    - node_modules/** # no need to add this yourself, this plugin does it for you
