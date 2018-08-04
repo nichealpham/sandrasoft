@@ -1,30 +1,26 @@
-import {ServiceLoader} from '../../system/ServiceLoader';
-import {HandlerHelper} from '../../scripts/helper/HandlerHelper';
+import { ServiceLoader } from '../../system/ServiceLoader';
+import { Monica } from '../models/monica/Monica';
 
 export class LinearRegressionController {
-    static createModel = {
-        routing: '/regression/linear/create-model',
-        method: 'POST',
-        mainfunc: async (event, context, callback) => {
-            event.body = JSON.parse(event.body);
-            let result = await ServiceLoader.LinearRegressionService.createMonica(event.body.data);
-            let response = HandlerHelper.createSuccessResponse(200, result, 'Model create successful !');
-            callback(null, response);
-        }
-    };
-
-    static trainModel = {
-        routing: '/regression/linear/train-model',
-        method: 'POST',
-        mainfunc: async (event, context, callback) => {
-            event.body = JSON.parse(event.body);
-            let input = {
-                fileUrl: event.body.file_url,
-                config: event.body.config,
-            };
-            let result = await ServiceLoader.LinearRegressionService.trainMonicaFromCsv(input);
-            let response = HandlerHelper.createSuccessResponse(200, result, 'Model create and training completed !');
-            callback(null, response);
+    static getAsRouter() {
+        return {
+            // LinearRegression: {
+                trainModel: this.trainModel,
+                createModel: this.createModel,
+            // }
         }
     }
+
+    static async createModel(req): Promise<Monica> {
+        return await ServiceLoader.LinearRegressionService.createMonica(req.body.data);
+    }
+    
+    static async trainModel(req): Promise<{model}> {
+        let input = {
+            fileUrl: req.body.file_url,
+            config: req.body.config,
+        };
+        return await ServiceLoader.LinearRegressionService.trainMonicaFromCsv(input);
+    }
 }
+

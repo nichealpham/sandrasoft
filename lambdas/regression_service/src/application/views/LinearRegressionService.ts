@@ -3,7 +3,7 @@ import { Monica, IMonica } from '../models/monica/Monica';
 import { FirebaseHelper } from '../../scripts/helper/FirebaseHelper';
 import { DataHelper } from '../../scripts/helper/DataHelper';
 
-interface ILinearRegressionService {
+export interface ILinearRegressionService {
     createMonica(data: IMonica): Promise<Monica>;
     trainMonicaFromCsv(input: {fileUrl, config}): Promise<{model}>;
 }
@@ -54,10 +54,10 @@ export class LinearRegressionService implements ILinearRegressionService {
         }
         // STEP 3: CREATE A LINEAR REGRESSION MODEL
         let model = new LinearRegressor();
-        model.configure(input.config);
+        model.mergeConfig(input.config);
         // STEP 4: TRAIN THE MODEL
         await model.train(features_data, labels_data, (i, cost) => {
-            if (i % Math.floor(input.config!.trials! / 100) === 0)
+            if (i % Math.floor(input.config!.iterations! / 100) === 0)
                 console.log(`Epoch ${i} loss is: ${cost}`);
         });
         // STEP 5: RETURN CUSTOMIZED VALUES

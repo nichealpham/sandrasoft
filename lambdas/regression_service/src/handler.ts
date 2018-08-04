@@ -1,3 +1,3 @@
-import Serverless = require('./system/Serverless');
+import { Serverless } from './system/Serverless';
 
-export = Serverless;
+export = Serverless.getRoutes();

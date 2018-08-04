@@ -110,7 +110,7 @@ export class LinearRegressor implements Monica {
         }
     }
 
-    configure(config: MonicaConfig) {
+    mergeConfig(config: MonicaConfig) {
         this.config = new RegressorConfig(config);
     }
 }

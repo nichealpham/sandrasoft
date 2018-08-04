@@ -75,7 +75,7 @@ package:
 
 functions:
   trainLinearModel:
-    handler: handler.trainLinearModel
+    handler: handler.trainModel
     events:
       - http:
           path: services/regression/train-linear-model
