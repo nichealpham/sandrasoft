@@ -5,7 +5,7 @@ import { HandlerHelper } from '../scripts/helper/HandlerHelper';
 import { LinearRegressionController } from '../application/controllers/LinearRegressionController';
 
 export class Serverless {
-    static getRoutes() {
+    static getRouters() {
         let routers = {
             ...LinearRegressionController.getAsRouter(),
         }

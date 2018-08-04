@@ -1,3 +1,3 @@
 import { Serverless } from './system/Serverless';
 
-export = Serverless.getRoutes();
+export = Serverless.getRouters();
