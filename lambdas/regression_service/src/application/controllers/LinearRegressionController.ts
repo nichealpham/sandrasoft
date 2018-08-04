@@ -1,5 +1,5 @@
 import {LinearRegressionService} from '../views/LinearRegressionService';
-import {HandlerHelper} from '../../libraries/helper/HandlerHelper';
+import {HandlerHelper} from '../../scripts/helper/HandlerHelper';
 import {Middleware} from '../../system/Middleware';
 
 export class LinearRegressionController {

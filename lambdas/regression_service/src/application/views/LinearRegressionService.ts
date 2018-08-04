@@ -1,7 +1,7 @@
 import { LinearRegressor } from '../models/regression/LinearRegressor';
 import { Monica, IMonica } from '../models/monica/Monica';
-import { FirebaseHelper } from '../../libraries/helper/FirebaseHelper';
-import { DataHelper } from '../../libraries/helper/DataHelper';
+import { FirebaseHelper } from '../../scripts/helper/FirebaseHelper';
+import { DataHelper } from '../../scripts/helper/DataHelper';
 
 export class LinearRegressionService {
     static async createMonica(data: IMonica): Promise<Monica> {

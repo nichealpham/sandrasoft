@@ -1,4 +1,4 @@
-import {HandlerHelper} from '../libraries/helper/HandlerHelper';
+import {HandlerHelper} from '../scripts/helper/HandlerHelper';
 
 export class Middleware {
     static ensureExist(event, params): {status: boolean, response} {
