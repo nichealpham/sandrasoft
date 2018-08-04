@@ -22,7 +22,7 @@ A serverless service for Tensorflow.js with AWS Lambda
 6. Write Single-responsibility model.
 7. Test before commit (TDD).
 8. Work on big picture skeleton, then fill in the details later. (interface => implementation)
-9. Independent components that can be reused.
+9. Write independent components that can be reused.
 10. Master your craft.
 
 ### The MIT License (MIT)

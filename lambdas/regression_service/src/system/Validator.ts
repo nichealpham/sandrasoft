@@ -1,6 +1,6 @@
 import {HandlerHelper} from '../scripts/helper/HandlerHelper';
 
-export class Middleware {
+export class Validator {
     static ensureExist(event, params): {status: boolean, response} {
         if (!event) {
             return {

@@ -3,13 +3,21 @@ import { Monica, IMonica } from '../models/monica/Monica';
 import { FirebaseHelper } from '../../scripts/helper/FirebaseHelper';
 import { DataHelper } from '../../scripts/helper/DataHelper';
 
-export class LinearRegressionService {
-    static async createMonica(data: IMonica): Promise<Monica> {
+interface ILinearRegressionService {
+    createMonica(data: IMonica): Promise<Monica>;
+    trainMonicaFromCsv(input: {fileUrl, config}): Promise<{model}>;
+}
+
+export class LinearRegressionService implements ILinearRegressionService {
+    constructor() {
+    }
+
+    async createMonica(data: IMonica): Promise<Monica> {
         let monicaCreate = new Monica(data).export();
         return await FirebaseHelper.createDocument('monica', monicaCreate);
     }
 
-    static async trainMonicaFromCsv(input: {fileUrl, config}) {
+    async trainMonicaFromCsv(input: {fileUrl, config}): Promise<{model}> {
         let labels_data: any[] = [];
         let features_data: any[] = [];
         // STEP 1: READ FILE FROM URL TO RAM

@@ -1,6 +1,8 @@
-import {LinearRegressionService} from '../src/application/views/LinearRegressionService'
+import {ServiceLoader} from '../src/system/ServiceLoader';
 import {ConsoleColor} from '../src/application/models/common/ConsoleColor';
-import {Middleware} from '../src/system/Middleware';
+import {Validator} from '../src/system/Validator';
+
+ServiceLoader.init();
 
 async function main() {
     await testCreateModel();
@@ -21,16 +23,16 @@ async function testCreateModel() {
         headers: ['API_KEY'],
         body: ['data'],
     };
-    let {status, response} = Middleware.ensureExist(event, params);
+    let {status, response} = Validator.ensureExist(event, params);
     if (!status) {
         console.log(ConsoleColor.Red, `Response: ${JSON.stringify(response)} \n`);
-        console.log(ConsoleColor.Red, '1. testTrainLinearRegressionModel failed. Middleware Validation failed ! \n');
+        console.log(ConsoleColor.Red, '1. testTrainLinearRegressionModel failed. Validator Validation failed ! \n');
         return;
     }
     if (status)
         console.log(ConsoleColor.Green, `Response: ${JSON.stringify(response)} \n`);
 
-    let result = await LinearRegressionService.createMonica(event.body.data);
+    let result = await ServiceLoader.LinearRegressionService.createMonica(event.body.data);
     if (!result) {
         console.log(ConsoleColor.Red, '2. testCreateModel failed. \n');
         return;
@@ -60,15 +62,15 @@ async function testTrainLinearRegressionModel() {
         body: ['fileUrl', 'config'],
         headers: ['API_KEY']
     };
-    let {status, response} = Middleware.ensureExist(event, params);
+    let {status, response} = Validator.ensureExist(event, params);
     if (!status) {
         console.log(ConsoleColor.Red, `Response: ${JSON.stringify(response)} \n`);
-        console.log(ConsoleColor.Red, '1. testTrainLinearRegressionModel failed. Middleware Validation failed ! \n');
+        console.log(ConsoleColor.Red, '1. testTrainLinearRegressionModel failed. Validator Validation failed ! \n');
         return;
     }
     if (status)
         console.log(ConsoleColor.Green, `Response: ${JSON.stringify(response)} \n`);
-    let result = await LinearRegressionService.trainMonicaFromCsv(event.body);
+    let result = await ServiceLoader.LinearRegressionService.trainMonicaFromCsv(event.body);
     if (!result) {
         console.log(ConsoleColor.Red, '1. testTrainLinearRegressionModel failed. \n');
         return;

@@ -1,4 +1,3 @@
-import {LinearRegressionController} from './application/controllers/LinearRegressionController';
+import Serverless = require('./system/Serverless');
 
-exports.createModel = LinearRegressionController.createModel.mainfunc;
-exports.trainLinearModel = LinearRegressionController.trainModel.mainfunc;
+export = Serverless;

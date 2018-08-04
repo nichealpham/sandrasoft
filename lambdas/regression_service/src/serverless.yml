@@ -54,7 +54,7 @@ package:
 #  excludeDevDependencies: true
   include:
     - application/**
-    - libraries/**
+    - scripts/**
     - system/**
     - node_modules/**
   exclude:
