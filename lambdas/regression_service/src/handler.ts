@@ -1,4 +1,3 @@
-import {LinearRegressionController} from './app/controllers/LinearRegressionController';
+import { Serverless } from './system/Serverless';
 
-exports.createModel = LinearRegressionController.createModel.mainfunc;
-exports.trainLinearModel = LinearRegressionController.trainModel.mainfunc;
+export = Serverless.getRouters();

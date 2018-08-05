@@ -36,7 +36,7 @@ build/
 dest/
 dist/
 release/
-private_keys/
+keys/
 
 # Dependency directories
 node_modules/

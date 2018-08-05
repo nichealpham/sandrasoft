@@ -6,13 +6,13 @@
 		"build-ts": "tsc",
 		"sync-node": "cp src/.gitignore build/ && cp src/package.json build/",
 		"sync-svless": "cp src/serverless.yml build/",
-		"sync-firebase": "cp src/system/private_keys/FirebaseServiceAccount.json build/system/private_keys/",
+		"sync-firebase": "mkdir build/system/keys && cp src/system/keys/FirebaseServiceAccount.json build/system/keys/",
 		"sync-all": "npm run sync-node && npm run sync-svless && npm run sync-firebase",
 		"build": "npm run build-ts && npm run sync-all",
 		"deploy": "npm run build && cd build && npm install --only=production && serverless deploy && cd ../ && rm -R build",
 		"undeploy": "cd build && serverless remove",
-		"test-local": "ts-node src/testing/Local.ts",
-		"test-release": "ts-node src/testing/Release.ts"
+		"test": "ts-node test/Service.ts",
+		"test-release": "ts-node test/Release.ts"
 	},
 	"keywords": [
 		"serverless",
