@@ -74,6 +74,20 @@ package:
 #      - 'config/**' # (optional) always include these globs and their dependencies
 
 functions:
+  getLinearRegressionModel:
+    handler: handler.getLinearRegressionModel
+    events:
+      - http:
+          path: services/linear-regression/get-model/{_id}
+          method: get
+
+  deleteLinearRegressionModel:
+    handler: handler.deleteLinearRegressionModel
+    events:
+      - http:
+          path: services/linear-regression/delete-model/{_id}
+          method: delete
+
   trainLinearRegressionModel:
     handler: handler.trainLinearRegressionModel
     events:
