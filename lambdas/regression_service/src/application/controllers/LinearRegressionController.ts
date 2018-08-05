@@ -4,10 +4,8 @@ import { Monica } from '../models/monica/Monica';
 export class LinearRegressionController {
     static getAsRouter() {
         return {
-            // LinearRegression: {
-                trainModel: this.trainModel,
-                createModel: this.createModel,
-            // }
+            trainLinearRegressionModel: this.trainModel,
+            createLinearRegressionModel: this.createModel,
         }
     }
 

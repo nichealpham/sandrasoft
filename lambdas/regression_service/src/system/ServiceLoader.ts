@@ -3,7 +3,7 @@ import {LinearRegressionService} from '../application/views/LinearRegressionServ
 export class ServiceLoader {
     static LinearRegressionService: LinearRegressionService;
     
-    static init() {
+    static startServices() {
         this.LinearRegressionService = new LinearRegressionService();
     }
 }
