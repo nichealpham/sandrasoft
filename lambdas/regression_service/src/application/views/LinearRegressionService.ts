@@ -1,23 +1,37 @@
 import { LinearRegressor } from '../models/regression/LinearRegressor';
 import { Monica, IMonica } from '../models/monica/Monica';
-import { FirebaseHelper } from '../../scripts/helper/FirebaseHelper';
 import { DataHelper } from '../../scripts/helper/DataHelper';
+import { FirebaseRepository } from '../../scripts/helper/FirebaseHelper';
+import { ServiceConfig } from '../../system/Config';
 
 export interface ILinearRegressionService {
-    createMonica(data: IMonica): Promise<Monica>;
-    trainMonicaFromCsv(input: {fileUrl, config}): Promise<{model}>;
+    getModel(_id: string): Promise<Monica>;
+    createModel(data: IMonica): Promise<Monica>;
+    trainModelFromCsv(input: {fileUrl, config}): Promise<{model}>;
+    deleteModel(_id: string): Promise<boolean>;
 }
 
 export class LinearRegressionService implements ILinearRegressionService {
+    protected modelRepository: FirebaseRepository;
+
     constructor() {
+        this.modelRepository = new FirebaseRepository(ServiceConfig.DATABASE.TABLES.MODEL);
     }
 
-    async createMonica(data: IMonica): Promise<Monica> {
+    async getModel(_id: string): Promise<Monica> {
+        return await this.modelRepository.get(_id);
+    }
+
+    async createModel(data: IMonica): Promise<Monica> {
         let monicaCreate = new Monica(data).export();
-        return await FirebaseHelper.createDocument('monica', monicaCreate);
+        return await this.modelRepository.create(monicaCreate);
     }
 
-    async trainMonicaFromCsv(input: {fileUrl, config}): Promise<{model}> {
+    async deleteModel(_id: string): Promise<boolean> {
+        return await this.modelRepository.delete(_id);
+    }
+
+    async trainModelFromCsv(input: {fileUrl, config}): Promise<{model}> {
         let labels_data: any[] = [];
         let features_data: any[] = [];
         // STEP 1: READ FILE FROM URL TO RAM
