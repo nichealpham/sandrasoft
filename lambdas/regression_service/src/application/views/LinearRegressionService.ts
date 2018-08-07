@@ -7,6 +7,7 @@ import { ServiceConfig } from '../../system/Config';
 export interface ILinearRegressionService {
     getModel(_id: string): Promise<Monica>;
     createModel(data: IMonica): Promise<Monica>;
+    updateModel(_id: string, data: Monica): Promise<boolean>;
     trainModelFromCsv(input: {fileUrl, config}): Promise<{model}>;
     deleteModel(_id: string): Promise<boolean>;
 }
@@ -27,11 +28,18 @@ export class LinearRegressionService implements ILinearRegressionService {
         return await this.modelRepository.create(monicaCreate);
     }
 
+    async updateModel(_id: string, data: IMonica): Promise<boolean> {
+        return await this.modelRepository.update(_id, data);
+    }
+
     async deleteModel(_id: string): Promise<boolean> {
         return await this.modelRepository.delete(_id);
     }
 
-    async trainModelFromCsv(input: {fileUrl, config}): Promise<{model}> {
+    async trainModelFromCsv(input: {fileUrl, config, modelId}): Promise<{model}> {
+        if (!input || !input.fileUrl || !input.modelId)
+            return {model: null};
+
         let labels_data: any[] = [];
         let features_data: any[] = [];
         // STEP 1: READ FILE FROM URL TO RAM
@@ -60,20 +68,27 @@ export class LinearRegressionService implements ILinearRegressionService {
                 labels_data.push(row[input.config!.indexLabel!]);
             }
         });
-        // STEP 2: NORMALIZE DATASET
-        if (input.config.normalize) {
+        // STEP 1.5: GET THE MODEL FROM FIRESTORE
+        let result = await this.getModel(input.modelId);
+        if (!result)
+            return {model: null};
+        // STEP 2: CREATE A LINEAR REGRESSION MODEL
+        let model = new LinearRegressor(result);
+        let iterations = model.config.iterations;
+        model.mergeConfig(input.config);
+        // STEP 3: NORMALIZE DATASET
+        if (result && result.config && result.config.normalize) {
             let {features, labels} = DataHelper.normalizeDataset(features_data, labels_data);
             features_data = features;
             labels_data = labels;
         }
-        // STEP 3: CREATE A LINEAR REGRESSION MODEL
-        let model = new LinearRegressor();
-        model.mergeConfig(input.config);
         // STEP 4: TRAIN THE MODEL
         await model.train(features_data, labels_data, (i, cost) => {
             if (i % Math.floor(input.config!.iterations! / 100) === 0)
                 console.log(`Epoch ${i} loss is: ${cost}`);
         });
+        model.config.iterations += iterations;
+        await this.updateModel(model._id!, model.export());
         // STEP 5: RETURN CUSTOMIZED VALUES
         return {
             model: model.export()

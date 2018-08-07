@@ -1,5 +1,5 @@
 export interface RegressorData {
-    weights: Float32Array | Int32Array | Uint8Array;
+    weights: number[];
     bias: number;
     nFeatures: number;
 };

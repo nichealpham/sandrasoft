@@ -19,9 +19,9 @@ export class LinearRegressor implements Monica {
     createdAt: number;
     updatedAt: number;
 
-    constructor(monica?: Monica) {
-        if (monica) 
-            this.import(monica);
+    constructor(model?: Monica) {
+        if (model) 
+            this.import(model);
     }
 
     async train(features: number[][], labels: number[], epochsSuccessCallback?: any): Promise<boolean> {
@@ -57,8 +57,9 @@ export class LinearRegressor implements Monica {
         };
         totalTimer.end();
         this.executionTime = (this.executionTime | 0) + Number(totalTimer.seconds().toFixed(2));
+        this.updatedAt = new Date().getTime();
         this.data = {
-            weights: weights.dataSync(),
+            weights: Object.values(weights.dataSync()).map(value => Number(value)),
             bias: bias.dataSync()[0],
             nFeatures: nFeatures,
         };
@@ -84,16 +85,16 @@ export class LinearRegressor implements Monica {
         return predicts.sub(labels).square().mean();
     }
 
-    import(monica: Monica) {
-        this._id = monica._id;
-        this.name = monica.name;
-        this.type = monica.type;
-        this.loss = monica.loss;
-        this.data = monica.data;
-        this.config = monica.config;
-        this.executionTime = monica.executionTime;
-        this.createdAt = monica.createdAt;
-        this.updatedAt = monica.updatedAt;
+    import(model: Monica) {
+        this._id = model._id;
+        this.name = model.name;
+        this.type = model.type;
+        this.loss = model.loss;
+        this.data = model.data;
+        this.config = model.config;
+        this.executionTime = model.executionTime;
+        this.createdAt = model.createdAt;
+        this.updatedAt = model.updatedAt;
     }
 
     export() {
@@ -111,6 +112,6 @@ export class LinearRegressor implements Monica {
     }
 
     mergeConfig(config: MonicaConfig) {
-        this.config = new RegressorConfig(config);
+        this.config = RegressorConfig.mergeWithDefault(config);
     }
 }

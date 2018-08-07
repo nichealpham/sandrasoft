@@ -21,8 +21,9 @@ export class LinearRegressionController {
     
     static async trainModel(req): Promise<{model}> {
         let input = {
-            fileUrl: req.body.file_url,
+            fileUrl: req.body.fileUrl,
             config: req.body.config,
+            modelId: req.body.modelId
         };
         return await ServiceLoader.LinearRegressionService.trainModelFromCsv(input);
     }
