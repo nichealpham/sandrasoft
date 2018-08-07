@@ -9,8 +9,9 @@ let _index: number = 1;
 async function main() {
     await testCreateModel();
     await testGetModel();
+    await testTrainModel();
+    await testTrainModelAgain();
     await testDeleteModel();
-    await testTrainLinearRegressionModel();
 };
 main();
 
@@ -20,7 +21,20 @@ async function testCreateModel() {
             API_KEY: 123
         },
         body: {
-            "data": {"loss":0.030236996710300446,"data":{"weights":{"0":-0.8055496215820312,"1":0.5777531862258911,"2":-0.1316557377576828,"3":0.5114028453826904},"bias":0.6095537543296814,"nFeatures":4},"config":{"epochs":1,"iterations":50,"shuffle":true,"optimizer":"sgd","normalize":true,"learningRate":0.009},"executionTime":0.13}
+            "data": {
+                "loss": 0,
+                "name": "Model testing ...",
+                "type": 2,
+                "createdAt": new Date().getTime(),
+                "updatedAt": new Date().getTime(),
+                "executionTime": 0,
+                "config": {
+                    "iterations": 0,
+                    "shuffle": true,
+                    "normalize": true,
+                    "learningRate": 0.01,
+                },
+            }
         }
     };
     let result = await ServiceLoader.LinearRegressionService.createModel(event.body.data);
@@ -34,31 +48,44 @@ async function testGetModel() {
     writeScreenLog('testGetModel', result);
 }
 
-async function testDeleteModel() {
-    let result = await ServiceLoader.LinearRegressionService.deleteModel(_id);
-    writeScreenLog('testDeleteModel', result);
-}
-
-async function testTrainLinearRegressionModel() {
+async function testTrainModel() {
     let event: any = {
         body: {
             "fileUrl": "https://raw.githubusercontent.com/eliben/deep-learning-samples/master/linear-regression/CCPP-dataset/data.csv",
             "config": {
                 "iterations": 1000,
-                "shuffle": true,
-                "normalize": true,
-                "learningRate": 0.009,
+                "learningRate": 0.01,
                 "indexLabel": 4,
                 "indexFeatures": [0, 1, 2, 3]
-            }
-        },
-        headers: {
-            API_KEY: 123
+            },
+            "modelId": _id
         }
     }
     let result = await ServiceLoader.LinearRegressionService.trainModelFromCsv(event.body);
-    writeScreenLog('testTrainLinearRegressionModel', result);
+    writeScreenLog('testTrainModel', result);
 };
+
+async function testTrainModelAgain() {
+    let event: any = {
+        body: {
+            "fileUrl": "https://raw.githubusercontent.com/eliben/deep-learning-samples/master/linear-regression/CCPP-dataset/data.csv",
+            "config": {
+                "iterations": 5000,
+                "learningRate": 0.1,
+                "indexLabel": 4,
+                "indexFeatures": [0, 1, 2, 3]
+            },
+            "modelId": _id
+        }
+    }
+    let result = await ServiceLoader.LinearRegressionService.trainModelFromCsv(event.body);
+    writeScreenLog('testTrainModelAgain', result);
+};
+
+async function testDeleteModel() {
+    let result = await ServiceLoader.LinearRegressionService.deleteModel(_id);
+    writeScreenLog('testDeleteModel', result);
+}
 
 function writeScreenLog(testName, result) {
     if (!result) {
