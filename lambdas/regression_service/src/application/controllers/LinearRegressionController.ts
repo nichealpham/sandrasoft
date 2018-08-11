@@ -2,12 +2,21 @@ import { ServiceLoader } from '../../system/ServiceLoader';
 import { Monica } from '../models/monica/Monica';
 
 export class LinearRegressionController {
-    static getAsRouter() {
+    static getAsHandler() {
         return {
             getLinearRegressionModel: this.getModel,
             trainLinearRegressionModel: this.trainModel,
             createLinearRegressionModel: this.createModel,
             deleteLinearRegressionModel: this.deleteModel,
+        }
+    }
+
+    static getAsRounter() {
+        return {
+            'GET://services/linear-regression/get-model/:_id': this.getModel,
+            'POST://services/linear-regression/train-model': this.trainModel,
+            'POST://services/linear-regression/create-model': this.createModel,
+            'DELETE://services/linear-regression/delete-model/:_id': this.deleteModel,
         }
     }
 

@@ -12,6 +12,8 @@ async function main() {
     await testTrainModel();
     await testTrainModelAgain();
     await testDeleteModel();
+
+    console.log(ConsoleColor.White, `\n All test cases finised successfully ! \n`);
 };
 main();
 

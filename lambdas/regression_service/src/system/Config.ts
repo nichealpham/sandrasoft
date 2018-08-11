@@ -1,5 +1,6 @@
 export class ServiceConfig {
     static NAME = 'Simple Tensorflow.js Micro-Serverless Service';
+    static EXPRESS_PORT = 3000;
     static API_BASE = 'https://70jfbnsgr5.execute-api.ap-southeast-1.amazonaws.com';
     static STAGE = 'dev';
     

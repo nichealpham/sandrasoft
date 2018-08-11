@@ -7,7 +7,7 @@ import { LinearRegressionController } from '../application/controllers/LinearReg
 export class Serverless {
     static getRouters() {
         let routers = {
-            ...LinearRegressionController.getAsRouter(),
+            ...LinearRegressionController.getAsHandler(),
         }
         for (let ctName in routers) {
             routers[ctName] = this.handleEventRequest(routers[ctName])

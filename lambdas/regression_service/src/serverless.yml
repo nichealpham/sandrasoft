@@ -80,27 +80,24 @@ functions:
       - http:
           path: services/linear-regression/get-model/{_id}
           method: get
-
-  deleteLinearRegressionModel:
-    handler: handler.deleteLinearRegressionModel
-    events:
-      - http:
-          path: services/linear-regression/delete-model/{_id}
-          method: delete
-
-  trainLinearRegressionModel:
-    handler: handler.trainLinearRegressionModel
-    events:
-      - http:
-          path: services/linear-regression/train-model
-          method: post
-
   createLinearRegressionModel:
     handler: handler.createLinearRegressionModel
     events:
       - http:
           path: services/linear-regression/create-model
           method: post
+  trainLinearRegressionModel:
+    handler: handler.trainLinearRegressionModel
+    events:
+      - http:
+          path: services/linear-regression/train-model
+          method: post
+  deleteLinearRegressionModel:
+    handler: handler.deleteLinearRegressionModel
+    events:
+      - http:
+          path: services/linear-regression/delete-model/{_id}
+          method: delete
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
