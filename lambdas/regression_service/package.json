@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "A boilerplate system design pattern to get started with Serverless",
 	"scripts": {
+		"dev": "ts-node ./src/system/ExpressServer.ts",
 		"build-ts": "tsc",
 		"sync-node": "cp src/.gitignore build/ && cp src/package.json build/",
 		"sync-svless": "cp src/serverless.yml build/",
@@ -11,8 +12,8 @@
 		"build": "npm run build-ts && npm run sync-all",
 		"deploy": "npm run build && cd build && npm install --only=production && serverless deploy && cd ../ && rm -R build",
 		"undeploy": "cd build && serverless remove",
-		"unit-test": "ts-node test/UnitTest.ts",
-		"prod-test": "ts-node test/ProductionTest.ts",
+		"test-unit": "ts-node tests/UnitTest.ts",
+		"test-prod": "ts-node tests/ProductionTest.ts",
 		"merge-master": "git checkout master && git merge dev && git push origin master && git checkout dev"
 	},
 	"keywords": [
