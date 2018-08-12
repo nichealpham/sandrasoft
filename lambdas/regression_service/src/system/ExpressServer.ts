@@ -1,29 +1,22 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-
 // Prepare the server
 let app = express();
 let router = express.Router();
-
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-
 // Init All services before registering controllers into routers
 import { ServiceLoader } from './ServiceLoader';
 ServiceLoader.startServices();
 // Import routers
-import { LinearRegressionController } from '../application/controllers/LinearRegressionController';
-import { HandlerHelper } from '../scripts/helper/HandlerHelper';
 import { ConsoleColor } from '../application/models/common/ConsoleColor';
+import { LinearRegressionController } from '../application/controllers/LinearRegressionController';
 // Combining all routers
 let _count = 1;
 let routes = {
 	...LinearRegressionController.getAsRounter(),
 };
 // Loop to register routers
-app.get('/services/hello/:_id', (req, res) => {
-	return res.json({message: `Hello ${req.params._id}`});
-});
 console.log(ConsoleColor.Green, 'API endpoints: \n');
 for (let rtString in routes) {
 	let controller: (req) => Promise<any> = routes[rtString];
@@ -37,11 +30,17 @@ for (let rtString in routes) {
 		let isError = false;
 		try {
 			result = await controller(req);
-			response = HandlerHelper.createSuccessResponse(200, result);
+			response = {
+				statusCode: 200,
+				body: result
+			}
 		}
 		catch (err) {
 			isError = true;
-			response = HandlerHelper.createErrorResponse(500, err);
+			response = {
+				statusCode: 500,
+				error: err
+			}
 		}
 		if (!isError)
 			return res.json(response);
