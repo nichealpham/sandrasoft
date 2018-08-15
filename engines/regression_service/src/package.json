@@ -1,0 +1,25 @@
+{
+	"author": "Nicheal Pham",
+	"scripts": {
+		"start": "node ./system/ExpressServer.js"
+	},
+	"dependencies": {
+		"@tensorflow/tfjs": "^0.12.2",
+		"@tensorflow/tfjs-node": "^0.1.9",
+		"csv-parse": "^2.5.0",
+		"firebase-admin": "^5.13.1",
+		"mongoose": "^5.2.8",
+		"node-simple-timer": "^0.1.1",
+		"rimraf": "^2.6.2",
+		"zlib": "^1.0.5",
+		"body-parser": "^1.18.3",
+		"express": "^4.16.3"
+	},
+	"devDependencies": {
+		"@tensorflow/tfjs-node-gpu": "^0.1.9",
+		"@types/body-parser": "^1.17.0",
+		"@types/express": "^4.16.0",
+		"@types/mongoose": "^5.2.5",
+		"@types/node": "^10.5.2"
+	}
+}

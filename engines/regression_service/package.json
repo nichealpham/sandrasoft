@@ -1,0 +1,29 @@
+{
+	"name": "serverless-template",
+	"version": "1.0.0",
+	"description": "A boilerplate system design pattern to get started with Serverless",
+	"scripts": {
+		"dev": "ts-node ./src/system/ExpressServer.ts",
+		"build-ts": "tsc",
+		"sync-node": "cp src/.gitignore build/ && cp src/package.json build/",
+		"sync-sls": "cp src/serverless.yml build/",
+		"sync-gcp": "cp src/app.yaml build/ && cp src/.gcloudignore build/",
+		"sync-firebase": "cp src/system/keys/FirebaseServiceAccount.json build/system/keys/",
+		"sync-all": "npm run sync-node && npm run sync-sls && npm run sync-gcp && npm run sync-firebase",
+		"build": "npm run build-ts && npm run sync-all",
+		"deploy-sls": "npm run build && cd build && npm install --only=production && serverless deploy && cd ../ && rm -R build",
+		"deploy-gcp": "npm run build && cd build && npm install --only=production && gcloud app deploy --project eztensorflowservices && cd ../ && rm -R build",
+		"undeploy": "cd build && serverless remove",
+		"test-unit": "ts-node tests/UnitTest.ts",
+		"test-prod": "ts-node tests/ProductionTest.ts",
+		"merge-master": "git checkout master && git merge dev && git push origin master && git checkout dev"
+	},
+	"keywords": [
+		"serverless",
+		"nodejs",
+		"ts"
+	],
+	"author": "Nicheal Pham",
+	"license": "MIT",
+	"dependencies": {}
+}
