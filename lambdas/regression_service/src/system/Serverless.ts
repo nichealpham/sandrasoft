@@ -1,5 +1,7 @@
-import { ServiceLoader } from './ServiceLoader';
-ServiceLoader.startServices();
+import { DatabaseEngines } from './DatabaseEngines';
+DatabaseEngines.initialize();
+import { ServiceGateway } from './ServiceGateway';
+ServiceGateway.initialize();
 
 import { HandlerHelper } from '../scripts/helper/HandlerHelper';
 import { LinearRegressionController } from '../application/controllers/LinearRegressionController';

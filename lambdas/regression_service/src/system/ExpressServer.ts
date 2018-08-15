@@ -6,8 +6,10 @@ let router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 // Init All services before registering controllers into routers
-import { ServiceLoader } from './ServiceLoader';
-ServiceLoader.startServices();
+import { DatabaseEngines } from './DatabaseEngines';
+DatabaseEngines.initialize();
+import { ServiceGateway } from './ServiceGateway';
+ServiceGateway.initialize();
 // Import routers
 import { ConsoleColor } from '../application/models/common/ConsoleColor';
 import { LinearRegressionController } from '../application/controllers/LinearRegressionController';

@@ -6,20 +6,12 @@ import * as crypto from 'crypto';
 if (!firebase.apps.length) {
     firebase.initializeApp({
         credential: firebase.credential.cert(ServiceAccount),
-        databaseURL: ServiceConfig.FIREBASE_KEY.databaseURL
+        databaseURL: ServiceConfig.FIREBASE_KEY.DATABASEURL
     });
 }
 let firestore = firebase.firestore();
 
-interface IFirebaseRepository {
-    get(_id: string): Promise<any>;
-    create(data: any): Promise<any>;
-    update(_id: string, data: any): Promise<boolean>;
-    delete(_id): Promise<boolean>;
-    // search(query: any): Promise<any>;
-}
-
-export class FirebaseRepository implements IFirebaseRepository {
+export class FirebaseRepository {
     protected collectionName;
     constructor(collectionName) {
         this.collectionName = collectionName;

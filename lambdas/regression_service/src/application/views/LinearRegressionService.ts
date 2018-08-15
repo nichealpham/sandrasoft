@@ -1,7 +1,7 @@
+import { FirestoreRepository } from '../../scripts/firebase/FirestoreRepository';
 import { LinearRegressor } from '../models/regression/LinearRegressor';
 import { Monica, IMonica } from '../models/monica/Monica';
 import { DataHelper } from '../../scripts/helper/DataHelper';
-import { FirebaseRepository } from '../../scripts/helper/FirebaseHelper';
 import { ServiceConfig } from '../../system/Config';
 
 export interface ILinearRegressionService {
@@ -13,10 +13,10 @@ export interface ILinearRegressionService {
 }
 
 export class LinearRegressionService implements ILinearRegressionService {
-    protected modelRepository: FirebaseRepository;
+    protected modelRepository: FirestoreRepository;
 
     constructor() {
-        this.modelRepository = new FirebaseRepository(ServiceConfig.DATABASE.TABLES.MODEL);
+        this.modelRepository = new FirestoreRepository(ServiceConfig.DATABASE.TABLES.MODEL);
     }
 
     async getModel(_id: string): Promise<Monica> {
