@@ -24,7 +24,14 @@ export class ServiceConfig {
         MESSAGINGSENDERID: string,
     } = ConfigPrivateKeys.FIREBASE_KEY;
     
-    static MONGODB_KEY: {
+    static MONGO_MLAB_KEY: {
+        USERNAME: string,
+        PASSWORD: string,
+        DBNAME: string,
+        CONNSTRING: string
+    } = ConfigPrivateKeys.MONGO_MLAB_KEY;
+
+    static MONGO_ATLAS_KEY: {
         USERNAME: string,
         PASSWORD: string,
         CLUSTERNAME: string,
