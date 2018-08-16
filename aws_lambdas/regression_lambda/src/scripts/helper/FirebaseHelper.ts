@@ -18,12 +18,12 @@ export class FirebaseHelper {
             else return null;
         },
         async create(data: any): Promise<any> {
-            let result = await RequestHelper.post(FirebaseUrl.createModel(), data);
+            let result = await RequestHelper.post(FirebaseUrl.createModel(), {data});
             if (result && result.data) return result.data;
             else return null;
         },
         async update(_id: string, data: any): Promise<boolean> {
-            let result = await RequestHelper.put(FirebaseUrl.updateModel(_id), data);
+            let result = await RequestHelper.put(FirebaseUrl.updateModel(_id), {data});
             if (result && result.data) return result.data;
             else return false;
         },

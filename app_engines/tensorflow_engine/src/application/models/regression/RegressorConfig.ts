@@ -9,17 +9,16 @@ export class RegressorConfig implements MonicaConfig {
     learningRate: number;
 
     static mergeWithDefault(config: MonicaConfig): RegressorConfig {
+        let DefaultConfig = {
+            epochs: 1,
+            iterations: 0,
+            shuffle: true,
+            optimizer: 'sgd',
+            normalize: true,
+            learningRate: 0.005,
+        };
         return mergeWithoutExtend(DefaultConfig, config);
     }
-}
-
-let DefaultConfig = {
-    epochs: 1,
-    iterations: 0,
-    shuffle: true,
-    optimizer: 'sgd',
-    normalize: true,
-    learningRate: 0.005,
 }
 
 function mergeWithoutExtend(object1, object2) {

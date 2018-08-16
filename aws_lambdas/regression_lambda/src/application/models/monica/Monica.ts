@@ -22,6 +22,20 @@ export class Monica {
     updatedAt: number;
 
     constructor(monica: IMonica) {
+        let DefaultMonica = {
+            _id: null,
+            name: 'new-monica',
+            type: MonicaType.LinearRegression,
+            loss: 0,
+            data: null,
+            config: {
+                iterations: 0,
+                shuffle: true,
+                normalize: true,
+                learningRate: 0.01,
+            },
+            executionTime: 0,
+        };
         let model = mergeWithoutExtend(DefaultMonica, monica);
         this._id = model._id;
         this.name = model.name;
@@ -47,21 +61,6 @@ export class Monica {
             updatedAt: this.updatedAt,
         }
     }
-}
-
-let DefaultMonica = {
-    _id: null,
-    name: 'new-monica',
-    type: MonicaType.LinearRegression,
-    loss: 0,
-    data: null,
-    config: {
-        iterations: 0,
-        shuffle: true,
-        normalize: true,
-        learningRate: 0.01,
-    },
-    executionTime: 0,
 }
 
 function mergeWithoutExtend(object1, object2) {

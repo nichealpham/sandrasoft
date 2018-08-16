@@ -7,6 +7,7 @@ export class FirestoreRepository {
     constructor(collectionName) {
         this.collectionName = collectionName;
     }
+
     async get(_id: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             let docRef = FirebaseApp.firestore.doc(`${this.collectionName}/${_id}`);
