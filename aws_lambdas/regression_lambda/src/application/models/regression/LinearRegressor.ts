@@ -1,5 +1,4 @@
 import * as tf from '@tensorflow/tfjs';
-import '@tensorflow/tfjs-node';
 import * as timer from 'node-simple-timer';
 
 import { Monica } from '../monica/Monica';

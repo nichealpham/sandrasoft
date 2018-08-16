@@ -1,13 +1,13 @@
-import { ServiceLoader } from './ServiceLoader';
-ServiceLoader.startServices();
+import { DatabaseEngines } from './DatabaseEngines';
+DatabaseEngines.initialize();
 
 import { HandlerHelper } from '../scripts/helper/HandlerHelper';
-import { LinearRegressionController } from '../application/controllers/LinearRegressionController';
+import { ModelController } from '../application/controllers/ModelController';
 
-export class Serverless {
-    static getRouters() {
+export class LambdaServerless {
+    static getAsHandler() {
         let routers = {
-            ...LinearRegressionController.getAsHandler(),
+            ...ModelController.getAsHandler(),
         }
         for (let ctName in routers) {
             routers[ctName] = this.handleEventRequest(routers[ctName])

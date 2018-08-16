@@ -1,9 +1,5 @@
-import {LinearRegressionService} from '../application/views/LinearRegressionService';
+import { ModelService } from '../application/views/ModelService';
 
 export class ServiceLoader {
-    static LinearRegressionService: LinearRegressionService;
-    
-    static startServices() {
-        this.LinearRegressionService = new LinearRegressionService();
-    }
+    static modelService = ModelService;
 }

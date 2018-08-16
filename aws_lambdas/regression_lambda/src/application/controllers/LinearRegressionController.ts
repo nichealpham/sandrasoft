@@ -13,10 +13,10 @@ export class LinearRegressionController {
 
     static getAsRounter() {
         return {
-            'GET://services/linear-regression/get-model/:_id': this.getModel,
-            'POST://services/linear-regression/train-model': this.trainModel,
-            'POST://services/linear-regression/create-model': this.createModel,
-            'DELETE://services/linear-regression/delete-model/:_id': this.deleteModel,
+            'GET://lambda/linear-regression/get-model/:_id': this.getModel,
+            'POST://lambda/linear-regression/train-model/:_id': this.trainModel,
+            'POST://lambda/linear-regression/create-model': this.createModel,
+            'DELETE://lambda/linear-regression/delete-model/:_id': this.deleteModel,
         }
     }
 
@@ -32,7 +32,7 @@ export class LinearRegressionController {
         let input = {
             fileUrl: req.body.fileUrl,
             config: req.body.config,
-            modelId: req.body.modelId
+            modelId: req.params._id,
         };
         return await ServiceLoader.LinearRegressionService.trainModelFromCsv(input);
     }

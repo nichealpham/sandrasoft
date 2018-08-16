@@ -2,19 +2,18 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 // Prepare the server
 let app = express();
-let router = express.Router();
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
-// Init All services before registering controllers into routers
-import { ServiceLoader } from './ServiceLoader';
-ServiceLoader.startServices();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+// Init Firebase via DatabaseEngine
+import { DatabaseEngines } from './DatabaseEngines';
+DatabaseEngines.initialize();
 // Import routers
 import { ConsoleColor } from '../application/models/common/ConsoleColor';
-import { LinearRegressionController } from '../application/controllers/LinearRegressionController';
+import { ModelController } from '../application/controllers/ModelController';
 // Combining all routers
 let _count = 1;
 let routes = {
-	...LinearRegressionController.getAsRounter(),
+	...ModelController.getAsRounter(),
 };
 // Loop to register routers
 console.log(ConsoleColor.Green, 'API endpoints: \n');

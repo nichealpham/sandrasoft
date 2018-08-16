@@ -1,3 +1,3 @@
-import { Serverless } from './system/Serverless';
+import { LambdaServerless } from './system/LambdaServerless';
 
-export = Serverless.getRouters();
+export = LambdaServerless.getAsHandler();

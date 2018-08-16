@@ -1,7 +1,5 @@
-import {ServiceLoader} from '../src/system/ServiceLoader';
-import {ConsoleColor} from '../src/application/models/common/ConsoleColor';
-
-ServiceLoader.startServices();
+import { ServiceLoader } from '../src/system/ServiceLoader';
+import { ConsoleColor } from '../src/application/models/common/ConsoleColor';
 
 let _id: string;
 let _index: number = 1;
@@ -42,7 +40,7 @@ async function testCreateModel() {
     let result = await ServiceLoader.LinearRegressionService.createModel(event.body.data);
     writeScreenLog('testCreateModel', result);
 
-    _id = result._id!;
+    _id = result.data._id!;
 }
 
 async function testGetModel() {
@@ -55,7 +53,7 @@ async function testTrainModel() {
         body: {
             "fileUrl": "https://raw.githubusercontent.com/eliben/deep-learning-samples/master/linear-regression/CCPP-dataset/data.csv",
             "config": {
-                "iterations": 1000,
+                "iterations": 100,
                 "learningRate": 0.01,
                 "indexLabel": 4,
                 "indexFeatures": [0, 1, 2, 3]
@@ -72,8 +70,8 @@ async function testTrainModelAgain() {
         body: {
             "fileUrl": "https://raw.githubusercontent.com/eliben/deep-learning-samples/master/linear-regression/CCPP-dataset/data.csv",
             "config": {
-                "iterations": 5000,
-                "learningRate": 0.1,
+                "iterations": 200,
+                "learningRate": 0.01,
                 "indexLabel": 4,
                 "indexFeatures": [0, 1, 2, 3]
             },

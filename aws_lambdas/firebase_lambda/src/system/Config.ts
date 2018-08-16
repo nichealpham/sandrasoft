@@ -1,7 +1,6 @@
 export class ServiceConfig {
     static NAME = 'Simple Tensorflow.js Micro-Serverless Service';
-    static EXPRESS_PORT = 3000;
-    static API_BASE = 'https://70jfbnsgr5.execute-api.ap-southeast-1.amazonaws.com';
+    static EXPRESS_PORT = 2002;
     static STAGE = 'dev';
     
     static CLOUD_PROVIDER = {
@@ -23,13 +22,11 @@ export class ServiceConfig {
     };
 
     static DATABASE = {
-        NAME: 'EZ.TENSORFLOW-DEV',
-        CLOUD_PROVIDER: 'Google Cloud Platform',
-        SERVICE: 'Cloud Firestore',
-        TABLES: {
+        NAME: 'EZTENSORFLOWSERVICES-DEV',
+        COLLECTION: {
             MODEL: 'monica',
             USER: 'user',
             TASK: 'task',
         }
-    }
+    };
 }

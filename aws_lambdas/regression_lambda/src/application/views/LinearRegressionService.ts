@@ -1,8 +1,7 @@
+import { FirebaseHelper } from '../../scripts/helper/FirebaseHelper';
 import { LinearRegressor } from '../models/regression/LinearRegressor';
 import { Monica, IMonica } from '../models/monica/Monica';
 import { DataHelper } from '../../scripts/helper/DataHelper';
-import { FirebaseRepository } from '../../scripts/helper/FirebaseHelper';
-import { ServiceConfig } from '../../system/Config';
 
 export interface ILinearRegressionService {
     getModel(_id: string): Promise<Monica>;
@@ -12,31 +11,25 @@ export interface ILinearRegressionService {
     deleteModel(_id: string): Promise<boolean>;
 }
 
-export class LinearRegressionService implements ILinearRegressionService {
-    protected modelRepository: FirebaseRepository;
-
-    constructor() {
-        this.modelRepository = new FirebaseRepository(ServiceConfig.DATABASE.TABLES.MODEL);
+export class LinearRegressionService {
+    static async getModel(_id: string): Promise<Monica> {
+        return await FirebaseHelper.modelService.get(_id);
     }
 
-    async getModel(_id: string): Promise<Monica> {
-        return await this.modelRepository.get(_id);
-    }
-
-    async createModel(data: IMonica): Promise<Monica> {
+    static async createModel(data: IMonica): Promise<Monica> {
         let monicaCreate = new Monica(data).export();
-        return await this.modelRepository.create(monicaCreate);
+        return await FirebaseHelper.modelService.create(monicaCreate);
     }
 
-    async updateModel(_id: string, data: IMonica): Promise<boolean> {
-        return await this.modelRepository.update(_id, data);
+    static async updateModel(_id: string, data: IMonica): Promise<boolean> {
+        return await FirebaseHelper.modelService.update(_id, data);
     }
 
-    async deleteModel(_id: string): Promise<boolean> {
-        return await this.modelRepository.delete(_id);
+    static async deleteModel(_id: string): Promise<boolean> {
+        return await FirebaseHelper.modelService.delete(_id);
     }
 
-    async trainModelFromCsv(input: {fileUrl, config, modelId}): Promise<{model}> {
+    static async trainModelFromCsv(input: {fileUrl, config, modelId}): Promise<{model}> {
         if (!input || !input.fileUrl || !input.modelId)
             return {model: null};
 
@@ -70,14 +63,14 @@ export class LinearRegressionService implements ILinearRegressionService {
         });
         // STEP 1.5: GET THE MODEL FROM FIRESTORE
         let result = await this.getModel(input.modelId);
-        if (!result)
+        if (!result || !result.data)
             return {model: null};
         // STEP 2: CREATE A LINEAR REGRESSION MODEL
-        let model = new LinearRegressor(result);
-        let iterations = model.config.iterations;
+        let model = new LinearRegressor(result.data);
+        let iterations = (model.config && model.config.iterations) || 0;
         model.mergeConfig(input.config);
         // STEP 3: NORMALIZE DATASET
-        if (result && result.config && result.config.normalize) {
+        if (model && model.config && model.config.normalize) {
             let {features, labels} = DataHelper.normalizeDataset(features_data, labels_data);
             features_data = features;
             labels_data = labels;

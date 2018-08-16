@@ -1,11 +1,8 @@
-import { ServiceLoader } from './ServiceLoader';
-ServiceLoader.startServices();
-
 import { HandlerHelper } from '../scripts/helper/HandlerHelper';
 import { LinearRegressionController } from '../application/controllers/LinearRegressionController';
 
-export class Serverless {
-    static getRouters() {
+export class LambdaServerless {
+    static getAsHandler() {
         let routers = {
             ...LinearRegressionController.getAsHandler(),
         }
