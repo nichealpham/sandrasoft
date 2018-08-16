@@ -8,7 +8,7 @@ import { RegressorConfig } from './RegressorConfig';
 import { MonicaConfig } from '../monica/MonicaConfig';
 
 export class LinearRegressor implements Monica {
-    _id?: string;
+    _id: string;
     name: string;
     type: MonicaType;
     loss: number;
@@ -18,9 +18,9 @@ export class LinearRegressor implements Monica {
     createdAt: number;
     updatedAt: number;
 
-    constructor(model?: Monica) {
-        if (model) 
-            this.import(model);
+    constructor(modelData?: Monica) {
+        if (modelData) 
+            this.importData(modelData);
     }
 
     async train(features: number[][], labels: number[], epochsSuccessCallback?: any): Promise<boolean> {
@@ -84,7 +84,7 @@ export class LinearRegressor implements Monica {
         return predicts.sub(labels).square().mean();
     }
 
-    import(model: Monica) {
+    importData(model: Monica) {
         this._id = model._id;
         this.name = model.name;
         this.type = model.type;
@@ -96,7 +96,7 @@ export class LinearRegressor implements Monica {
         this.updatedAt = model.updatedAt;
     }
 
-    export() {
+    exportData() {
         return {
             _id: this._id,
             name: this.name,

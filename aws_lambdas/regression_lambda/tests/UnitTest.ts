@@ -40,7 +40,7 @@ async function testCreateModel() {
     let result = await ServiceLoader.LinearRegressionService.createModel(event.body.data);
     writeScreenLog('testCreateModel', result);
 
-    _id = result.data._id!;
+    _id = result._id!;
 }
 
 async function testGetModel() {
