@@ -1,0 +1,12 @@
+{
+	"name": "ez-tensorflow-services-backend-package",
+	"version": "1.0.1",
+	"scripts": {
+		"setup": "npm i && sudo npm i -g serverless"
+	},
+	"author": "Nicheal Pham",
+	"license": "MIT",
+	"devDependencies": {
+		"ts-node": "^7.0.1"
+	}
+}

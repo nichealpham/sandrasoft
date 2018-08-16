@@ -3,6 +3,7 @@
 	"version": "1.0.1",
 	"description": "Backend pattern for AWS Lambda and GCP AppEngine",
 	"scripts": {
+		"init": "cd ./src/ && npm i",
 		"dev": "ts-node ./src/system/ExpressServer.ts",
 		"build-ts": "tsc",
 		"sync-node": "cp src/.gitignore build/ && cp src/package.json build/",
@@ -19,6 +20,8 @@
 	"keywords": [
 		"serverless",
 		"nodejs",
+		"lambda",
+		"aws",
 		"ts"
 	],
 	"author": "Nicheal Pham",
