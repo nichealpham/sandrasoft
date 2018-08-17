@@ -1,4 +1,4 @@
-import { ServiceGateway } from '../src/system/ServiceGateway';
+import { ServiceLoader } from '../src/system/ServiceLoader';
 import { ConsoleColor } from '../src/application/models/common/ConsoleColor';
 
 let _id: string;
@@ -37,14 +37,14 @@ async function testCreateModel() {
             }
         }
     };
-    let result = await ServiceGateway.LinearRegressionService.createModel(event.body.data);
+    let result = await ServiceLoader.LinearRegressionService.createModel(event.body.data);
     writeScreenLog('testCreateModel', result);
 
     _id = result._id!;
 }
 
 async function testGetModel() {
-    let result = await ServiceGateway.LinearRegressionService.getModel(_id);
+    let result = await ServiceLoader.LinearRegressionService.getModel(_id);
     writeScreenLog('testGetModel', result);
 }
 
@@ -61,7 +61,7 @@ async function testTrainModel() {
             "modelId": _id
         }
     }
-    let result = await ServiceGateway.LinearRegressionService.trainModelFromCsv(event.body);
+    let result = await ServiceLoader.LinearRegressionService.trainModelFromCsv(event.body);
     writeScreenLog('testTrainModel', result);
 };
 
@@ -78,12 +78,12 @@ async function testTrainModelAgain() {
             "modelId": _id
         }
     }
-    let result = await ServiceGateway.LinearRegressionService.trainModelFromCsv(event.body);
+    let result = await ServiceLoader.LinearRegressionService.trainModelFromCsv(event.body);
     writeScreenLog('testTrainModelAgain', result);
 };
 
 async function testDeleteModel() {
-    let result = await ServiceGateway.LinearRegressionService.deleteModel(_id);
+    let result = await ServiceLoader.LinearRegressionService.deleteModel(_id);
     writeScreenLog('testDeleteModel', result);
 }
 

@@ -12,7 +12,8 @@
 		"build": "npm run build-ts && npm run sync-all",
 		"deploy": "npm run build && cd build && npm install --only=production && serverless deploy && cd ../ && rm -R build",
 		"undeploy": "cd build && serverless remove",
-		"test-unit": "ts-node tests/UnitTest.ts"
+		"test-unit": "ts-node tests/UnitTest.ts",
+		"test-prod": "ts-node tests/ProductionTest.ts"
 	},
 	"keywords": [
 		"serverless",

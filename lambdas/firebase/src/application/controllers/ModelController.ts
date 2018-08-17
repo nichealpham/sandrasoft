@@ -1,4 +1,4 @@
-import { ServiceGateway } from '../../system/ServiceGateway';
+import { ServiceLoader } from '../../system/ServiceLoader';
 import { Monica } from '../models/monica/Monica';
 
 export class ModelController {
@@ -21,19 +21,19 @@ export class ModelController {
     }
 
     static async getModel(req): Promise<Monica> {
-        return await ServiceGateway.modelService.getModel(req.params._id);
+        return await ServiceLoader.modelService.getModel(req.params._id);
     }
 
     static async createModel(req): Promise<Monica> {
-        return await ServiceGateway.modelService.createModel(req.body.data);
+        return await ServiceLoader.modelService.createModel(req.body.data);
     }
     
     static async updateModel(req): Promise<boolean> {
-        return await ServiceGateway.modelService.updateModel(req.params._id, req.body.data);
+        return await ServiceLoader.modelService.updateModel(req.params._id, req.body.data);
     }
 
     static async deleteModel(req): Promise<boolean> {
-        return await ServiceGateway.modelService.deleteModel(req.params._id);
+        return await ServiceLoader.modelService.deleteModel(req.params._id);
     }
 }
 

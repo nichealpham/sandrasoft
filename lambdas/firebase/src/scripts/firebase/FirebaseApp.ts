@@ -1,6 +1,6 @@
 import * as firebase from 'firebase-admin';
-let DatabaseUrl = 'https://sandrasofttensorflowservice.firebaseio.com';
 let ServiceAccount = require('./FirebaseServiceAccount.json');
+let DatabaseUrl = 'https://sandrasofttensorflowservice.firebaseio.com';
 
 export class FirebaseApp {
     static firebase;
@@ -12,9 +12,9 @@ export class FirebaseApp {
                 credential: firebase.credential.cert(ServiceAccount),
                 databaseURL: DatabaseUrl
             });
-	        console.log("\x1b[36m", '\n Firebase App Initilized Successfully !');
         }
-        this.firebase = firebase.database();
+        // Cannot use database for lambda, request freeze and timeout!
+        // this.firebase = firebase.database();
         this.firestore = firebase.firestore();
     }
 }

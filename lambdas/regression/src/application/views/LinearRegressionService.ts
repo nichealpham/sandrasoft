@@ -1,4 +1,4 @@
-import { FirebaseHelper } from '../../scripts/helper/FirebaseHelper';
+import { FirebaseGateway } from './../gateways/FirebaseGateway';
 import { LinearRegressor } from '../models/regression/LinearRegressor';
 import { Monica, IMonica } from '../models/monica/Monica';
 import { DataHelper } from '../../scripts/helper/DataHelper';
@@ -13,21 +13,21 @@ export interface ILinearRegressionService {
 
 export class LinearRegressionService {
     static async getModel(_id: string): Promise<Monica> {
-        return await FirebaseHelper.modelService.get(_id);
+        return await FirebaseGateway.getModel(_id);
     }
 
     static async createModel(data: any): Promise<Monica> {
         let monicaCreate = new Monica(data).exportData();
-        return await FirebaseHelper.modelService.create(monicaCreate);
+        return await FirebaseGateway.createModel(monicaCreate);
     }
 
     static async updateModel(_id: string, data: any): Promise<boolean> {
         let monicaUpdate = new Monica(data).exportData();
-        return await FirebaseHelper.modelService.update(_id, monicaUpdate);
+        return await FirebaseGateway.updateModel(_id, monicaUpdate);
     }
 
     static async deleteModel(_id: string): Promise<boolean> {
-        return await FirebaseHelper.modelService.delete(_id);
+        return await FirebaseGateway.deleteModel(_id);
     }
 
     static async trainModelFromCsv(input: {fileUrl, config, modelId}): Promise<{model}> {

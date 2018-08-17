@@ -1,5 +1,5 @@
 import { ModelService } from '../application/views/ModelService';
 
-export class ServiceGateway {
+export class ServiceLoader {
     static modelService = ModelService;
 }

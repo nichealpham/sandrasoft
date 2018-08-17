@@ -1,4 +1,4 @@
-import { ServiceGateway } from '../src/system/ServiceGateway';
+import { ServiceLoader } from '../src/system/ServiceLoader';
 import { ConsoleColor } from '../src/application/models/common/ConsoleColor';
 import { DatabaseEngines } from '../src/system/DatabaseEngines';
 
@@ -39,7 +39,7 @@ async function testCreateModel() {
             }
         }
     };
-    let result = await ServiceGateway.modelService.createModel(event.body.data);
+    let result = await ServiceLoader.modelService.createModel(event.body.data);
     _id = result._id!;
     writeScreenLog('testCreateModel', result);
 }
@@ -66,17 +66,17 @@ async function testUpdateModel() {
             }
         }
     };
-    let result = await ServiceGateway.modelService.updateModel(_id, event.body.data);
+    let result = await ServiceLoader.modelService.updateModel(_id, event.body.data);
     writeScreenLog('testUpdateModel', result);
 }
 
 async function testGetModel() {
-    let result = await ServiceGateway.modelService.getModel(_id);
+    let result = await ServiceLoader.modelService.getModel(_id);
     writeScreenLog('testGetModel', result);
 }
 
 async function testDeleteModel() {
-    let result = await ServiceGateway.modelService.deleteModel(_id);
+    let result = await ServiceLoader.modelService.deleteModel(_id);
     writeScreenLog('testDeleteModel', result);
 }
 

@@ -1,7 +1,7 @@
 import { FirebaseApp } from '../scripts/firebase/FirebaseApp';
 
 export class DatabaseEngines {
-    static initialize() {
+    static async initialize() {
         FirebaseApp.initialize();
     }
 }
