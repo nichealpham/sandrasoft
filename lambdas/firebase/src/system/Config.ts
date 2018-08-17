@@ -13,20 +13,15 @@ export class ServiceConfig {
     };
 
     static FIREBASE_KEY = {
-        apiKey: "AIzaSyABK7xdi-E_GVA005H7Q4NczGVUW_oiUQY",
-        authDomain: "monica-service.firebaseapp.com",
-        databaseURL: "https://monica-service.firebaseio.com",
-        projectId: "monica-service",
-        storageBucket: "",
-        messagingSenderId: "104815442198",
+        databaseURL: "https://sandrasofttensorflowservice.firebaseio.com",
     };
 
     static DATABASE = {
         NAME: 'EZTENSORFLOWSERVICES-DEV',
         COLLECTION: {
-            MODEL: 'monica',
-            USER: 'user',
-            TASK: 'task',
+            MODEL: 'Model',
+            USER: 'User',
+            TASK: 'TaskWorker',
         }
     };
 }

@@ -15,9 +15,9 @@ export class ServiceConfig {
     static DATABASE = {
         NAME: 'EZTENSORFLOWSERVICES-DEV',
         COLLECTION: {
-            MODEL: 'monica',
-            USER: 'user',
-            TASK: 'task',
+            MODEL: 'Model',
+            USER: 'User',
+            TASK: 'TaskWorker',
         }
     };
 }

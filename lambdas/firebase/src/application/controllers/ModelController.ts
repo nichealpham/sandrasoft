@@ -13,10 +13,10 @@ export class ModelController {
 
     static getAsRounter() {
         return {
-            'GET://lambda/firebase/monica/get/:_id': this.getModel,
-            'POST://lambda/firebase/monica/create': this.createModel,
-            'PUT://lambda/firebase/monica/update/:_id': this.updateModel,
-            'DELETE://lambda/firebase/monica/delete/:_id': this.deleteModel,
+            'GET://lambda/firebase/model/get/:_id': this.getModel,
+            'POST://lambda/firebase/model/create': this.createModel,
+            'PUT://lambda/firebase/model/update/:_id': this.updateModel,
+            'DELETE://lambda/firebase/model/delete/:_id': this.deleteModel,
         }
     }
 

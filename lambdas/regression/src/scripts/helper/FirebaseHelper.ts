@@ -4,10 +4,10 @@ import { ApiGateway } from '../../system/ApiGateway';
 
 let baseUrl = `${ApiGateway.FIREBASE.API_BASE}/${ServiceConfig.STAGE}/lambda/${ApiGateway.FIREBASE.ALIAS}`;
 let FirebaseUrl = {
-    getModel: (_id) => `${baseUrl}/${ServiceConfig.DATABASE.COLLECTION.MODEL}/get/${_id}`,
-    createModel: () => `${baseUrl}/${ServiceConfig.DATABASE.COLLECTION.MODEL}/create`,
-    updateModel: (_id) => `${baseUrl}/${ServiceConfig.DATABASE.COLLECTION.MODEL}/update/${_id}`,
-    deleteModel: (_id) => `${baseUrl}/${ServiceConfig.DATABASE.COLLECTION.MODEL}/delete/${_id}`,
+    getModel: (_id) => `${baseUrl}/model/get/${_id}`,
+    createModel: () => `${baseUrl}/model/create`,
+    updateModel: (_id) => `${baseUrl}/model/update/${_id}`,
+    deleteModel: (_id) => `${baseUrl}/model/delete/${_id}`,
 }
 
 export class FirebaseHelper {

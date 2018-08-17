@@ -11,7 +11,7 @@ async function main() {
     await testCreateModel();
     await testUpdateModel();
     await testGetModel();
-    await testDeleteModel();
+    // await testDeleteModel();
 
     console.log(ConsoleColor.White, `\n All test cases finised successfully ! \n`);
 };
