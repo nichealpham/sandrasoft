@@ -1,22 +1,20 @@
-import { ConsoleColor } from '../../application/models/common/ConsoleColor';
 import * as firebase from 'firebase-admin';
-let ServiceAccount = require('../../system/keys/FirebaseServiceAccount.json');
-import { ServiceConfig } from '../../system/Config';
+let DatabaseUrl = 'https://sandrasofttensorflowservice.firebaseio.com';
+let ServiceAccount = require('./FirebaseServiceAccount.json');
 
 export class FirebaseApp {
+    static firebase;
     static firestore;
-    static appSetting = {
-        timestampsInSnapshots: true
-    }
 
     static initialize() {
         if (!firebase.apps.length) {
             firebase.initializeApp({
                 credential: firebase.credential.cert(ServiceAccount),
-                databaseURL: ServiceConfig.FIREBASE_KEY.databaseURL
+                databaseURL: DatabaseUrl
             });
-	        console.log(ConsoleColor.Green, '\n 2. Firebase Engine Initilize Success');
+	        console.log("\x1b[36m", '\n Firebase App Initilized Successfully !');
         }
+        this.firebase = firebase.database();
         this.firestore = firebase.firestore();
     }
 }

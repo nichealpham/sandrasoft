@@ -1,7 +1,7 @@
-import { ServiceConfig } from './../../../system/Config';
+import { ServiceConfig } from '../../../system/Config';
 
 let UserSchema = {
-    collectionName: ServiceConfig.DATABASE.TABLES.USER,
+    collectionName: ServiceConfig.DATABASE.COLLECTION.USER,
     schemaDefinition: {
         userName: {
             type: String,

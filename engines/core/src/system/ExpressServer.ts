@@ -3,7 +3,6 @@ import * as bodyParser from 'body-parser';
 // Init All services before registering controllers into routers
 import { DatabaseEngines } from './DatabaseEngines';
 import { ServiceConfig } from './Config';
-import { ServiceGateway } from './ServiceGateway';
 // Import routers
 import { ConsoleColor } from '../application/models/common/ConsoleColor';
 import { LinearRegressionController } from '../application/controllers/LinearRegressionController';
@@ -12,9 +11,7 @@ async function startServer() {
 	let app = express();
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: true }));
-	
 	await DatabaseEngines.initialize();
-	ServiceGateway.initialize();
 	// Combining all routers
 	let _count = 1;
 	let routes = {

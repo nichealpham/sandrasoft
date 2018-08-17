@@ -4,7 +4,6 @@ import { ConsoleColor } from '../src/application/models/common/ConsoleColor';
 
 async function setup() {
     await DatabaseEngines.initialize();
-    ServiceGateway.initialize();
 }
 
 let _id: string;

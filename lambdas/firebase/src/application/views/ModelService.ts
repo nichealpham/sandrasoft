@@ -1,5 +1,5 @@
 import { Monica, IMonica } from '../models/monica/Monica';
-import { FirestoreRepository } from '../../scripts/firebase/FirestoreRepository';
+import { FirebaseRepository } from '../../scripts/firebase/FirebaseRepository';
 import { ServiceConfig } from '../../system/Config';
 
 export interface IModelService {
@@ -10,7 +10,7 @@ export interface IModelService {
 }
 
 export class ModelService {
-    static modelRepository = new FirestoreRepository(ServiceConfig.DATABASE.COLLECTION.MODEL);
+    static modelRepository = new FirebaseRepository(ServiceConfig.DATABASE.COLLECTION.MODEL);
 
     static async getModel(_id: string): Promise<Monica> {
         return await this.modelRepository.get(_id);

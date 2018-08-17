@@ -1,4 +1,4 @@
-import { ServiceLoader } from '../../system/ServiceLoader';
+import { ServiceGateway } from '../../system/ServiceGateway';
 import { Monica } from '../models/monica/Monica';
 
 export class LinearRegressionController {
@@ -21,11 +21,11 @@ export class LinearRegressionController {
     }
 
     static async getModel(req): Promise<Monica> {
-        return await ServiceLoader.LinearRegressionService.getModel(req.params._id);
+        return await ServiceGateway.LinearRegressionService.getModel(req.params._id);
     }
 
     static async createModel(req): Promise<Monica> {
-        return await ServiceLoader.LinearRegressionService.createModel(req.body.data);
+        return await ServiceGateway.LinearRegressionService.createModel(req.body.data);
     }
     
     static async trainModel(req): Promise<{model}> {
@@ -34,11 +34,11 @@ export class LinearRegressionController {
             config: req.body.config,
             modelId: req.params._id,
         };
-        return await ServiceLoader.LinearRegressionService.trainModelFromCsv(input);
+        return await ServiceGateway.LinearRegressionService.trainModelFromCsv(input);
     }
 
     static async deleteModel(req): Promise<boolean> {
-        return await ServiceLoader.LinearRegressionService.deleteModel(req.params._id);
+        return await ServiceGateway.LinearRegressionService.deleteModel(req.params._id);
     }
 }
 

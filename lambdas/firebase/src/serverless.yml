@@ -18,23 +18,23 @@ functions:
     handler: handler.getModel
     events:
       - http:
-          path: lambda/firebase/monica/get/{_id}
+          path: lambda/firebase/model/get/{_id}
           method: get
   createModel:
     handler: handler.createModel
     events:
       - http:
-          path: lambda/firebase/monica/create
+          path: lambda/firebase/model/create
           method: post
   updateModel:
     handler: handler.updateModel
     events:
       - http:
-          path: lambda/firebase/monica/update/{_id}
+          path: lambda/firebase/model/update/{_id}
           method: put
   deleteModel:
     handler: handler.deleteModel
     events:
       - http:
-          path: lambda/firebase/monica/delete/{_id}
+          path: lambda/firebase/model/delete/{_id}
           method: delete          

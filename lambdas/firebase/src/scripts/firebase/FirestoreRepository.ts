@@ -1,5 +1,5 @@
 import { FirebaseApp } from './FirebaseApp';
-import { randomBytes } from 'crypto';
+import { randomBytes } from 'crypto';       // Native Node package
 
 export class FirestoreRepository {
     protected collectionName;
@@ -27,7 +27,7 @@ export class FirestoreRepository {
         });
     }
     async update(_id: string, data: any): Promise<boolean> {
-        return new Promise<boolean>(async (resolve, reject) => {
+        return new Promise<boolean>((resolve, reject) => {
             data._id = _id;
             let docRef = FirebaseApp.firestore.doc(`${this.collectionName}/${_id}`);
             docRef.update(data).then(() => {resolve(true)}).catch((err) => {reject(err)});

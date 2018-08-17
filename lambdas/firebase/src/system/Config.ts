@@ -1,32 +1,23 @@
 export class ServiceConfig {
     static NAME = 'Simple Tensorflow.js Micro-Serverless Service';
-    static EXPRESS_PORT = 2002;
+    static EXPRESS_PORT = 8080;
     static STAGE = 'dev';
     
     static CLOUD_PROVIDER = {
-        name: 'Amazon Web Services',
-        service: 'AWS Lambda',
-        runtime: 'nodejs8.10',
-        region: 'ap-southeast-1',
-        memorysize: 1024,
-        timeout: 300,
-    };
-
-    static FIREBASE_KEY = {
-        apiKey: "AIzaSyABK7xdi-E_GVA005H7Q4NczGVUW_oiUQY",
-        authDomain: "monica-service.firebaseapp.com",
-        databaseURL: "https://monica-service.firebaseio.com",
-        projectId: "monica-service",
-        storageBucket: "",
-        messagingSenderId: "104815442198",
+        NAME: 'Amazon Web Services',
+        SERVICE: 'AWS Lambda',
+        RUNTIME: 'nodejs8.10',
+        REGION: 'ap-southeast-1',
+        MEMORYSIZE: 1024,
+        TIMEOUT: 300,
     };
 
     static DATABASE = {
-        NAME: 'EZTENSORFLOWSERVICES-DEV',
+        NAME: 'EZ.TENSORFLOW-DEV',
         COLLECTION: {
-            MODEL: 'monica',
-            USER: 'user',
-            TASK: 'task',
+            MODEL: 'Model',
+            USER: 'User',
+            TASK: 'TaskWorker',
         }
-    };
+    }
 }

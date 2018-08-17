@@ -1,5 +1,5 @@
 import {LinearRegressionService} from '../application/views/LinearRegressionService';
 
-export class ServiceLoader {
+export class ServiceGateway {
     static LinearRegressionService = LinearRegressionService;
 }

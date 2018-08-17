@@ -1,5 +1,3 @@
-import { ConfigPrivateKeys } from './keys/ConfigPrivateKeys';
-
 export class ServiceConfig {
     static NAME = 'Simple Tensorflow.js Micro-Serverless Service';
     static EXPRESS_PORT = 8080;
@@ -15,35 +13,12 @@ export class ServiceConfig {
         TIMEOUT: 300,
     };
 
-    static FIREBASE_KEY: {
-        APIKEY: string,
-        AUTHDOMAIN: string,
-        DATABASEURL: string,
-        PROJECTID: string,
-        STORAGEBUCKET: string,
-        MESSAGINGSENDERID: string,
-    } = ConfigPrivateKeys.FIREBASE_KEY;
-    
-    static MONGO_MLAB_KEY: {
-        USERNAME: string,
-        PASSWORD: string,
-        DBNAME: string,
-        CONNECTION_STRING: string
-    } = ConfigPrivateKeys.MONGO_MLAB_KEY;
-
-    static MONGO_ATLAS_KEY: {
-        USERNAME: string,
-        PASSWORD: string,
-        CLUSTERNAME: string,
-        CONNECTION_STRING: string
-    } = ConfigPrivateKeys.MONGO_ATLAS_KEY;
-
     static DATABASE = {
         NAME: 'EZ.TENSORFLOW-DEV',
-        TABLES: {
-            MODEL: 'monica',
-            USER: 'user',
-            TASK: 'task',
+        COLLECTION: {
+            MODEL: 'Model',
+            USER: 'User',
+            TASK: 'TaskWorker',
         }
     }
 }

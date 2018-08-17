@@ -9,7 +9,7 @@ import { RegressorConfig } from './RegressorConfig';
 import { MonicaConfig } from '../monica/MonicaConfig';
 
 export class LinearRegressor implements Monica {
-    _id?: string;
+    _id: string;
     name: string;
     type: MonicaType;
     loss: number;
@@ -97,7 +97,7 @@ export class LinearRegressor implements Monica {
         this.updatedAt = model.updatedAt;
     }
 
-    export() {
+    exportData() {
         return {
             _id: this._id,
             name: this.name,

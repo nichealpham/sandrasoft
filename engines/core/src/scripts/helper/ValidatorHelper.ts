@@ -1,6 +1,6 @@
-import {HandlerHelper} from '../scripts/helper/HandlerHelper';
+import { HandlerHelper } from './HandlerHelper';
 
-export class Validator {
+export class ValidatorHelper {
     static ensureExist(event, params): {status: boolean, response} {
         if (!event) {
             return {

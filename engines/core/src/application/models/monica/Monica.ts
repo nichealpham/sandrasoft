@@ -1,7 +1,7 @@
 import {MonicaType} from './MonicaType';
 
 export interface IMonica {
-    _id?: string;
+    _id: string;
     name: string;
     type?: MonicaType;
     loss?: number;
@@ -11,7 +11,7 @@ export interface IMonica {
 }
 
 export class Monica {
-    _id?: string;
+    _id: string;
     name: string;
     type: MonicaType;
     loss: number;
@@ -28,7 +28,12 @@ export class Monica {
             type: MonicaType.LinearRegression,
             loss: 0,
             data: null,
-            config: null,
+            config: {
+                iterations: 0,
+                shuffle: true,
+                normalize: true,
+                learningRate: 0.01,
+            },
             executionTime: 0,
         };
         let model = mergeWithoutExtend(DefaultMonica, monica);
@@ -43,7 +48,7 @@ export class Monica {
         this.updatedAt = new Date().getTime();
     }
 
-    export() {
+    exportData() {
         return {
             _id: this._id,
             name: this.name,
