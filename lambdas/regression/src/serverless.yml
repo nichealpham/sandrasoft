@@ -7,34 +7,36 @@ provider:
   timeout: 300
 package:
   include:
-    - application/**
-    - scripts/**
+    - app/**
+    - libs/**
     - system/**
     - node_modules/**
+    - handler.js
   exclude:
     - tests/**
+    - server.js
 functions:
   getLinearRegressionModel:
     handler: handler.getLinearRegressionModel
     events:
       - http:
-          path: lambda/linear-regression/get-model/{_id}
+          path: lambda/regression/linear/get-model/{_id}
           method: get
   createLinearRegressionModel:
     handler: handler.createLinearRegressionModel
     events:
       - http:
-          path: lambda/linear-regression/create-model
+          path: lambda/regression/linear/create-model
           method: post
   trainLinearRegressionModel:
     handler: handler.trainLinearRegressionModel
     events:
       - http:
-          path: lambda/linear-regression/train-model/{_id}
+          path: lambda/regression/linear/train-model/{_id}
           method: post
   deleteLinearRegressionModel:
     handler: handler.deleteLinearRegressionModel
     events:
       - http:
-          path: lambda/linear-regression/delete-model/{_id}
+          path: lambda/regression/linear/delete-model/{_id}
           method: delete

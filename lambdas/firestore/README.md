@@ -1,5 +1,5 @@
-# TensorflowService.Regression.Sandrasoft
-Lambda Regression Services for Sandrasoft using Tensorflow
+# FirestoreService.Sandrasoft
+Lambda Firestore Services for Sandrasoft
 
 ### Key Features
 

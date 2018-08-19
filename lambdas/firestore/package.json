@@ -10,7 +10,8 @@
 		"deploy": "npm run build && cd build && npm install --only=production && serverless deploy && cd ../ && rm -R build",
 		"sync-sls": "cp src/serverless.yml build/",
 		"sync-node": "cp src/package.json build/",
-		"sync-all": "npm run sync-node && npm run sync-sls"
+		"sync-firebase": "cp src/libs/firestore/ServiceAccount.json build/libs/firestore/",
+		"sync-all": "npm run sync-node && npm run sync-sls && npm run sync-firebase"
 	},
 	"keywords": [
 		"serverless",

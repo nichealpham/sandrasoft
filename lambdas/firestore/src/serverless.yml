@@ -1,0 +1,42 @@
+service: aws-firebase-lambda
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ap-southeast-1
+  memorySize: 1024
+  timeout: 300
+package:
+  include:
+    - app/**
+    - libs/**
+    - system/**
+    - node_modules/**
+    - handler.js
+  exclude:
+    - tests/**
+    - server.js
+functions:
+  getModel:
+    handler: handler.getModel
+    events:
+      - http:
+          path: lambda/firestore/model/get/{_id}
+          method: get
+  createModel:
+    handler: handler.createModel
+    events:
+      - http:
+          path: lambda/firestore/model/create
+          method: post
+  updateModel:
+    handler: handler.updateModel
+    events:
+      - http:
+          path: lambda/firestore/model/update/{_id}
+          method: put
+  deleteModel:
+    handler: handler.deleteModel
+    events:
+      - http:
+          path: lambda/firestore/model/delete/{_id}
+          method: delete          
