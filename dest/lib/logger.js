@@ -32,3 +32,4 @@ class Logger {
     }
 }
 exports.Logger = Logger;
+//# sourceMappingURL=logger.js.map

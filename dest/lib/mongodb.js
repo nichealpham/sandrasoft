@@ -235,3 +235,4 @@ class MongooseFunction {
     }
 }
 exports.MongooseFunction = MongooseFunction;
+//# sourceMappingURL=mongodb.js.map

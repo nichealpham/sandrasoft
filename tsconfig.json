@@ -6,12 +6,7 @@
         "target": "es2018",
         "module": "commonjs",
         "lib": [
-            "es5",
-            "es2015",
-            "es2017",
-            "es2018",
-            "dom",
-            "scripthost"
+            "es5"
         ],
         "rootDir": "./src",
         "outDir": "dest",
@@ -20,7 +15,8 @@
         "skipLibCheck": true,
         "moduleResolution": "node",
         "removeComments": true,
-        // "declaration": true,
+        "declaration": true,
+        "sourceMap": true
     },
     "include": [
         "./src/**/*",

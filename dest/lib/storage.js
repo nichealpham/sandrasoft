@@ -209,3 +209,4 @@ function splitPathAndFileName(fullPath) {
         path: fullPath.slice(0, fullPath.lastIndexOf('/'))
     };
 }
+//# sourceMappingURL=storage.js.map

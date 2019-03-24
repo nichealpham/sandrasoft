@@ -10,3 +10,4 @@ module.exports = {
     SandraMongo: mongodb_1.MongoDb,
     SandraLogger: mongodb_2.Logger,
 };
+//# sourceMappingURL=index.js.map
