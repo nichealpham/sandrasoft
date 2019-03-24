@@ -19,11 +19,12 @@
         "strictNullChecks": true,
         "skipLibCheck": true,
         "moduleResolution": "node",
-        "allowJs": true,
         "removeComments": true,
+        "declaration": true,
     },
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        "**/*.d.ts"
     ],
     "exclude": [
         "./**/*.map.js",
