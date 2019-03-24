@@ -8,6 +8,10 @@
 		"build": "rm -Rf dest/ && ./node_modules/.bin/tsc",
 		"publish": "npm publish --access=public"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/nichealpham/sandrasoft.git"
+	},
 	"dependencies": {
 		"@google-cloud/storage": "^1.7.0",
 		"body-parser": "^1.18.3",
