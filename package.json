@@ -1,9 +1,8 @@
 {
 	"name": "sandrasoft",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Nodejs utilities for creating back-end services",
 	"main": "dest/index.js",
-	"types": "dest/types.d.ts",
 	"scripts": {
 		"build": "rm -Rf dest/ && ./node_modules/.bin/tsc",
 		"publish": "npm publish --access=public"

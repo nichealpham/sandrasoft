@@ -20,7 +20,7 @@
         "skipLibCheck": true,
         "moduleResolution": "node",
         "removeComments": true,
-        "declaration": true,
+        // "declaration": true,
     },
     "include": [
         "./src/**/*",
