@@ -39,23 +39,33 @@ export class SandraCore {
         this.server.use(middleware);
     }
 
-    public applyRoutes(routes: IServerRoute[]) {
+    public applyRoutes(routes: {[key: string]: IServerRoute}) {
+        const rounter = express.Router();
         Logger.info(`API endpoints: `);
-        let rounter = express.Router();
+        for (const routeName in routes) {
+            const routeConfig = routes[routeName];
+            const fullUrl = `${this.serverConfig.apiRoot}${routeConfig.url}`;
+            const routePath = `${++this._routeCounter}. ${routeName}: ${routeConfig.method.toUpperCase()} => ${fullUrl}`;
 
-        routes.forEach(route => {
-            this._routeCounter += 1;
-
-            let fullUrl = `${this.serverConfig.apiRoot}${route.url}`;
-            let routeName = `${this._routeCounter}. ${route.method.toUpperCase()} => ${fullUrl}`;
-
-            rounter.route(route.url)[route.method.toLowerCase()](
-                ...route.validators,
+            Logger.info(`${routePath}`);
+            rounter.route(routeConfig.url)[routeConfig.method.toLowerCase()](
+                ...routeConfig.validators,
                 async (req: Request, res: Response) => {
+                    const params: {[key: string]: any} = {};
+                    const paramsConfig = routeConfig.params;
+
+                    for (const paramName in paramsConfig) {
+                        const steps = paramsConfig[paramName].split('.');
+                        let value = req;
+                        for (let i = 1; i < steps.length; i++) {
+                            value = value[steps[i]];
+                        }
+                        params[paramName] = value;
+                    }
                     let response: any = {};
                     let errorMessage: string = '';
 
-                    let result = await route.controller(req).catch((err: Error) => {
+                    let result = await routeConfig.controller(params).catch((err: Error) => {
                         errorMessage = err.toString();
                     });
 
@@ -71,7 +81,7 @@ export class SandraCore {
                             }
                         }
                         if (this.serverConfig.remoting.rest.errorHandler.writeLog) {
-                            Logger.error(`API Error: ${routeName} `);
+                            Logger.error(`API Error: ${routePath} `);
                             Logger.error(`Message: ${errorMessage} `);
                         }
                     }
@@ -102,8 +112,7 @@ export class SandraCore {
                     return res.json(response);
                 }
             );
-            Logger.info(`${routeName}`);
-        });
+        }
         this.server.use(this.serverConfig.apiRoot, rounter);
     }
 
@@ -127,11 +136,6 @@ export interface IServerConfig {
     apiRoot: string,
     hostName: string,
     port: number,
-    swagger: {
-        url: string,
-        enableUI: boolean,
-        spec: any
-    },
     remoting: {
         cors: {
             origin: string | string[],
@@ -167,5 +171,8 @@ export interface IServerRoute {
     method: string,
     url: string,
     validators: Function[],
+    params: {
+        [paramName: string]: string
+    },
     controller: Function,
 }

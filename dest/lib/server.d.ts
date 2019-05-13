@@ -6,7 +6,9 @@ export declare class SandraCore {
     constructor(config: IServerConfig);
     private createServer;
     applyMiddleware(middleware: express.RequestHandler): void;
-    applyRoutes(routes: IServerRoute[]): void;
+    applyRoutes(routes: {
+        [key: string]: IServerRoute;
+    }): void;
     startListening(): Promise<boolean>;
     getServerConfig(): IServerConfig;
 }
@@ -14,11 +16,6 @@ export interface IServerConfig {
     apiRoot: string;
     hostName: string;
     port: number;
-    swagger: {
-        url: string;
-        enableUI: boolean;
-        spec: any;
-    };
     remoting: {
         cors: {
             origin: string | string[];
@@ -53,5 +50,8 @@ export interface IServerRoute {
     method: string;
     url: string;
     validators: Function[];
+    params: {
+        [paramName: string]: string;
+    };
     controller: Function;
 }

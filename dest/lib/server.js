@@ -32,16 +32,27 @@ class SandraCore {
         this.server.use(middleware);
     }
     applyRoutes(routes) {
+        const rounter = express.Router();
         logger_1.Logger.info(`API endpoints: `);
-        let rounter = express.Router();
-        routes.forEach(route => {
-            this._routeCounter += 1;
-            let fullUrl = `${this.serverConfig.apiRoot}${route.url}`;
-            let routeName = `${this._routeCounter}. ${route.method.toUpperCase()} => ${fullUrl}`;
-            rounter.route(route.url)[route.method.toLowerCase()](...route.validators, async (req, res) => {
+        for (const routeName in routes) {
+            const routeConfig = routes[routeName];
+            const fullUrl = `${this.serverConfig.apiRoot}${routeConfig.url}`;
+            const routePath = `${++this._routeCounter}. ${routeName}: ${routeConfig.method.toUpperCase()} => ${fullUrl}`;
+            logger_1.Logger.info(`${routePath}`);
+            rounter.route(routeConfig.url)[routeConfig.method.toLowerCase()](...routeConfig.validators, async (req, res) => {
+                const params = {};
+                const paramsConfig = routeConfig.params;
+                for (const paramName in paramsConfig) {
+                    const steps = paramsConfig[paramName].split('.');
+                    let value = req;
+                    for (let i = 1; i < steps.length; i++) {
+                        value = value[steps[i]];
+                    }
+                    params[paramName] = value;
+                }
                 let response = {};
                 let errorMessage = '';
-                let result = await route.controller(req).catch((err) => {
+                let result = await routeConfig.controller(params).catch((err) => {
                     errorMessage = err.toString();
                 });
                 if (errorMessage) {
@@ -56,7 +67,7 @@ class SandraCore {
                         };
                     }
                     if (this.serverConfig.remoting.rest.errorHandler.writeLog) {
-                        logger_1.Logger.error(`API Error: ${routeName} `);
+                        logger_1.Logger.error(`API Error: ${routePath} `);
                         logger_1.Logger.error(`Message: ${errorMessage} `);
                     }
                 }
@@ -86,8 +97,7 @@ class SandraCore {
                 }
                 return res.json(response);
             });
-            logger_1.Logger.info(`${routeName}`);
-        });
+        }
         this.server.use(this.serverConfig.apiRoot, rounter);
     }
     async startListening() {
