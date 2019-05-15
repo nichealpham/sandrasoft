@@ -2,67 +2,7 @@ import * as Mongoose from 'mongoose';
 import { Logger } from './logger';
 import { Types } from 'mongoose';
 
-const connections: any = {};     // {'connectionString': Mongoose.Connection}
-const collections: any = {};     // {'collectionString': MongoCollection}
-
-export class MongoDb {
-    public static connect(config: IDbConfig): MongoCollection {
-        let collection = this.findCollection(config);
-        if (!collection) {
-            let connection = this.findConnection(config);
-            if (!connection) {
-                connection = this.initConnection(config);
-            }
-            collection = this.initCollection(connection, config);
-        }
-        return collection;
-    }
-
-    private static findCollection(config: IDbConfig): MongoCollection {
-        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}/${config.modelname}`;
-        return collections[secreteKey];
-    }
-
-    private static findConnection(config: IDbConfig): Mongoose.Connection {
-        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}`;
-        return connections[secreteKey];
-    }
-
-    private static initCollection(connection: Mongoose.Connection, config: IDbConfig): MongoCollection {
-        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}/${config.modelname}`;
-        let collection = new MongoCollection(connection, config.modelname, config.schema);
-        collections[secreteKey] = collection;
-        return collection;
-    }
-
-    private static initConnection(config: IDbConfig): Mongoose.Connection {
-        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}`;
-        let connection = Mongoose.createConnection(secreteKey, { 
-            useNewUrlParser: true,
-            useCreateIndex: true,
-        });
-        connection.on('error', (error) => {
-            Logger.error(`Mongoose Connection Error!`);
-            Logger.error(`Message: ${error.toString()} !`);
-        });
-        connection.once('open', () => {
-            collections[secreteKey] = connection;
-            Logger.info(`Mongoose Connection Success, db: ${config.dbname}`);
-        });
-        return connection;
-    }
-}
-
-export interface IDbConfig {
-    username: string,
-    password: string,
-    hostname: string,
-    dbname: string,
-    modelname: string,
-    schema: Mongoose.Schema,
-}
-
-export class MongoCollection {
+class MongoCollection {
     protected collection: any = null;
 
     constructor(connector: Mongoose.Connection, modelname: string, schema: Mongoose.Schema) {
@@ -197,6 +137,66 @@ export class MongoCollection {
         await this.collection.deleteOne({ _id: MongooseFunction.toObjectId(id) }).exec();
         return true;
     }
+}
+
+const connections: {[cnnSecreteKey: string]: Mongoose.Connection} = {};
+const collections: {[colSecreteKey: string]: MongoCollection} = {};
+
+export class MongoDb {
+    public static connect(config: IDbConfig): MongoCollection {
+        let collection = this.findCollection(config);
+        if (!collection) {
+            let connection = this.findConnection(config);
+            if (!connection) {
+                connection = this.initConnection(config);
+            }
+            collection = this.initCollection(connection, config);
+        }
+        return collection;
+    }
+
+    private static findCollection(config: IDbConfig): MongoCollection {
+        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}/${config.modelname}`;
+        return collections[secreteKey];
+    }
+
+    private static findConnection(config: IDbConfig): Mongoose.Connection {
+        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}`;
+        return connections[secreteKey];
+    }
+
+    private static initCollection(connection: Mongoose.Connection, config: IDbConfig): MongoCollection {
+        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}/${config.modelname}`;
+        let collection = new MongoCollection(connection, config.modelname, config.schema);
+        collections[secreteKey] = collection;
+        return collection;
+    }
+
+    private static initConnection(config: IDbConfig): Mongoose.Connection {
+        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}`;
+        let connection = Mongoose.createConnection(secreteKey, { 
+            useNewUrlParser: true,
+            useCreateIndex: true,
+        });
+        connection.on('error', (error) => {
+            Logger.error(`Mongoose Connection Error!`);
+            Logger.error(`Message: ${error.toString()} !`);
+        });
+        connection.once('open', () => {
+            collections[secreteKey] = connection;
+            Logger.info(`Mongoose Connection Success, db: ${config.dbname}`);
+        });
+        return connection;
+    }
+}
+
+export interface IDbConfig {
+    username: string,
+    password: string,
+    hostname: string,
+    dbname: string,
+    modelname: string,
+    schema: Mongoose.Schema,
 }
 
 class Pagination {

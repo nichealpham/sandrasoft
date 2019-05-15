@@ -1,15 +1,20 @@
+// Import external libraries
 import * as cors from 'cors';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-
-import { Logger } from './logger';
 import { Request, Response } from 'express';
 
-export class SandraCore {
-    private _routeCounter: number = 0;
-    
+// Import peer-modules
+import { Logger } from '../logger';
+
+// Import sub-modules
+import { IServerConfig } from './interfaces/server_config';
+import { IServerRoute } from './interfaces/server_route';
+
+class Server {
     private server: express.Application;
     private serverConfig: IServerConfig;
+    private _routeCounter: number = 0;
 
     constructor(config: IServerConfig) {
         this.server = this.createServer(config);
@@ -42,14 +47,16 @@ export class SandraCore {
     public applyRoutes(routes: {[key: string]: IServerRoute}) {
         const rounter = express.Router();
         Logger.info(`API endpoints: `);
+
         for (const routeName in routes) {
+
             const routeConfig = routes[routeName];
             const fullUrl = `${this.serverConfig.apiRoot}${routeConfig.url}`;
             const routePath = `${++this._routeCounter}. ${routeName}: ${routeConfig.method.toUpperCase()} => ${fullUrl}`;
 
             Logger.info(`${routePath}`);
             rounter.route(routeConfig.url)[routeConfig.method.toLowerCase()](
-                ...routeConfig.validators,
+                ...(routeConfig.validators || []),
                 async (req: Request, res: Response) => {
                     const params: {[key: string]: any} = {};
                     const paramsConfig = routeConfig.params;
@@ -70,7 +77,11 @@ export class SandraCore {
                     });
 
                     if (errorMessage) {
-                        if (this.serverConfig.remoting.rest.errorHandler.fieldName) {
+                        if (this.serverConfig.remoting &&
+                            this.serverConfig.remoting.rest &&
+                            this.serverConfig.remoting.rest.errorHandler &&
+                            this.serverConfig.remoting.rest.errorHandler.fieldName
+                        ) {
                             response.statusCode = 500;
                             response[this.serverConfig.remoting.rest.errorHandler.fieldName] = errorMessage;
                         }
@@ -80,20 +91,32 @@ export class SandraCore {
                                 message: 'Internal Server Error'
                             }
                         }
-                        if (this.serverConfig.remoting.rest.errorHandler.writeLog) {
+                        if (this.serverConfig.remoting &&
+                            this.serverConfig.remoting.rest &&
+                            this.serverConfig.remoting.rest.errorHandler &&
+                            this.serverConfig.remoting.rest.errorHandler.writeLog
+                        ) {
                             Logger.error(`API Error: ${routePath} `);
                             Logger.error(`Message: ${errorMessage} `);
                         }
                     }
                     else {
-                        if (!result && this.serverConfig.remoting.rest.convertNullToError) {
+                        if (!result && 
+                            this.serverConfig.remoting &&
+                            this.serverConfig.remoting.rest &&
+                            this.serverConfig.remoting.rest.convertNullToError
+                        ) {
                             response = {
                                 statusCode: 400,
                                 message: 'Data cannot be found'
                             }
                         }
                         else {
-                            if (this.serverConfig.remoting.rest.successHandler.fieldName) {
+                            if (this.serverConfig.remoting &&
+                                this.serverConfig.remoting.rest &&
+                                this.serverConfig.remoting.rest.successHandler &&
+                                this.serverConfig.remoting.rest.successHandler.fieldName
+                            ) {
                                 response.statusCode = 200;
                                 response[this.serverConfig.remoting.rest.successHandler.fieldName] = result;
                             }
@@ -104,7 +127,11 @@ export class SandraCore {
                                 }
                             }
                         }
-                        if (this.serverConfig.remoting.rest.successHandler.writeLog) {
+                        if (this.serverConfig.remoting &&
+                            this.serverConfig.remoting.rest &&
+                            this.serverConfig.remoting.rest.successHandler &&
+                            this.serverConfig.remoting.rest.successHandler.writeLog
+                        ) {
                             Logger.info(`API Success: ${routeName} `);
                             Logger.info(`Result: ${JSON.stringify(result)} `);
                         }
@@ -132,47 +159,8 @@ export class SandraCore {
     }
 }
 
-export interface IServerConfig {
-    apiRoot: string,
-    hostName: string,
-    port: number,
-    remoting: {
-        cors: {
-            origin: string | string[],
-            optionsSuccessStatus: number,
-        },
-        json: {
-            strict: boolean,
-            limit: string,
-        },
-        urlencoded: {
-            extended: boolean,
-            limit: string,
-        },
-        logger: {
-            logFilePath: string,
-            timestampFormat: string,
-        }
-        rest: {
-            errorHandler: {
-                fieldName: string,
-                writeLog: boolean,
-            },
-            successHandler: {
-                fieldName: string,
-                writeLog: boolean,
-            },
-            convertNullToError: boolean,
-        }
-    }
-}
-
-export interface IServerRoute {
-    method: string,
-    url: string,
-    validators: Function[],
-    params: {
-        [paramName: string]: string
-    },
-    controller: Function,
+export { 
+    IServerConfig,
+    IServerRoute,
+    Server
 }
