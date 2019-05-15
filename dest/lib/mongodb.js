@@ -132,7 +132,7 @@ class MongoCollection {
         return JSON.parse(JSON.stringify(doc));
     }
     async update(id, data) {
-        let result = await this.collection.updateOne({ _id: MongooseFunction.toObjectId(id) }, data).exec();
+        let result = await this.collection.updateOne({ _id: MongoUltility.toObjectId(id) }, data).exec();
         return result && result.ok > 0;
     }
     async findOneAndUpdate(query, data) {
@@ -152,7 +152,7 @@ class MongoCollection {
         }
     }
     async delete(id) {
-        await this.collection.deleteOne({ _id: MongooseFunction.toObjectId(id) }).exec();
+        await this.collection.deleteOne({ _id: MongoUltility.toObjectId(id) }).exec();
         return true;
     }
 }
@@ -171,7 +171,7 @@ class Pagination {
         return (this.page - 1) * this.limit;
     }
 }
-class MongooseFunction {
+class MongoUltility {
     static isObjectId(id) {
         return id && id._bsontype === 'ObjectID';
     }
@@ -234,5 +234,5 @@ class MongooseFunction {
         }
     }
 }
-exports.MongooseFunction = MongooseFunction;
+exports.MongoUltility = MongoUltility;
 //# sourceMappingURL=mongodb.js.map

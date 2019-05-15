@@ -1,12 +1,12 @@
 import * as Mongoose from 'mongoose';
 export declare class MongoDb {
-    static connect(config: IDbConfig): MongoCollection;
+    static connect(config: IMongoDbConfig): MongoCollection;
     private static findCollection;
     private static findConnection;
     private static initCollection;
     private static initConnection;
 }
-export interface IDbConfig {
+export interface IMongoDbConfig {
     username: string;
     password: string;
     hostname: string;
@@ -32,7 +32,7 @@ export declare class MongoCollection {
     updateDataByFields(id: any, data: any, parentField?: string): Promise<void>;
     delete(id: any): Promise<boolean>;
 }
-export declare class MongooseFunction {
+export declare class MongoUltility {
     static isObjectId(id: any): boolean;
     static toObjectId(id: any): any;
     static handleDataModel<T>(data: any, Type: {

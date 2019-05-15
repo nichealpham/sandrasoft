@@ -1,4 +1,4 @@
-// Import external libraries
+// Import external-modules
 import * as cors from 'cors';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
