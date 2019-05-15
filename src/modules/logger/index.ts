@@ -1,8 +1,12 @@
+// Import external-modules
 const NodeLogger = require('simple-node-logger');
 
-export class Logger {
-    static logger: any;
+// Import peer-modules
+// Import sub-modules
+import { ILoggerConfig } from './interfaces/logger_config';
 
+class Logger {
+    static logger;
     static init(config: ILoggerConfig) {
         if (config.logFilePath) {
             this.logger = NodeLogger.createSimpleLogger({
@@ -11,25 +15,21 @@ export class Logger {
             });
         }
     }
-
     static debug(message: string) {
         if (this.logger) {
             this.logger.debug(message);
         }
     }
-
     static info(message: string) {
         if (this.logger) {
             this.logger.info(message);
         }
     }
-
     static warn(message: string) {
         if (this.logger) {
             this.logger.warn(message);
         }
     }
-
     static error(message: string) {
         if (this.logger) {
             this.logger.error(message);
@@ -37,7 +37,7 @@ export class Logger {
     }
 }
 
-export interface ILoggerConfig {
-    logFilePath: String,
-    timestampFormat: String,
+export {
+    ILoggerConfig,
+    Logger,
 }
