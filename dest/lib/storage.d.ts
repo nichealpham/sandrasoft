@@ -1,5 +1,5 @@
 /// <reference types="node" />
-export interface IStorageConfig {
+export interface IGoogleStorageConfig {
     serviceAccountPath: string;
     directory: string;
 }
@@ -7,7 +7,7 @@ export declare class GoogleStorage {
     private bucketName;
     private directory;
     private storage;
-    constructor(config: IStorageConfig);
+    constructor(config: IGoogleStorageConfig);
     getSubDirUri(): string;
     getGsuitUri(): string;
     exist(filePath: string): Promise<boolean>;

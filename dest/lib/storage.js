@@ -69,7 +69,7 @@ class GoogleStorage {
         });
     }
     async uploadFile2Folder(filePath, makePublic = false, cacheControl = 'no-cache, no-store, max-age=0', prefix = '') {
-        let splited = splitPathAndFileName(filePath);
+        let splited = splitPathAndFileNameFromUrl(filePath);
         let fileName = splited.file;
         let destPath = prefix ? `${prefix}/${fileName}` : fileName;
         return new Promise(async (resolve, reject) => {
@@ -203,7 +203,7 @@ class GoogleStorage {
     }
 }
 exports.GoogleStorage = GoogleStorage;
-function splitPathAndFileName(fullPath) {
+function splitPathAndFileNameFromUrl(fullPath) {
     return {
         file: fullPath.slice(fullPath.lastIndexOf('/') + 1, fullPath.length),
         path: fullPath.slice(0, fullPath.lastIndexOf('/'))

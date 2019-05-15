@@ -1,16 +1,17 @@
+// Import external-modules
 import * as Storage from '@google-cloud/storage';
 
-export interface IStorageConfig {
-    serviceAccountPath: string,
-    directory: string,
-}
+// Import peer-modules
+// Import sub-modules
+import { IGoogleStorageConfig } from './interfaces/google_storage_config';
+import { splitPathAndFileNameFromUrl } from './services/split_path_filename_from_url';
 
-export class GoogleStorage {
+class GoogleStorage {
     private bucketName: string;
     private directory: string;
     private storage: Storage;
 
-    constructor(config: IStorageConfig) {
+    constructor(config: IGoogleStorageConfig) {
         let projectId = require(config.serviceAccountPath).project_id;
 
         this.directory = config.directory;
@@ -86,7 +87,7 @@ export class GoogleStorage {
     }
 
     async uploadFile2Folder(filePath: string, makePublic: boolean = false, cacheControl: string = 'no-cache, no-store, max-age=0', prefix = ''): Promise<string> {
-        let splited = splitPathAndFileName(filePath);
+        let splited = splitPathAndFileNameFromUrl(filePath);
         let fileName = splited.file;
         let destPath = prefix ? `${prefix}/${fileName}` : fileName;
         return new Promise<string>(async (resolve, reject) => {
@@ -237,9 +238,7 @@ export class GoogleStorage {
     }
 }
 
-function splitPathAndFileName(fullPath: string): { file: string, path: string } {
-    return {
-        file: fullPath.slice(fullPath.lastIndexOf('/') + 1, fullPath.length),
-        path: fullPath.slice(0, fullPath.lastIndexOf('/'))
-    }
+export {
+    IGoogleStorageConfig,
+    GoogleStorage,
 }
