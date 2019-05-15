@@ -1,18 +1,14 @@
-// Import external-modules
-import { Types } from 'mongoose';
-// Import peer-modules
-// Import sub-modules
-
-export class MongoUltility {
-    static isObjectId(id): boolean {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+class MongoUltility {
+    static isObjectId(id) {
         return id && id._bsontype === 'ObjectID';
     }
-
     static toObjectId(id) {
-        return typeof id === 'string' ? Types.ObjectId.createFromHexString(id) : id;
+        return typeof id === 'string' ? mongoose_1.Types.ObjectId.createFromHexString(id) : id;
     }
-
-    static handleDataModel<T>(data, dataType: {new(d): T}): string | T {
+    static handleDataModel(data, dataType) {
         if (!data) {
             return '';
         }
@@ -24,8 +20,7 @@ export class MongoUltility {
         }
         return '';
     }
-
-    static handleFileModel(file): string {
+    static handleFileModel(file) {
         if (file) {
             if (this.isObjectId(file)) {
                 return file.toString();
@@ -36,8 +31,7 @@ export class MongoUltility {
         }
         return file;
     }
-
-    static filterDataInput<T>(entity: T, data, fields: string[]): T {
+    static filterDataInput(entity, data, fields) {
         for (let i = 0; i < fields.length; i++) {
             if (data.hasOwnProperty(fields[i]) && data[fields[i]] !== undefined) {
                 entity[fields[i]] = data[fields[i]];
@@ -45,18 +39,15 @@ export class MongoUltility {
         }
         return entity;
     }
-
-    static applyTemplate(template: string, ...params): string {
+    static applyTemplate(template, ...params) {
         return template.replace(/{(\d+)}/g, (match, templateIndex) => {
             return params[templateIndex] || match;
         });
     }
-
-    static convertToCurrency(value: number, option): string {
+    static convertToCurrency(value, option) {
         if (typeof value !== 'number') {
             return '';
         }
-
         if (!option) {
             option = {};
         }
@@ -66,20 +57,23 @@ export class MongoUltility {
         if (!option.currency) {
             option.currency = 'USD';
         }
-
-        return value.toLocaleString(option.format, {style: 'currency', currency: option.currency});
+        return value.toLocaleString(option.format, { style: 'currency', currency: option.currency });
     }
-
-    static convertStringToBoolean(val: string): boolean {
+    static convertStringToBoolean(val) {
         if (!val) {
             return false;
         }
         val = val.toString();
-
         switch (val.toLowerCase().trim()) {
-        case 'true': case 'yes': case '1': return true;
-        case 'false': case 'no': case '0': return false;
-        default: return false;
+            case 'true':
+            case 'yes':
+            case '1': return true;
+            case 'false':
+            case 'no':
+            case '0': return false;
+            default: return false;
         }
     }
 }
+exports.MongoUltility = MongoUltility;
+//# sourceMappingURL=mongo_ultility.js.map

@@ -5,7 +5,7 @@
 	"main": "dest/index.js",
 	"types": "dest/index.d.ts",
 	"scripts": {
-		"build": "rm -Rf dest/ && ./node_modules/.bin/tsc",
+		"build": "rm -Rf dest/ && tslint --fix --project ./ && ./node_modules/.bin/tsc",
 		"registry": "npm publish --access=public"
 	},
 	"repository": {
@@ -29,6 +29,7 @@
 		"@types/multer": "^1.3.7",
 		"@types/node": "^10.9.4",
 		"ts-node": "^6.0.0",
+		"tslint": "^5.16.0",
 		"typescript": "^3.1.6"
 	},
 	"keywords": [

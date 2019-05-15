@@ -5,7 +5,7 @@ import * as Mongoose from 'mongoose';
 import { Logger } from '../logger';
 // Import sub-modules
 import { MongoCollection } from './mongo_collection';
-import { IMongoDbConfig } from './interfaces/db_config';
+import { MongoDbConfig } from './interfaces/db_config';
 import { MongoUltility } from './mongo_ultility';
 
 // Define gobal variables
@@ -13,7 +13,7 @@ const connections: {[cnnSecreteKey: string]: Mongoose.Connection} = {};
 const collections: {[colSecreteKey: string]: MongoCollection} = {};
 
 class MongoDb {
-    public static connect(config: IMongoDbConfig): MongoCollection {
+    static connect(config: MongoDbConfig): MongoCollection {
         let collection = this.findCollection(config);
         if (!collection) {
             let connection = this.findConnection(config);
@@ -25,26 +25,26 @@ class MongoDb {
         return collection;
     }
 
-    private static findCollection(config: IMongoDbConfig): MongoCollection {
-        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}/${config.modelname}`;
+    private static findCollection(config: MongoDbConfig): MongoCollection {
+        const secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}/${config.modelname}`;
         return collections[secreteKey];
     }
 
-    private static findConnection(config: IMongoDbConfig): Mongoose.Connection {
-        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}`;
+    private static findConnection(config: MongoDbConfig): Mongoose.Connection {
+        const secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}`;
         return connections[secreteKey];
     }
 
-    private static initCollection(connection: Mongoose.Connection, config: IMongoDbConfig): MongoCollection {
-        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}/${config.modelname}`;
-        let collection = new MongoCollection(connection, config.modelname, config.schema);
+    private static initCollection(connection: Mongoose.Connection, config: MongoDbConfig): MongoCollection {
+        const secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}/${config.modelname}`;
+        const collection = new MongoCollection(connection, config.modelname, config.schema);
         collections[secreteKey] = collection;
         return collection;
     }
 
-    private static initConnection(config: IMongoDbConfig): Mongoose.Connection {
-        let secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}`;
-        let connection = Mongoose.createConnection(secreteKey, { 
+    private static initConnection(config: MongoDbConfig): Mongoose.Connection {
+        const secreteKey = `mongodb://${config.username}:${config.password}@${config.hostname}/${config.dbname}`;
+        const connection = Mongoose.createConnection(secreteKey, { 
             useNewUrlParser: true,
             useCreateIndex: true,
         });
@@ -61,11 +61,11 @@ class MongoDb {
 }
 
 export {
-    IMongoDbConfig,
+    MongoDbConfig,
     MongoCollection,
     MongoUltility,
     MongoDb,
-}
+};
 
 
 

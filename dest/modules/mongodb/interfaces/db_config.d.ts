@@ -1,6 +1,4 @@
-// Import external-modules
 import { Schema } from 'mongoose';
-
 export interface MongoDbConfig {
     username: string;
     password: string;

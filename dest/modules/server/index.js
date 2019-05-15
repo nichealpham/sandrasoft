@@ -3,15 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
-const logger_1 = require("./logger");
-class SandraCore {
+const logger_1 = require("../logger");
+class Server {
     constructor(config) {
         this._routeCounter = 0;
         this.server = this.createServer(config);
         this.serverConfig = config;
     }
     createServer(config) {
-        let server = express();
+        const server = express();
         if (config.remoting) {
             if (config.remoting.cors) {
                 server.use(cors(config.remoting.cors));
@@ -34,15 +34,15 @@ class SandraCore {
     applyRoutes(routes) {
         const rounter = express.Router();
         logger_1.Logger.info(`API endpoints: `);
-        for (const routeName in routes) {
+        for (const routeName of Object.keys(routes)) {
             const routeConfig = routes[routeName];
             const fullUrl = `${this.serverConfig.apiRoot}${routeConfig.url}`;
             const routePath = `${++this._routeCounter}. ${routeName}: ${routeConfig.method.toUpperCase()} => ${fullUrl}`;
             logger_1.Logger.info(`${routePath}`);
-            rounter.route(routeConfig.url)[routeConfig.method.toLowerCase()](...routeConfig.validators, async (req, res) => {
+            rounter.route(routeConfig.url)[routeConfig.method.toLowerCase()](...(routeConfig.validators || []), async (req, res) => {
                 const params = {};
-                const paramsConfig = routeConfig.params;
-                for (const paramName in paramsConfig) {
+                const paramsConfig = routeConfig.params || {};
+                for (const paramName of Object.keys(paramsConfig)) {
                     const steps = paramsConfig[paramName].split('.');
                     let value = req;
                     for (let i = 1; i < steps.length; i++) {
@@ -50,47 +50,64 @@ class SandraCore {
                     }
                     params[paramName] = value;
                 }
-                let response = {};
                 let errorMessage = '';
-                let result = await routeConfig.controller(params).catch((err) => {
+                let response = {
+                    statusCode: 500,
+                };
+                const result = await routeConfig.controller(params).catch((err) => {
                     errorMessage = err.toString();
                 });
                 if (errorMessage) {
-                    if (this.serverConfig.remoting.rest.errorHandler.fieldName) {
+                    if (this.serverConfig.remoting &&
+                        this.serverConfig.remoting.rest &&
+                        this.serverConfig.remoting.rest.errorHandler &&
+                        this.serverConfig.remoting.rest.errorHandler.fieldName) {
                         response.statusCode = 500;
                         response[this.serverConfig.remoting.rest.errorHandler.fieldName] = errorMessage;
                     }
                     else {
                         response = {
                             statusCode: 500,
-                            message: 'Internal Server Error'
+                            message: 'Internal Server Error',
                         };
                     }
-                    if (this.serverConfig.remoting.rest.errorHandler.writeLog) {
+                    if (this.serverConfig.remoting &&
+                        this.serverConfig.remoting.rest &&
+                        this.serverConfig.remoting.rest.errorHandler &&
+                        this.serverConfig.remoting.rest.errorHandler.writeLog) {
                         logger_1.Logger.error(`API Error: ${routePath} `);
                         logger_1.Logger.error(`Message: ${errorMessage} `);
                     }
                 }
                 else {
-                    if (!result && this.serverConfig.remoting.rest.convertNullToError) {
+                    if (!result &&
+                        this.serverConfig.remoting &&
+                        this.serverConfig.remoting.rest &&
+                        this.serverConfig.remoting.rest.convertNullToError) {
                         response = {
                             statusCode: 400,
-                            message: 'Data cannot be found'
+                            message: 'Data cannot be found',
                         };
                     }
                     else {
-                        if (this.serverConfig.remoting.rest.successHandler.fieldName) {
+                        if (this.serverConfig.remoting &&
+                            this.serverConfig.remoting.rest &&
+                            this.serverConfig.remoting.rest.successHandler &&
+                            this.serverConfig.remoting.rest.successHandler.fieldName) {
                             response.statusCode = 200;
                             response[this.serverConfig.remoting.rest.successHandler.fieldName] = result;
                         }
                         else {
                             response = {
                                 statusCode: 200,
-                                data: result
+                                data: result,
                             };
                         }
                     }
-                    if (this.serverConfig.remoting.rest.successHandler.writeLog) {
+                    if (this.serverConfig.remoting &&
+                        this.serverConfig.remoting.rest &&
+                        this.serverConfig.remoting.rest.successHandler &&
+                        this.serverConfig.remoting.rest.successHandler.writeLog) {
                         logger_1.Logger.info(`API Success: ${routeName} `);
                         logger_1.Logger.info(`Result: ${JSON.stringify(result)} `);
                     }
@@ -113,5 +130,5 @@ class SandraCore {
         return this.serverConfig;
     }
 }
-exports.SandraCore = SandraCore;
-//# sourceMappingURL=server.js.map
+exports.Server = Server;
+//# sourceMappingURL=index.js.map

@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const NodeLogger = require('simple-node-logger');
+const nodeLogger = require('simple-node-logger');
 class Logger {
     static init(config) {
         if (config.logFilePath) {
-            this.logger = NodeLogger.createSimpleLogger({
+            this.logger = nodeLogger.createSimpleLogger({
                 logFilePath: config.logFilePath,
                 timestampFormat: config.logFilePath || 'YYYY-MM-DD HH:mm:ss',
             });
@@ -32,4 +32,4 @@ class Logger {
     }
 }
 exports.Logger = Logger;
-//# sourceMappingURL=logger.js.map
+//# sourceMappingURL=index.js.map

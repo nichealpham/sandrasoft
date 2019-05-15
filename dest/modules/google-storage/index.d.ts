@@ -1,13 +1,10 @@
 /// <reference types="node" />
-export interface IGoogleStorageConfig {
-    serviceAccountPath: string;
-    directory: string;
-}
-export declare class GoogleStorage {
+import { GoogleStorageConfig } from './interfaces/google_storage_config';
+declare class GoogleStorage {
     private bucketName;
     private directory;
     private storage;
-    constructor(config: IGoogleStorageConfig);
+    constructor(config: GoogleStorageConfig);
     getSubDirUri(): string;
     getGsuitUri(): string;
     exist(filePath: string): Promise<boolean>;
@@ -33,9 +30,10 @@ export declare class GoogleStorage {
     moveFile(filePath: string, fileDestPath: string): Promise<boolean>;
     moveUploadedFile(filename: string, fileDestPath: string): Promise<boolean>;
     copyFile(filePath: string, fileDestPath: string): Promise<boolean>;
-    listFiles(prefix: string, delimiter?: string): Promise<{
+    listFiles(prefix: string, delimiter?: string): Promise<Array<{
         name: any;
-    }[]>;
+    }>>;
     protected createBucket(bucketName: string): Promise<boolean>;
     protected listBucketNames(): Promise<string[]>;
 }
+export { GoogleStorageConfig, GoogleStorage, };

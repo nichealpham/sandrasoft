@@ -8,21 +8,21 @@ import { Request, Response } from 'express';
 import { Logger } from '../logger';
 
 // Import sub-modules
-import { IServerConfig } from './interfaces/server_config';
-import { IServerRoute } from './interfaces/server_route';
+import { ServerConfig } from './interfaces/server_config';
+import { ServerRoute } from './interfaces/server_route';
 
 class Server {
     private server: express.Application;
-    private serverConfig: IServerConfig;
-    private _routeCounter: number = 0;
+    private serverConfig: ServerConfig;
+    private _routeCounter = 0;
 
-    constructor(config: IServerConfig) {
+    constructor(config: ServerConfig) {
         this.server = this.createServer(config);
         this.serverConfig = config;
     }
 
-    private createServer(config: IServerConfig): express.Application {
-        let server = express();
+    private createServer(config: ServerConfig): express.Application {
+        const server = express();
         if (config.remoting) {
             if (config.remoting.cors) {
                 server.use(cors(config.remoting.cors));
@@ -40,15 +40,15 @@ class Server {
         return server;
     }
 
-    public applyMiddleware(middleware: express.RequestHandler) {
+    applyMiddleware(middleware: express.RequestHandler) {
         this.server.use(middleware);
     }
 
-    public applyRoutes(routes: {[key: string]: IServerRoute}) {
+    applyRoutes(routes: {[key: string]: ServerRoute}) {
         const rounter = express.Router();
         Logger.info(`API endpoints: `);
 
-        for (const routeName in routes) {
+        for (const routeName of Object.keys(routes)) {
 
             const routeConfig = routes[routeName];
             const fullUrl = `${this.serverConfig.apiRoot}${routeConfig.url}`;
@@ -58,10 +58,10 @@ class Server {
             rounter.route(routeConfig.url)[routeConfig.method.toLowerCase()](
                 ...(routeConfig.validators || []),
                 async (req: Request, res: Response) => {
-                    const params: {[key: string]: any} = {};
-                    const paramsConfig = routeConfig.params;
+                    const params: {[key: string]: object | string | number} = {};
+                    const paramsConfig = routeConfig.params || {};
 
-                    for (const paramName in paramsConfig) {
+                    for (const paramName of Object.keys(paramsConfig)) {
                         const steps = paramsConfig[paramName].split('.');
                         let value = req;
                         for (let i = 1; i < steps.length; i++) {
@@ -69,13 +69,16 @@ class Server {
                         }
                         params[paramName] = value;
                     }
-                    let response: any = {};
-                    let errorMessage: string = '';
-
-                    let result = await routeConfig.controller(params).catch((err: Error) => {
+                    let errorMessage = '';
+                    let response: {
+                        statusCode: number, 
+                        [addtionalField: string]: object | string | number
+                    } = {
+                        statusCode: 500,
+                    };
+                    const result = await routeConfig.controller(params).catch((err: Error) => {
                         errorMessage = err.toString();
                     });
-
                     if (errorMessage) {
                         if (this.serverConfig.remoting &&
                             this.serverConfig.remoting.rest &&
@@ -88,8 +91,8 @@ class Server {
                         else {
                             response = {
                                 statusCode: 500,
-                                message: 'Internal Server Error'
-                            }
+                                message: 'Internal Server Error',
+                            };
                         }
                         if (this.serverConfig.remoting &&
                             this.serverConfig.remoting.rest &&
@@ -108,8 +111,8 @@ class Server {
                         ) {
                             response = {
                                 statusCode: 400,
-                                message: 'Data cannot be found'
-                            }
+                                message: 'Data cannot be found',
+                            };
                         }
                         else {
                             if (this.serverConfig.remoting &&
@@ -123,8 +126,8 @@ class Server {
                             else {
                                 response = {
                                     statusCode: 200,
-                                    data: result
-                                }
+                                    data: result,
+                                };
                             }
                         }
                         if (this.serverConfig.remoting &&
@@ -143,7 +146,7 @@ class Server {
         this.server.use(this.serverConfig.apiRoot, rounter);
     }
 
-    public async startListening(): Promise<boolean> {
+    async startListening(): Promise<boolean> {
         Logger.info(`Starting server ... `);
 
         return new Promise<boolean>((resolve) => {
@@ -154,13 +157,13 @@ class Server {
         });
     }
 
-    public getServerConfig() {
+    getServerConfig() {
         return this.serverConfig;
     }
 }
 
 export { 
-    IServerConfig,
-    IServerRoute,
+    ServerConfig,
+    ServerRoute,
     Server
-}
+};

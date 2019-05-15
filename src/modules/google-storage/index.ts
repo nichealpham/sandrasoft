@@ -3,7 +3,7 @@ import * as Storage from '@google-cloud/storage';
 
 // Import peer-modules
 // Import sub-modules
-import { IGoogleStorageConfig } from './interfaces/google_storage_config';
+import { GoogleStorageConfig } from './interfaces/google_storage_config';
 import { splitPathAndFileNameFromUrl } from './services/split_path_filename_from_url';
 
 class GoogleStorage {
@@ -11,14 +11,14 @@ class GoogleStorage {
     private directory: string;
     private storage: Storage;
 
-    constructor(config: IGoogleStorageConfig) {
-        let projectId = require(config.serviceAccountPath).project_id;
+    constructor(config: GoogleStorageConfig) {
+        const projectId = require(config.serviceAccountPath).project_id;
 
         this.directory = config.directory;
         this.bucketName = projectId + '.appspot.com';
         this.storage = new Storage({
             projectId,
-            keyFilename: config.serviceAccountPath
+            keyFilename: config.serviceAccountPath,
         });
     }
 
@@ -36,49 +36,54 @@ class GoogleStorage {
         });
     }
 
-    async uploadBuffer(filePath: string, buffer: Buffer, makePublic: boolean = false, cacheControl: string = 'no-cache, no-store, max-age=0', prefix = '', mimetype: string = ''): Promise<string> {
+    async uploadBuffer(filePath: string, buffer: Buffer, makePublic = false, cacheControl = 'no-cache, no-store, max-age=0', prefix = '', mimetype = ''): Promise<string> {
         filePath = prefix ? prefix + '/' + filePath : filePath;
         return new Promise<string>(async (resolve, reject) => {
-            if (await this.exist(filePath))
+            if (await this.exist(filePath)) {
                 await this.deleteFile(filePath);
-
-            let file = this.storage.bucket(this.bucketName).file(`${this.directory}/${filePath}`);
-            let option: any = {
-                metadata: {
-                    cacheControl
-                }
             }
-            if (mimetype)
+
+            const file = this.storage.bucket(this.bucketName).file(`${this.directory}/${filePath}`);
+            const option: {metadata} = {
+                metadata: {
+                    cacheControl,
+                },
+            };
+            if (mimetype) {
                 option.metadata.contentType = mimetype;
-            let writeStream = file.createWriteStream(option);
+            }
+            const writeStream = file.createWriteStream(option);
 
             writeStream.on('error', (err) => {
                 reject(err);
             });
             writeStream.on('finish', async () => {
-                if (makePublic)
+                if (makePublic) {
                     await this.makePublic(filePath);
+                }
                 resolve(`https://storage.googleapis.com/${this.bucketName}/${this.directory}/${filePath}`);
             });
             writeStream.end(buffer);
         });
     }
 
-    async uploadFile(filePath: string, makePublic: boolean = false, cacheControl: string = 'no-cache, no-store, max-age=0', prefix = ''): Promise<string> {
-        let destPath = prefix ? prefix + '/' + filePath : filePath;
+    async uploadFile(filePath: string, makePublic = false, cacheControl = 'no-cache, no-store, max-age=0', prefix = ''): Promise<string> {
+        const destPath = prefix ? prefix + '/' + filePath : filePath;
         return new Promise<string>(async (resolve, reject) => {
-            if (await this.exist(destPath))
+            if (await this.exist(destPath)) {
                 await this.deleteFile(destPath);
+            }
             this.storage.bucket(this.bucketName).upload(filePath, {
                 gzip: false,
                 metadata: {
                     cacheControl,
                 },
             }).then(async () => {
-                let fileName = filePath.substr(filePath.lastIndexOf('/') + 1, filePath.length);
+                const fileName = filePath.substr(filePath.lastIndexOf('/') + 1, filePath.length);
                 await this.moveUploadedFile(fileName, destPath);
-                if (makePublic)
+                if (makePublic) {
                     await this.makePublic(destPath);
+                }
                 resolve(`https://storage.googleapis.com/${this.bucketName}/${this.directory}/${destPath}`);
             }).catch(err => {
                 reject(err);
@@ -86,13 +91,14 @@ class GoogleStorage {
         });
     }
 
-    async uploadFile2Folder(filePath: string, makePublic: boolean = false, cacheControl: string = 'no-cache, no-store, max-age=0', prefix = ''): Promise<string> {
-        let splited = splitPathAndFileNameFromUrl(filePath);
-        let fileName = splited.file;
-        let destPath = prefix ? `${prefix}/${fileName}` : fileName;
+    async uploadFile2Folder(filePath: string, makePublic = false, cacheControl = 'no-cache, no-store, max-age=0', prefix = ''): Promise<string> {
+        const splited = splitPathAndFileNameFromUrl(filePath);
+        const fileName = splited.file;
+        const destPath = prefix ? `${prefix}/${fileName}` : fileName;
         return new Promise<string>(async (resolve, reject) => {
-            if (await this.exist(destPath))
+            if (await this.exist(destPath)) {
                 await this.deleteFile(destPath);
+            }
             this.storage.bucket(this.bucketName).upload(filePath, {
                 gzip: false,
                 metadata: {
@@ -100,8 +106,9 @@ class GoogleStorage {
                 },
             }).then(async () => {
                 await this.moveUploadedFile(fileName, destPath);
-                if (makePublic)
+                if (makePublic) {
                     await this.makePublic(destPath);
+                }
                 resolve(`https://storage.googleapis.com/${this.bucketName}/${this.directory}/${destPath}`);
             }).catch(err => {
                 reject(err);
@@ -110,12 +117,12 @@ class GoogleStorage {
     }
 
     async getDownloadUrl(filePath: string, prefix = ''): Promise<string> {
-        let destPath = prefix ? prefix + '/' + filePath : filePath;
-        let file = this.storage.bucket(this.bucketName).file(`${this.directory}/${destPath}`);
+        const destPath = prefix ? prefix + '/' + filePath : filePath;
+        const file = this.storage.bucket(this.bucketName).file(`${this.directory}/${destPath}`);
         return new Promise<string>((resolve) => {
             file.getSignedUrl({
                 action: 'read',
-                expires: '03-09-2491'
+                expires: '03-09-2491',
             }).then(signedUrls => {
                 return resolve(signedUrls[0]);
             });
@@ -124,7 +131,7 @@ class GoogleStorage {
 
     async downloadFile(filePath: string, localPath: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            let options = {
+            const options = {
                 destination: localPath,
             };
             this.storage.bucket(this.bucketName).file(`${this.directory}/${filePath}`).download(options).then(() => {
@@ -150,13 +157,13 @@ class GoogleStorage {
         cacheControl, contentType, contentEncoding,
         mediaLink, metadata
     }> {
-        return new Promise<any>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             this.storage.bucket(this.bucketName).file(`${this.directory}/${filePath}`).getMetadata().then((results) => {
                 resolve(results[0]);
             }).catch(err => {
                 reject(err);
             });
-        })
+        });
     }
 
     async makePublic(filePath: string): Promise<boolean> {
@@ -201,21 +208,21 @@ class GoogleStorage {
         });
     }
 
-    async listFiles(prefix: string, delimiter?: string): Promise<{ name }[]> {
-        let options: { prefix, delimiter?} = {
-            prefix: prefix
+    async listFiles(prefix: string, delimiter?: string): Promise<Array<{ name }>> {
+        const options: { prefix, delimiter?} = {
+            prefix,
         };
         if (delimiter) {
             options.delimiter = delimiter;
-        };
+        }
 
-        return new Promise<{ name }[]>((resolve, reject) => {
+        return new Promise<Array<{ name }>>((resolve, reject) => {
             this.storage.bucket(this.bucketName).getFiles(options).then(result => {
-                let files = result[0];
+                const files = result[0];
                 resolve(files.map(file => {
                     return {
-                        name: file.name
-                    }
+                        name: file.name,
+                    };
                 }));
             }).catch(err => reject(err));
         });
@@ -223,15 +230,15 @@ class GoogleStorage {
 
     protected createBucket(bucketName: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            this.storage.createBucket(bucketName).then(() => { resolve(true) })
-                .catch(err => { reject(err) });
+            this.storage.createBucket(bucketName).then(() => { resolve(true); })
+                .catch(err => { reject(err); });
         });
     }
 
     protected listBucketNames(): Promise<string[]> {
         return new Promise<string[]>((resolve, reject) => {
             this.storage.getBuckets().then(result => {
-                let buckets = result[0];
+                const buckets = result[0];
                 resolve(buckets.map(bucket => bucket.name));
             }).catch(err => reject(err));
         });
@@ -239,6 +246,6 @@ class GoogleStorage {
 }
 
 export {
-    IGoogleStorageConfig,
+    GoogleStorageConfig,
     GoogleStorage,
-}
+};

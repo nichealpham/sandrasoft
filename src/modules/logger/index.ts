@@ -1,15 +1,15 @@
 // Import external-modules
-const NodeLogger = require('simple-node-logger');
+const nodeLogger = require('simple-node-logger');
 
 // Import peer-modules
 // Import sub-modules
-import { ILoggerConfig } from './interfaces/logger_config';
+import { LoggerConfig } from './interfaces/logger_config';
 
 class Logger {
     static logger;
-    static init(config: ILoggerConfig) {
+    static init(config: LoggerConfig) {
         if (config.logFilePath) {
-            this.logger = NodeLogger.createSimpleLogger({
+            this.logger = nodeLogger.createSimpleLogger({
                 logFilePath: config.logFilePath,
                 timestampFormat: config.logFilePath || 'YYYY-MM-DD HH:mm:ss',
             });
@@ -38,6 +38,6 @@ class Logger {
 }
 
 export {
-    ILoggerConfig,
+    LoggerConfig,
     Logger,
-}
+};

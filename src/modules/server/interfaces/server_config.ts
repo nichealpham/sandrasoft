@@ -1,7 +1,7 @@
-export interface IServerConfig {
-    apiRoot: string,
-    hostName?: string,
-    port: number,
+export interface ServerConfig {
+    apiRoot: string;
+    hostName?: string;
+    port: number;
     remoting?: {
         cors?: {
             origin: string | string[],
@@ -30,5 +30,5 @@ export interface IServerConfig {
             },
             convertNullToError: boolean,
         }
-    }
+    };
 }

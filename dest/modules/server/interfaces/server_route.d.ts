@@ -3,7 +3,7 @@ export interface ServerRoute {
     url: string;
     validators?: Function[];
     params?: {
-        [paramName: string]: string
+        [paramName: string]: string;
     };
     controller: Function;
 }
