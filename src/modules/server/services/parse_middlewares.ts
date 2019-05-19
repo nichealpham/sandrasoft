@@ -1,6 +1,9 @@
-import { ServerMiddlewares } from "./interfaces/server_middlewares";
-import { MiddlewareFunction } from "./interfaces/middleware_function";
+// Import external-modules
 import * as Ramda from 'ramda';
+
+// Import sub-modules
+import { ServerMiddlewares } from "../interfaces/server_middlewares";
+import { MiddlewareFunction } from "../interfaces/middleware_function";
 
 export const parseMiddlewares = (middlewares: ServerMiddlewares = {}): MiddlewareFunction[] => {
     if (Ramda.isEmpty(middlewares)) {

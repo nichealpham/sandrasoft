@@ -6,9 +6,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger_1 = require("../logger");
 const error_1 = require("../error");
-const get_default_server_config_1 = require("./get_default_server_config");
-const parse_request_handler_1 = require("./parse_request_handler");
-const parse_middlewares_1 = require("./parse_middlewares");
+const parse_request_validatons_1 = require("./services/parse_request_validatons");
+const get_default_server_config_1 = require("./services/get_default_server_config");
+const parse_request_handler_1 = require("./services/parse_request_handler");
+const parse_middlewares_1 = require("./services/parse_middlewares");
 class Server {
     constructor(config) {
         this._routeCounter = 0;
@@ -58,7 +59,7 @@ class Server {
                 const middlewares = parse_middlewares_1.parseMiddlewares(routeConfig.middlewares);
                 const pathName = `${++this._routeCounter}. ${routeName}: ` +
                     `${routeConfig.method.toUpperCase()} => ${fullPath}`;
-                rounter.route(path)[method](...middlewares, parse_request_handler_1.parseRequestHandler({
+                rounter.route(path)[method](...middlewares, parse_request_validatons_1.parseRequestValidations(routeConfig.validations), parse_request_handler_1.parseRequestHandler({
                     pathName,
                     routeConfig,
                     serverConfig: this.serverConfig,

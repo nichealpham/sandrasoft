@@ -3,11 +3,11 @@ import { Request, Response } from 'express';
 import * as Ramda from 'ramda';
 
 // Import peer-modules
-import { Logger } from '../logger';
+import { Logger } from '../../logger';
 
 // Import sub-modules
-import { ServerRoute } from './interfaces/server_route';
-import { ServerConfig } from './interfaces/server_config';
+import { ServerRoute } from '../interfaces/server_route';
+import { ServerConfig } from '../interfaces/server_config';
 
 export const parseRequestHandler = (input: {
     pathName: string,

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Ramda = require("ramda");
-const logger_1 = require("../logger");
+const logger_1 = require("../../logger");
 exports.parseRequestHandler = (input) => {
     return async (req, res) => {
         let errorMessage = '';

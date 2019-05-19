@@ -11,9 +11,10 @@ import { errorServerCreate, errorServerApplyMiddleware, errorServerStartListenni
 // Import sub-modules
 import { ServerConfig } from './interfaces/server_config';
 import { ServerRoute } from './interfaces/server_route';
-import { getDefaultServerConfig } from './get_default_server_config';
-import { parseRequestHandler } from './parse_request_handler';
-import { parseMiddlewares } from './parse_middlewares';
+import { parseRequestValidations } from './services/parse_request_validatons';
+import { getDefaultServerConfig } from './services/get_default_server_config';
+import { parseRequestHandler } from './services/parse_request_handler';
+import { parseMiddlewares } from './services/parse_middlewares';
 
 class Server {
     private server: express.Application;
@@ -73,6 +74,9 @@ class Server {
                     `${routeConfig.method.toUpperCase()} => ${fullPath}`;
                 
                 rounter.route(path)[method](...middlewares,
+                    parseRequestValidations(
+                        routeConfig.validations
+                    ),
                     parseRequestHandler({
                         pathName, 
                         routeConfig, 

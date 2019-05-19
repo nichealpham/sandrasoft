@@ -1,4 +1,5 @@
-import { ServerConfig } from "./interfaces/server_config";
+// Import sub-modules
+import { ServerConfig } from "../interfaces/server_config";
 
 export const getDefaultServerConfig = (): ServerConfig => {
     return JSON.parse(JSON.stringify({
