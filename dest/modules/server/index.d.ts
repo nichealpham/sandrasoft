@@ -9,7 +9,7 @@ declare class Server {
     private createServer;
     applyMiddleware(middleware: express.RequestHandler): void;
     applyRoutes(routes: {
-        [key: string]: ServerRoute;
+        [routeName: string]: ServerRoute;
     }): void;
     startListening(): Promise<boolean>;
     getServerConfig(): ServerConfig;
