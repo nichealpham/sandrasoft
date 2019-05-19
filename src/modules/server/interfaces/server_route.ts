@@ -8,6 +8,6 @@ export interface ServerRoute {
     middlewares?: ServerMiddlewares;
     validations?: ServerValidations;
     prepareInput: (req: Request) => object;
-    serviceHandler: (input: object) => object | string | number | Buffer;
+    serviceHandler: (input: object) => Promise<object | string | number | Buffer | null | undefined>;
 }
 

@@ -32,38 +32,3 @@ export interface ServerConfig {
         }
     };
 }
-
-export const defaultServerConfig: ServerConfig = {
-    apiRoot: "/api",
-    hostName: "sandrasoft.com",
-    port: 3000,
-    remoting: {
-        cors: {
-            origin: "*",
-            optionsSuccessStatus: 200,
-        },
-        json: {
-            strict: true,
-            limit: "200mb",
-        },
-        urlencoded: {
-            extended: true,
-            limit: "100kb",
-        },
-        logger: {
-            logFilePath: "",
-            timestampFormat: "YYYY-MM-DD HH:mm:ss",
-        },
-        rest: {
-            errorHandler: {
-                fieldName: "error",
-                writeLog: true,
-            },
-            successHandler: {
-                fieldName: "body",
-                writeLog: true,
-            },
-            convertNullToError: true,
-        },
-    },
-};

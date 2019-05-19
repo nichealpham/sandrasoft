@@ -1,8 +1,8 @@
 // Import external-modules
 import * as cors from 'cors';
+import * as ramda from 'ramda';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import { Request, Response } from 'express';
 
 // Import peer-modules
 import { Logger } from '../logger';
@@ -11,8 +11,9 @@ import { errorServerCreate, errorServerApplyMiddleware, errorServerStartListenni
 // Import sub-modules
 import { ServerConfig } from './interfaces/server_config';
 import { ServerRoute } from './interfaces/server_route';
-import { parseMiddlewares } from './parse-middlewares';
-import { parseServiceHandler } from './parse_service_handler';
+import { getDefaultServerConfig } from './get_default_server_config';
+import { parseRequestHandler } from './parse_request_handler';
+import { parseMiddlewares } from './parse_middlewares';
 
 class Server {
     private server: express.Application;
@@ -20,8 +21,9 @@ class Server {
     private _routeCounter = 0;
 
     constructor(config: ServerConfig) {
-        this.server = this.createServer(config);
-        this.serverConfig = config;
+        const serverConfig = ramda.mergeDeepRight(getDefaultServerConfig(), config);
+        this.server = this.createServer(serverConfig);
+        this.serverConfig = serverConfig;
     }
 
     private createServer(config: ServerConfig): express.Application {
@@ -70,10 +72,14 @@ class Server {
                     `${++this._routeCounter}. ${routeName}: ` + 
                     `${routeConfig.method.toUpperCase()} => ${fullPath}`;
                 
-                Logger.info(`${pathName}`);
                 rounter.route(path)[method](...middlewares,
-                    parseServiceHandler()
+                    parseRequestHandler({
+                        pathName, 
+                        routeConfig, 
+                        serverConfig: this.serverConfig,
+                    })
                 );
+                Logger.info(`${pathName}`);
             }
         }
         this.server.use(this.serverConfig.apiRoot, rounter);
