@@ -42,7 +42,7 @@ export const parseRequestHandler = (input: {
             serverConfig.remoting.rest &&
             serverConfig.remoting.rest.successHandler &&
             serverConfig.remoting.rest.successHandler.fieldName
-        ) || 'body';
+        ) || 'data';
 
         if (errorMessage) {
             response.statusCode = 500;

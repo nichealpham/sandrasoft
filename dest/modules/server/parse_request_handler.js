@@ -20,7 +20,7 @@ exports.parseRequestHandler = (input) => {
         const successFieldName = (serverConfig.remoting &&
             serverConfig.remoting.rest &&
             serverConfig.remoting.rest.successHandler &&
-            serverConfig.remoting.rest.successHandler.fieldName) || 'body';
+            serverConfig.remoting.rest.successHandler.fieldName) || 'data';
         if (errorMessage) {
             response.statusCode = 500;
             response[errorFieldName] = errorMessage;
