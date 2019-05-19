@@ -6,10 +6,13 @@ import { Request, Response } from 'express';
 
 // Import peer-modules
 import { Logger } from '../logger';
+import { errorServerCreate, errorServerApplyMiddleware, errorServerStartListenning } from '../error';
 
 // Import sub-modules
 import { ServerConfig } from './interfaces/server_config';
 import { ServerRoute } from './interfaces/server_route';
+import { parseMiddlewares } from './parse-middlewares';
+import { parseServiceHandler } from './parse_service_handler';
 
 class Server {
     private server: express.Application;
@@ -23,137 +26,70 @@ class Server {
 
     private createServer(config: ServerConfig): express.Application {
         const server = express();
-        if (config.remoting) {
-            if (config.remoting.cors) {
-                server.use(cors(config.remoting.cors));
+        try {
+            if (config.remoting) {
+                if (config.remoting.cors) {
+                    server.use(cors(config.remoting.cors));
+                }
+                if (config.remoting.json) {
+                    server.use(bodyParser.json(config.remoting.json));
+                }
+                if (config.remoting.urlencoded) {
+                    server.use(bodyParser.urlencoded(config.remoting.urlencoded));
+                }
+                if (config.remoting.logger) {
+                    Logger.init(config.remoting.logger);
+                }
             }
-            if (config.remoting.json) {
-                server.use(bodyParser.json(config.remoting.json));
-            }
-            if (config.remoting.urlencoded) {
-                server.use(bodyParser.urlencoded(config.remoting.urlencoded));
-            }
-            if (config.remoting.logger) {
-                Logger.init(config.remoting.logger);
-            }
+        } catch (err) {
+            throw new errorServerCreate(err.message.toString());
         }
         return server;
     }
 
     applyMiddleware(middleware: express.RequestHandler) {
-        this.server.use(middleware);
+        try {
+            this.server.use(middleware);
+        } catch (err) {
+            throw new errorServerApplyMiddleware(err.message.toString());
+        }
     }
 
-    applyRoutes(routes: {[key: string]: ServerRoute}) {
+    applyRoutes(routes: {[routeName: string]: ServerRoute}) {
         const rounter = express.Router();
         Logger.info(`API endpoints: `);
-
         for (const routeName of Object.keys(routes)) {
 
             const routeConfig = routes[routeName];
-            const fullUrl = `${this.serverConfig.apiRoot}${routeConfig.url}`;
-            const routePath = `${++this._routeCounter}. ${routeName}: ${routeConfig.method.toUpperCase()} => ${fullUrl}`;
+            for (const path of routeConfig.paths) {
 
-            Logger.info(`${routePath}`);
-            rounter.route(routeConfig.url)[routeConfig.method.toLowerCase()](
-                ...(routeConfig.validators || []),
-                async (req: Request, res: Response) => {
-                    const params: {[key: string]: object | string | number} = {};
-                    const paramsConfig = routeConfig.params || {};
-
-                    for (const paramName of Object.keys(paramsConfig)) {
-                        const steps = paramsConfig[paramName].split('.');
-                        let value = req;
-                        for (let i = 1; i < steps.length; i++) {
-                            value = value[steps[i]];
-                        }
-                        params[paramName] = value;
-                    }
-                    let errorMessage = '';
-                    let response: {
-                        statusCode: number, 
-                        [addtionalField: string]: object | string | number
-                    } = {
-                        statusCode: 500,
-                    };
-                    const result = await routeConfig.controller(params).catch((err: Error) => {
-                        errorMessage = err.toString();
-                    });
-                    if (errorMessage) {
-                        if (this.serverConfig.remoting &&
-                            this.serverConfig.remoting.rest &&
-                            this.serverConfig.remoting.rest.errorHandler &&
-                            this.serverConfig.remoting.rest.errorHandler.fieldName
-                        ) {
-                            response.statusCode = 500;
-                            response[this.serverConfig.remoting.rest.errorHandler.fieldName] = errorMessage;
-                        }
-                        else {
-                            response = {
-                                statusCode: 500,
-                                message: 'Internal Server Error',
-                            };
-                        }
-                        if (this.serverConfig.remoting &&
-                            this.serverConfig.remoting.rest &&
-                            this.serverConfig.remoting.rest.errorHandler &&
-                            this.serverConfig.remoting.rest.errorHandler.writeLog
-                        ) {
-                            Logger.error(`API Error: ${routePath} `);
-                            Logger.error(`Message: ${errorMessage} `);
-                        }
-                    }
-                    else {
-                        if (!result && 
-                            this.serverConfig.remoting &&
-                            this.serverConfig.remoting.rest &&
-                            this.serverConfig.remoting.rest.convertNullToError
-                        ) {
-                            response = {
-                                statusCode: 400,
-                                message: 'Data cannot be found',
-                            };
-                        }
-                        else {
-                            if (this.serverConfig.remoting &&
-                                this.serverConfig.remoting.rest &&
-                                this.serverConfig.remoting.rest.successHandler &&
-                                this.serverConfig.remoting.rest.successHandler.fieldName
-                            ) {
-                                response.statusCode = 200;
-                                response[this.serverConfig.remoting.rest.successHandler.fieldName] = result;
-                            }
-                            else {
-                                response = {
-                                    statusCode: 200,
-                                    data: result,
-                                };
-                            }
-                        }
-                        if (this.serverConfig.remoting &&
-                            this.serverConfig.remoting.rest &&
-                            this.serverConfig.remoting.rest.successHandler &&
-                            this.serverConfig.remoting.rest.successHandler.writeLog
-                        ) {
-                            Logger.info(`API Success: ${routeName} `);
-                            Logger.info(`Result: ${JSON.stringify(result)} `);
-                        }
-                    }
-                    return res.json(response);
-                }
-            );
+                const method = routeConfig.method.toLowerCase();
+                const fullPath = `${this.serverConfig.apiRoot}${path}`;
+                const middlewares = parseMiddlewares(routeConfig.middlewares);
+                const pathName = 
+                    `${++this._routeCounter}. ${routeName}: ` + 
+                    `${routeConfig.method.toUpperCase()} => ${fullPath}`;
+                
+                Logger.info(`${pathName}`);
+                rounter.route(path)[method](...middlewares,
+                    parseServiceHandler()
+                );
+            }
         }
         this.server.use(this.serverConfig.apiRoot, rounter);
     }
 
     async startListening(): Promise<boolean> {
         Logger.info(`Starting server ... `);
-
-        return new Promise<boolean>((resolve) => {
-            this.server.listen(this.serverConfig.port, () => {
-                Logger.info(`Server is listenning on port ${this.serverConfig.port} `);
-                return resolve(true);
-            });
+        return new Promise<boolean>((resolve, reject) => {
+            try {
+                this.server.listen(this.serverConfig.port, () => {
+                    Logger.info(`Server is listenning on port ${this.serverConfig.port} `);
+                    return resolve(true);
+                });
+            } catch (err) {
+                return reject(new errorServerStartListenning(err.message.toString()));
+            }
         });
     }
 
