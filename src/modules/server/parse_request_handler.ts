@@ -20,7 +20,7 @@ export const parseRequestHandler = (input: {
         const { pathName, routeConfig, serverConfig } = input;
         const response: {
             statusCode: number, 
-            [addtionalField: string]: object | string | number | Buffer | null | undefined | void
+            [addtionalField: string]: object | string | number | Buffer | null | undefined | void | boolean
         } = {
             statusCode: 500,
         };

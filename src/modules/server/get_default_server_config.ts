@@ -20,7 +20,7 @@ export const getDefaultServerConfig = (): ServerConfig => {
             },
             logger: {
                 logFilePath: "",
-                timestampFormat: "YYYY-MM-DD HH:mm:ss",
+                timestampFormat: "",
             },
             rest: {
                 errorHandler: {
