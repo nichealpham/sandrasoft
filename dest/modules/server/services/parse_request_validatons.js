@@ -5,7 +5,13 @@ const ramda = require("ramda");
 const logger_1 = require("../../logger");
 exports.parseRequestValidations = (validations = {}) => {
     return (req, res, next) => {
-        const schema = ramda.mergeDeepWith(exports.validateMergeValue, req, validations);
+        const request = ramda.mergeDeepRight(JSON.parse(JSON.stringify(validations)), {
+            headers: req.headers,
+            body: req.body,
+            query: req.query,
+            params: req.params,
+        });
+        const schema = ramda.mergeDeepWith(exports.validateMergeValue, request, validations);
         if (JSON.stringify(schema).includes(':false')) {
             res.json({
                 errorCode: 400,

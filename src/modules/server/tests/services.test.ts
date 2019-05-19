@@ -20,6 +20,7 @@ const request = {
         password: '123123123123',
     },
 };
+// const request = {};
 
 const test = {
     params: {
@@ -40,6 +41,7 @@ const test = {
         password: ['isAlphanumeric'],
     },
 };
+// const test = {};
 
 console.log(ramda.mergeDeepWith(
     validateMergeValue,

@@ -58,8 +58,12 @@ class Server {
                 const fullPath = `${this.serverConfig.apiRoot}${path}`;
                 const middlewares = parse_middlewares_1.parseMiddlewares(routeConfig.middlewares);
                 const pathName = `${++this._routeCounter}. ${routeName}: ` +
-                    `${routeConfig.method.toUpperCase()} => ${fullPath}`;
-                rounter.route(path)[method](...middlewares, parse_request_validatons_1.parseRequestValidations(routeConfig.validations), parse_request_handler_1.parseRequestHandler({
+                    `${method} => ${fullPath}`;
+                if (routeConfig.validations) {
+                    const validationMiddleware = parse_request_validatons_1.parseRequestValidations(routeConfig.validations);
+                    middlewares.push(validationMiddleware);
+                }
+                rounter.route(path)[method](...middlewares, parse_request_handler_1.parseRequestHandler({
                     pathName,
                     routeConfig,
                     serverConfig: this.serverConfig,

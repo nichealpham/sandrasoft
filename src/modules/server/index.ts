@@ -65,18 +65,22 @@ class Server {
 
             const routeConfig = routes[routeName];
             for (const path of routeConfig.paths) {
-
+                
                 const method = routeConfig.method.toLowerCase();
                 const fullPath = `${this.serverConfig.apiRoot}${path}`;
                 const middlewares = parseMiddlewares(routeConfig.middlewares);
+                
                 const pathName = 
                     `${++this._routeCounter}. ${routeName}: ` + 
-                    `${routeConfig.method.toUpperCase()} => ${fullPath}`;
+                    `${method} => ${fullPath}`;
                 
-                rounter.route(path)[method](...middlewares,
-                    parseRequestValidations(
+                if (routeConfig.validations) {
+                    const validationMiddleware = parseRequestValidations(
                         routeConfig.validations
-                    ),
+                    );
+                    middlewares.push(validationMiddleware);
+                }
+                rounter.route(path)[method](...middlewares,
                     parseRequestHandler({
                         pathName, 
                         routeConfig, 

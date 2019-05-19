@@ -11,9 +11,18 @@ import { ServerValidations } from "../interfaces/server_validations";
 
 export const parseRequestValidations = (validations: ServerValidations = {}) => {
     return (req: Request, res: Response, next: NextFunction) => {
+        const request = ramda.mergeDeepRight(
+            JSON.parse(JSON.stringify(validations)),
+            {
+                headers: req.headers,
+                body: req.body,
+                query: req.query,
+                params: req.params,
+            }
+        );
         const schema = ramda.mergeDeepWith(
             validateMergeValue,
-            req,
+            request,
             validations
         );
         if (JSON.stringify(schema).includes(':false')) {
