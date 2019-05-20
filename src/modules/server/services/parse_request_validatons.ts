@@ -27,7 +27,8 @@ export const parseRequestValidations = (validations: ServerValidations = {}) => 
         );
         if (JSON.stringify(schema).includes(':false')) {
             res.json({
-                errorCode: 400,
+                statusCode: 422,
+                errorCode: 422,
                 error: 'Invalid params',
                 schema,
             });

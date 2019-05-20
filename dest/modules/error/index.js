@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const error_creator_1 = require("./error_creator");
+exports.errorInvalidParamaters = error_creator_1.ErrorCreator.createCustomError({
+    errorName: 'Invalid params',
+    errorCode: 422,
+});
 exports.errorServerCreate = error_creator_1.ErrorCreator.createCustomError({
     errorName: 'Create server',
     errorCode: 1000,

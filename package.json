@@ -1,6 +1,6 @@
 {
 	"name": "sandrasoft",
-	"version": "2.1.7",
+	"version": "2.1.8",
 	"description": "Nodejs utilities for creating back-end services",
 	"main": "dest/index.js",
 	"types": "dest/index.d.ts",
