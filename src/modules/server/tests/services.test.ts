@@ -20,31 +20,51 @@ const request = {
         password: '123123123123',
     },
 };
-// const request = {};
 
 const test = {
     params: {
-        userId: ['isAlphanumeric'],
+        userId: ['!isEmpty'],
     },
     query: {
-        name: ['!isByteLength'],
+        name: ['!isEmpty'],
     },
     headers: {
-        accessToken: ['isAlphanumeric'],
+        accessToken: ['!isEmpty'],
     },
     body: {
         userCreate: {
             _id: ['isAlphanumeric'],
         },
-        uid: ['isAlphanumeric'],
+        uid: ['!isEmpty'],
         email: ['isEmail'],
-        password: ['isAlphanumeric'],
+        password: ['!isEmpty'],
     },
 };
-// const test = {};
 
-console.log(ramda.mergeDeepWith(
-    validateMergeValue,
-    request,
-    test
-));
+describe(`ramda.mergeDeepWith(fn, value, schema) should success`, () => {
+    it(`name = hello != isEmpty should return true`, () => {
+        expect(JSON.stringify(ramda.mergeDeepWith(
+            validateMergeValue,
+            request,
+            test
+        )).includes(':false')).toEqual(false);
+    });
+
+    it(`name = hello == isEmpty should return false`, () => {
+        test.query.name = ['isEmpty'];
+        expect(JSON.stringify(ramda.mergeDeepWith(
+            validateMergeValue,
+            request,
+            test
+        )).includes(':false')).toEqual(true);
+    });
+
+    it(`name = '' == isEmpty should return true`, () => {
+        request.query.name = '';
+        expect(JSON.stringify(ramda.mergeDeepWith(
+            validateMergeValue,
+            request,
+            test
+        )).includes(':false')).toEqual(false);
+    });
+});
