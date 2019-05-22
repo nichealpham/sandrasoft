@@ -4,36 +4,33 @@ const nodeLogger = require('simple-node-logger');
 // Import peer-modules
 // Import sub-modules
 import { LoggerConfig } from './interfaces/logger_config';
+import { ColorCode } from './color_code';
 
 class Logger {
-    static logger;
-    static init(config: LoggerConfig) {
-        if (config.logFilePath) {
-            this.logger = nodeLogger.createSimpleLogger({
-                logFilePath: config.logFilePath,
-                timestampFormat: config.logFilePath || 'YYYY-MM-DD HH:mm:ss',
-            });
-        }
+    /* @todo
+    // init connection to elastic search */
+    constructor(config: LoggerConfig) {
+        nodeLogger.createSimpleLogger({
+            logFilePath: config.logFilePath,
+            timestampFormat: config.timestampFormat || 'YYYY-MM-DD HH:mm:ss',
+        });
     }
     static debug(message: string) {
-        if (this.logger) {
-            this.logger.debug(message);
-        }
+        console.log(ColorCode.debug, message);
     }
     static info(message: string) {
-        if (this.logger) {
-            this.logger.info(message);
-        }
+        console.log(ColorCode.info, message);
+    }
+    static success(message: string) {
+        console.log(ColorCode.success, message);
     }
     static warn(message: string) {
-        if (this.logger) {
-            this.logger.warn(message);
-        }
+        console.log(ColorCode.warn, message);
     }
     static error(message: string) {
-        if (this.logger) {
-            this.logger.error(message);
-        }
+        /* @todo
+        // logging to elastic search */
+        console.log(ColorCode.error, message);
     }
 }
 

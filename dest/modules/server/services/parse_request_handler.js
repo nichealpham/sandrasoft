@@ -26,7 +26,7 @@ exports.parseRequestHandler = (input) => {
             response[errorFieldName] = errorMessage;
             if (Ramda.path(['remoting', 'rest', 'errorHandler', 'writeLog'], serverConfig)) {
                 logger_1.Logger.error(`API Error: ${pathName} `);
-                logger_1.Logger.error(`Message: ${errorMessage} `);
+                logger_1.Logger.debug(`Message: ${errorMessage} `);
             }
         }
         else {
@@ -39,8 +39,8 @@ exports.parseRequestHandler = (input) => {
                 response[successFieldName] = result;
             }
             if (Ramda.path(['remoting', 'rest', 'successHandler', 'writeLog'], serverConfig)) {
-                logger_1.Logger.info(`API Success: ${pathName} `);
-                logger_1.Logger.info(`Result: ${JSON.stringify(result)} `);
+                logger_1.Logger.success(`API Success: ${pathName} `);
+                logger_1.Logger.debug(`Result: ${JSON.stringify(result)} `);
             }
         }
         return res.json(response);

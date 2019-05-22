@@ -40,9 +40,6 @@ class Server {
                 if (config.remoting.urlencoded) {
                     server.use(bodyParser.urlencoded(config.remoting.urlencoded));
                 }
-                if (config.remoting.logger) {
-                    Logger.init(config.remoting.logger);
-                }
             }
         } catch (err) {
             throw new errorServerCreate(err.message.toString());
@@ -87,7 +84,7 @@ class Server {
                         serverConfig: this.serverConfig,
                     })
                 );
-                Logger.info(`${pathName}`);
+                Logger.success(`${pathName}`);
             }
         }
         this.server.use(this.serverConfig.apiRoot, rounter);
@@ -98,7 +95,7 @@ class Server {
         return new Promise<boolean>((resolve, reject) => {
             try {
                 this.server.listen(this.serverConfig.port, () => {
-                    Logger.info(`Server is listenning on port ${this.serverConfig.port} `);
+                    Logger.success(`Server is listenning on port ${this.serverConfig.port} `);
                     return resolve(true);
                 });
             } catch (err) {

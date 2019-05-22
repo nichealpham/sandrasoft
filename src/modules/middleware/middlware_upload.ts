@@ -23,15 +23,12 @@ export interface UploaderFileObject {
 export const allowSingleUploadMemory = (uploadKeyName = 'file-upload') => {
     return multer({ storage: multer.memoryStorage() }).single(uploadKeyName);
 };
-
 export const allowMultipleUploadMemory = (uploadKeyName = 'file-upload', maxCount = 100) => {
     return multer({ storage: multer.memoryStorage() }).array(uploadKeyName, maxCount);
 };
-
 export const disableFileUpload = () => {
     return multer().none();
 };
-
 export const allowSingleStorageUpload = (uploadKeyName = 'file-upload', storageConfig: UploaderMiddlewareStorageConfig) => {
     const storageOptions: UploaderMiddlewareStorageConfig = {
         destination: storageConfig.destination || 'uploads/',
@@ -41,7 +38,6 @@ export const allowSingleStorageUpload = (uploadKeyName = 'file-upload', storageC
     }
     return multer({ storage: multer.diskStorage(storageOptions)}).single(uploadKeyName);
 };
-
 export const allowMultipleStorageUpload = (uploadKeyName = 'file-upload', storageConfig: UploaderMiddlewareStorageConfig, maxCount = 100) => {
     const storageOptions: UploaderMiddlewareStorageConfig = {
         destination: storageConfig.destination || 'uploads/',

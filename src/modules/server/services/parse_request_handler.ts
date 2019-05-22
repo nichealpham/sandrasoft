@@ -52,7 +52,7 @@ export const parseRequestHandler = (input: {
                 serverConfig
             )) {
                 Logger.error(`API Error: ${pathName} `);
-                Logger.error(`Message: ${errorMessage} `);
+                Logger.debug(`Message: ${errorMessage} `);
             }
         } else {
             if (Ramda.path(
@@ -70,8 +70,8 @@ export const parseRequestHandler = (input: {
                 ['remoting', 'rest', 'successHandler', 'writeLog'], 
                 serverConfig
             )) {
-                Logger.info(`API Success: ${pathName} `);
-                Logger.info(`Result: ${JSON.stringify(result)} `);
+                Logger.success(`API Success: ${pathName} `);
+                Logger.debug(`Result: ${JSON.stringify(result)} `);
             }
         }
         return res.json(response);
