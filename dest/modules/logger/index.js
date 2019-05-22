@@ -1,13 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const nodeLogger = require('simple-node-logger');
 const color_code_1 = require("./color_code");
 class Logger {
     constructor(config) {
-        nodeLogger.createSimpleLogger({
-            logFilePath: config.logFilePath,
-            timestampFormat: config.timestampFormat || 'YYYY-MM-DD HH:mm:ss',
-        });
     }
     static debug(message) {
         console.log(color_code_1.ColorCode.debug, message);

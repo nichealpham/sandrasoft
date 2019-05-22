@@ -1,6 +1,4 @@
 // Import external-modules
-const nodeLogger = require('simple-node-logger');
-
 // Import peer-modules
 // Import sub-modules
 import { LoggerConfig } from './interfaces/logger_config';
@@ -10,10 +8,7 @@ class Logger {
     /* @todo
     // init connection to elastic search */
     constructor(config: LoggerConfig) {
-        nodeLogger.createSimpleLogger({
-            logFilePath: config.logFilePath,
-            timestampFormat: config.timestampFormat || 'YYYY-MM-DD HH:mm:ss',
-        });
+        
     }
     static debug(message: string) {
         console.log(ColorCode.debug, message);
