@@ -10,7 +10,7 @@ ErrorCreator.createCustomError = (config) => {
             this.errorCode = errorCode;
             this.errorName = errorName;
             if (detailMsg) {
-                this.message += ` ${this.errorName} error: ${detailMsg}`;
+                this.message = `${this.errorName} error: ${detailMsg}`;
             }
         }
     };

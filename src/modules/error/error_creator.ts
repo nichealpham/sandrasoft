@@ -13,7 +13,7 @@ export class ErrorCreator {
             constructor(detailMsg?: string) {
                 super('Oops! Something wrong happened.');
                 if (detailMsg) {
-                    this.message += ` ${this.errorName} error: ${detailMsg}`;
+                    this.message = `${this.errorName} error: ${detailMsg}`;
                 }
             }
         };
