@@ -28,3 +28,7 @@ export const errorServerStartListenning = ErrorCreator.createCustomError({
     errorName: 'Start server',
     errorCode: 1300,
 });
+export const errorTerminalExecute = ErrorCreator.createCustomError({
+    errorName: 'Terminal execute',
+    errorCode: 9000,
+});

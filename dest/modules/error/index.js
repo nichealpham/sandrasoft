@@ -29,4 +29,8 @@ exports.errorServerStartListenning = error_creator_1.ErrorCreator.createCustomEr
     errorName: 'Start server',
     errorCode: 1300,
 });
+exports.errorTerminalExecute = error_creator_1.ErrorCreator.createCustomError({
+    errorName: 'Terminal execute',
+    errorCode: 9000,
+});
 //# sourceMappingURL=index.js.map
