@@ -3,6 +3,7 @@ import * as multer from 'multer';
 import { Request } from 'express';
 
 // Import peer-modules
+import { SystemHelper } from '../helper';
 // Import sub-modules
 
 export interface UploaderMiddlewareStorageConfig {
@@ -30,6 +31,11 @@ export const disableFileUpload = () => {
     return multer().none();
 };
 export const allowSingleStorageUpload = (uploadKeyName = 'file-upload', storageConfig: UploaderMiddlewareStorageConfig) => {
+    if (storageConfig.destination) {
+        if (!SystemHelper.dirExist(storageConfig.destination)) {
+            SystemHelper.createDir(storageConfig.destination);
+        }
+    }
     const storageOptions: UploaderMiddlewareStorageConfig = {
         destination: storageConfig.destination || 'uploads/',
     };
@@ -39,6 +45,11 @@ export const allowSingleStorageUpload = (uploadKeyName = 'file-upload', storageC
     return multer({ storage: multer.diskStorage(storageOptions)}).single(uploadKeyName);
 };
 export const allowMultipleStorageUpload = (uploadKeyName = 'file-upload', storageConfig: UploaderMiddlewareStorageConfig, maxCount = 100) => {
+    if (storageConfig.destination) {
+        if (!SystemHelper.dirExist(storageConfig.destination)) {
+            SystemHelper.createDir(storageConfig.destination);
+        }
+    }
     const storageOptions: UploaderMiddlewareStorageConfig = {
         destination: storageConfig.destination || 'uploads/',
     };
