@@ -21,8 +21,8 @@ class Request {
         if (!input.url || ramda.isEmpty(input.url)) {
             throw new Error(`Request url is invalid`);
         }
-        const options = Object.assign({ method: 'GET', uri: input.url, json: true, qs: input.query, headers: input.headers }, input.config);
-        const result = await callRequest(options);
+        const options = Object.assign({ method: 'GET', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config);
+        const result = await exports.callRequest(options);
         return result;
     }
     static async post(input, data = {}) {
@@ -31,8 +31,8 @@ class Request {
         if (!input.url || ramda.isEmpty(input.url)) {
             throw new Error(`Request url is invalid`);
         }
-        const options = Object.assign({ method: 'POST', uri: input.url, json: true, qs: input.query, headers: input.headers }, input.config, { body: data });
-        const result = await callRequest(options);
+        const options = Object.assign({ method: 'POST', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config, { body: data });
+        const result = await exports.callRequest(options);
         return result;
     }
     static async put(input, data = {}) {
@@ -41,8 +41,8 @@ class Request {
         if (!input.url || ramda.isEmpty(input.url)) {
             throw new Error(`Request url is invalid`);
         }
-        const options = Object.assign({ method: 'PUT', uri: input.url, json: true, qs: input.query, headers: input.headers }, input.config, { body: data });
-        const result = await callRequest(options);
+        const options = Object.assign({ method: 'PUT', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config, { body: data });
+        const result = await exports.callRequest(options);
         return result;
     }
     static async delete(input) {
@@ -51,8 +51,8 @@ class Request {
         if (!input.url || ramda.isEmpty(input.url)) {
             throw new Error(`Request url is invalid`);
         }
-        const options = Object.assign({ method: 'DELETE', uri: input.url, json: true, qs: input.query, headers: input.headers }, input.config);
-        const result = await callRequest(options);
+        const options = Object.assign({ method: 'DELETE', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config);
+        const result = await exports.callRequest(options);
         return result;
     }
     static async postFile(input, filePath, uploadKey, data = {}) {
@@ -64,22 +64,43 @@ class Request {
         if (!helper_1.SystemHelper.dirExist(filePath)) {
             throw new Error(`Request post file not exist!`);
         }
-        const options = Object.assign({ method: 'POST', uri: input.url, json: true, qs: input.query, headers: input.headers }, input.config, { formData: data });
+        const options = Object.assign({ method: 'POST', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config, { formData: data });
         options.formData[uploadKey] = fs.createReadStream(filePath);
-        const result = await callRequest(options);
+        const result = await exports.callRequest(options);
         return result;
     }
 }
 exports.Request = Request;
-const callRequest = (options) => {
+exports.callRequest = (options) => {
+    logger_1.Logger.info(`${options.method && options.method.toUpperCase()} ${options.uri}`);
     return new Promise((resolve, reject) => {
         RequestPromise(options).then(data => {
             return resolve(data);
         }).catch(error => {
             logger_1.Logger.error(`Request Error! ${options.method} url: ${options.uri}`);
-            logger_1.Logger.warn(`Error message: ${error.message.toString()}`);
+            logger_1.Logger.warn(`Error message: ${error.message}`);
             return reject(error);
         });
     });
+};
+exports.buildQueryString = (query = {}) => {
+    if (!query || ramda.isEmpty(query)) {
+        return '';
+    }
+    const queries = [];
+    for (const keyname in query) {
+        if (typeof query[keyname] !== 'object') {
+            queries.push(`${keyname}=${query[keyname]}`);
+        }
+        else {
+            if (Array.isArray(query[keyname])) {
+                queries.push(`${keyname}=${query[keyname].join(',')}`);
+            }
+            else {
+                queries.push(`${keyname}=${JSON.stringify(query[keyname])}`);
+            }
+        }
+    }
+    return `?${queries.join('&')}`;
 };
 //# sourceMappingURL=index.js.map

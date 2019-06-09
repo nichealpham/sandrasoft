@@ -29,9 +29,8 @@ export class Request {
         }
         const options = {
             method: 'GET',
-            uri: input.url,
+            uri: `${input.url}${buildQueryString(input.query)}`,
             json: true,
-            qs: input.query,
             headers: input.headers,
             ...input.config,
         };
@@ -47,9 +46,8 @@ export class Request {
         }
         const options = {
             method: 'POST',
-            uri: input.url,
+            uri: `${input.url}${buildQueryString(input.query)}`,
             json: true,
-            qs: input.query,
             headers: input.headers,
             ...input.config,
             body: data,
@@ -66,9 +64,8 @@ export class Request {
         }
         const options = {
             method: 'PUT',
-            uri: input.url,
+            uri: `${input.url}${buildQueryString(input.query)}`,
             json: true,
-            qs: input.query,
             headers: input.headers,
             ...input.config,
             body: data,
@@ -85,9 +82,8 @@ export class Request {
         }
         const options = {
             method: 'DELETE',
-            uri: input.url,
+            uri: `${input.url}${buildQueryString(input.query)}`,
             json: true,
-            qs: input.query,
             headers: input.headers,
             ...input.config,
         };
@@ -106,9 +102,8 @@ export class Request {
         }
         const options = {
             method: 'POST',
-            uri: input.url,
+            uri: `${input.url}${buildQueryString(input.query)}`,
             json: true,
-            qs: input.query,
             headers: input.headers,
             ...input.config,
             formData: data,
@@ -119,14 +114,34 @@ export class Request {
     }
 }
 
-const callRequest = (options: RequestPromise.OptionsWithUri) => {
+export const callRequest = (options: RequestPromise.OptionsWithUri) => {
+    Logger.info(`${options.method && options.method.toUpperCase()} ${options.uri}`);
     return new Promise((resolve, reject) => {
         RequestPromise(options).then(data => {
             return resolve(data);
         }).catch(error => {
             Logger.error(`Request Error! ${options.method} url: ${options.uri}`);
-            Logger.warn(`Error message: ${error.message.toString()}`);
+            Logger.warn(`Error message: ${error.message}`);
             return reject(error);
         });
     });
+};
+
+export const buildQueryString = (query = {}): string => {
+    if (!query || ramda.isEmpty(query)) {
+        return '';
+    }
+    const queries: string[] = [];
+    for (const keyname in query) {
+        if (typeof query[keyname] !== 'object') {
+            queries.push(`${keyname}=${query[keyname]}`);
+        } else {
+            if (Array.isArray(query[keyname])) {
+                queries.push(`${keyname}=${query[keyname].join(',')}`);
+            } else {
+                queries.push(`${keyname}=${JSON.stringify(query[keyname])}`);
+            }
+        }
+    }
+    return `?${queries.join('&')}`;
 };
