@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const rimraf = require("rimraf");
+const mkdirp = require("mkdirp");
 class SystemHelper {
     static dirExist(path) {
         return fs.existsSync(path);
@@ -10,10 +11,17 @@ class SystemHelper {
         return fs.existsSync(path) && fs.lstatSync(path).isDirectory();
     }
     static createDir(path) {
-        if (!this.dirExist(path)) {
-            fs.mkdirSync(path, { recursive: true });
-        }
-        return true;
+        return new Promise((resolve, reject) => {
+            if (!this.dirExist(path)) {
+                mkdirp(path, (err) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve(true);
+                });
+            }
+            return resolve(true);
+        });
     }
     static removeDir(path) {
         rimraf.sync(path);

@@ -31,11 +31,6 @@ export const disableFileUpload = () => {
     return multer().none();
 };
 export const allowSingleStorageUpload = (uploadKeyName = 'file-upload', storageConfig: UploaderMiddlewareStorageConfig) => {
-    if (storageConfig.destination) {
-        if (!SystemHelper.dirExist(storageConfig.destination)) {
-            SystemHelper.createDir(storageConfig.destination);
-        }
-    }
     const storageOptions: UploaderMiddlewareStorageConfig = {
         destination: storageConfig.destination || 'uploads/',
     };
@@ -45,11 +40,6 @@ export const allowSingleStorageUpload = (uploadKeyName = 'file-upload', storageC
     return multer({ storage: multer.diskStorage(storageOptions)}).single(uploadKeyName);
 };
 export const allowMultipleStorageUpload = (uploadKeyName = 'file-upload', storageConfig: UploaderMiddlewareStorageConfig, maxCount = 100) => {
-    if (storageConfig.destination) {
-        if (!SystemHelper.dirExist(storageConfig.destination)) {
-            SystemHelper.createDir(storageConfig.destination);
-        }
-    }
     const storageOptions: UploaderMiddlewareStorageConfig = {
         destination: storageConfig.destination || 'uploads/',
     };

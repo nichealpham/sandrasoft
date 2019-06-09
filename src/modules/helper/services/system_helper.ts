@@ -1,6 +1,7 @@
 // Import external-modules
 import * as fs from 'fs';
 import * as rimraf from 'rimraf';
+import * as mkdirp from 'mkdirp';
 
 // Import peer-modules
 // Import sub-moudles
@@ -13,11 +14,19 @@ export class SystemHelper {
         return fs.existsSync(path) && fs.lstatSync(path).isDirectory();
     }
 
-    static createDir(path: string): boolean {
-        if (!this.dirExist(path)) {
-            fs.mkdirSync(path, {recursive: true});
-        }
-        return true;
+    static createDir(path: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            if (!this.dirExist(path)) {
+                mkdirp(path, (err) => { 
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve(true);
+                });
+            }
+            return resolve(true);
+        });
+        
     }
 
     static removeDir(path: string): boolean {
