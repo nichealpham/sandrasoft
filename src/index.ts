@@ -4,4 +4,5 @@ export * from './modules/logger';
 export * from './modules/server';
 export * from './modules/helper';
 export * from './modules/request';
+export * from './modules/firebase';
 export * from './modules/middleware';
