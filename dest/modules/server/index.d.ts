@@ -7,7 +7,7 @@ declare class Server {
     private _routeCounter;
     constructor(config: ServerConfig);
     private createServer;
-    applyMiddleware(middleware: express.RequestHandler): void;
+    applyMiddleware(middleware: (req: express.Request, res: express.Response, next: express.NextFunction) => void): void;
     applyRoutes(routes: {
         [routeName: string]: ServerRoute;
     }): void;
