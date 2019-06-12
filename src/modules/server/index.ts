@@ -47,7 +47,7 @@ class Server {
         return server;
     }
 
-    applyMiddleware(middleware: express.RequestHandler) {
+    applyMiddleware(middleware: (req: express.Request, res: express.Response, next: express.NextFunction) => void) {
         try {
             this.server.use(middleware);
         } catch (err) {
