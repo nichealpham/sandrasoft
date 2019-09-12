@@ -11,4 +11,5 @@ __export(require("./modules/helper"));
 __export(require("./modules/request"));
 __export(require("./modules/firebase"));
 __export(require("./modules/middleware"));
+__export(require("./modules/sandracore"));
 //# sourceMappingURL=index.js.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"GetDefaultServerConfig.js","sourceRoot":"","sources":["../../../../src/modules/sandracore/modules/GetDefaultServerConfig.ts"],"names":[],"mappings":";;AAGa,QAAA,sBAAsB,GAAG,GAAiB,EAAE;IACrD,OAAO,IAAI,CAAC,KAAK,CAAC,IAAI,CAAC,SAAS,CAAC;QAC7B,OAAO,EAAE,MAAM;QACf,IAAI,EAAE,IAAI;QACV,MAAM,EAAE,EAAE;KACb,CAAC,CAAC,CAAC;AACR,CAAC,CAAC"}
