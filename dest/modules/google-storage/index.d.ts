@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { GoogleStorageConfig } from './interfaces/google_storage_config';
+import { GoogleStorageConfig } from "./interfaces/google_storage_config";
 declare class GoogleStorage {
     private bucketName;
     private directory;
@@ -36,4 +36,4 @@ declare class GoogleStorage {
     protected createBucket(bucketName: string): Promise<boolean>;
     protected listBucketNames(): Promise<string[]>;
 }
-export { GoogleStorageConfig, GoogleStorage, };
+export { GoogleStorageConfig, GoogleStorage };

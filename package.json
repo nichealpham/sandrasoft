@@ -1,65 +1,63 @@
 {
-	"name": "sandrasoft",
-	"version": "2.2.9",
-	"description": "Nodejs utilities for creating back-end services",
-	"main": "dest/index.js",
-	"types": "dest/index.d.ts",
-	"scripts": {
-		"build": "rm -Rf dest/ && tslint --fix --project ./ && ./node_modules/.bin/tsc",
-		"test": "npx jest",
-		"registry": "npm publish --access=public"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/nichealpham/sandrasoft.git"
-	},
-	"dependencies": {
-		"@google-cloud/storage": "^1.7.0",
-		"body-parser": "^1.18.3",
-		"cookie-parser": "^1.4.4",
-		"cors": "^2.8.4",
-		"csv-parser": "^2.3.0",
-		"express": "^4.16.3",
-		"firebase-admin": "^8.1.0",
-		"mkdirp": "^0.5.1",
-		"mongoose": "^5.2.14",
-		"multer": "^1.4.1",
-		"ramda": "^0.26.1",
-		"request-promise": "^4.2.4",
-		"rimraf": "^2.6.3",
-		"validator": "^10.11.0",
-		"zlib": "^1.0.5"
-	},
-	"devDependencies": {
-		"@types/body-parser": "^1.17.0",
-		"@types/cors": "^2.8.4",
-		"@types/express": "^4.16.0",
-		"@types/jest": "^24.0.13",
-		"@types/mkdirp": "^0.5.2",
-		"@types/mongoose": "^5.2.12",
-		"@types/multer": "^1.3.7",
-		"@types/node": "^10.9.4",
-		"@types/qs": "^6.5.3",
-		"@types/ramda": "^0.26.8",
-		"@types/request-promise": "^4.1.44",
-		"@types/rimraf": "^2.0.2",
-		"@types/validator": "^10.11.0",
-		"jest": "^24.8.0",
-		"ts-jest": "^24.0.2",
-		"ts-node": "^6.0.0",
-		"tslint": "^5.16.0",
-		"typescript": "^3.1.6"
-	},
-	"keywords": [
-		"serverless",
-		"gcp-appengine",
-		"aws-lambda",
-		"sharp",
-		"cloud-storage",
-		"firestore",
-		"nodejs",
-		"ts"
-	],
-	"author": "Nicheal Pham",
-	"license": "MIT"
+  "name": "sandrasoft",
+  "version": "2.3.1",
+  "description": "Nodejs utilities for creating back-end services",
+  "main": "dest/index.js",
+  "types": "dest/index.d.ts",
+  "scripts": {
+    "build": "rm -Rf dest/ && tslint --fix --project ./ && ./node_modules/.bin/tsc",
+    "test": "npx jest",
+    "registry": "npm publish --access=public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nichealpham/sandrasoft.git"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^5.16.0",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.4",
+    "csv-parser": "^2.3.0",
+    "express": "^4.16.3",
+    "firebase-admin": "^10.0.0",
+    "mkdirp": "^0.5.1",
+    "mongoose": "^5.2.14",
+    "multer": "^1.4.1",
+    "ramda": "^0.26.1",
+    "request-promise": "^4.2.4",
+    "rimraf": "^2.6.3",
+    "validator": "^13.7.0",
+    "zlib": "^1.0.5"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/cors": "^2.8.4",
+    "@types/express": "^4.16.0",
+    "@types/jest": "^27.0.2",
+    "@types/mkdirp": "^0.5.2",
+    "@types/mongoose": "^5.2.12",
+    "@types/multer": "^1.3.7",
+    "@types/node": "^10.9.4",
+    "@types/qs": "^6.5.3",
+    "@types/ramda": "^0.26.8",
+    "@types/request-promise": "^4.1.44",
+    "@types/rimraf": "^2.0.2",
+    "@types/validator": "^10.11.0",
+    "ts-node": "^6.0.0",
+    "tslint": "^5.16.0",
+    "typescript": "^3.1.6"
+  },
+  "keywords": [
+    "serverless",
+    "gcp-appengine",
+    "aws-lambda",
+    "sharp",
+    "cloud-storage",
+    "firestore",
+    "nodejs",
+    "ts"
+  ],
+  "author": "Nicheal Pham",
+  "license": "MIT"
 }

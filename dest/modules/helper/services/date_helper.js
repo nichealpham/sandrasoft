@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DateHelper = void 0;
 class DateHelper {
     static addSeconds(date, seconds) {
         date.setSeconds(date.getSeconds() + seconds);

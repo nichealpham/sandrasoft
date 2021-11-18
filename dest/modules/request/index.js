@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.buildQueryString = exports.callRequest = exports.Request = void 0;
 const fs = require("fs");
 const ramda = require("ramda");
 const RequestPromise = require("request-promise");
@@ -21,7 +22,13 @@ class Request {
         if (!input.url || ramda.isEmpty(input.url)) {
             throw new Error(`Request url is invalid`);
         }
-        const options = Object.assign({ method: 'GET', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config);
+        const options = {
+            method: 'GET',
+            uri: `${input.url}${exports.buildQueryString(input.query)}`,
+            json: true,
+            headers: input.headers,
+            ...input.config,
+        };
         const result = await exports.callRequest(options);
         return result;
     }
@@ -31,7 +38,14 @@ class Request {
         if (!input.url || ramda.isEmpty(input.url)) {
             throw new Error(`Request url is invalid`);
         }
-        const options = Object.assign({ method: 'POST', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config, { body: data });
+        const options = {
+            method: 'POST',
+            uri: `${input.url}${exports.buildQueryString(input.query)}`,
+            json: true,
+            headers: input.headers,
+            ...input.config,
+            body: data,
+        };
         const result = await exports.callRequest(options);
         return result;
     }
@@ -41,7 +55,14 @@ class Request {
         if (!input.url || ramda.isEmpty(input.url)) {
             throw new Error(`Request url is invalid`);
         }
-        const options = Object.assign({ method: 'PUT', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config, { body: data });
+        const options = {
+            method: 'PUT',
+            uri: `${input.url}${exports.buildQueryString(input.query)}`,
+            json: true,
+            headers: input.headers,
+            ...input.config,
+            body: data,
+        };
         const result = await exports.callRequest(options);
         return result;
     }
@@ -51,7 +72,13 @@ class Request {
         if (!input.url || ramda.isEmpty(input.url)) {
             throw new Error(`Request url is invalid`);
         }
-        const options = Object.assign({ method: 'DELETE', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config);
+        const options = {
+            method: 'DELETE',
+            uri: `${input.url}${exports.buildQueryString(input.query)}`,
+            json: true,
+            headers: input.headers,
+            ...input.config,
+        };
         const result = await exports.callRequest(options);
         return result;
     }
@@ -64,7 +91,14 @@ class Request {
         if (!helper_1.SystemHelper.dirExist(filePath)) {
             throw new Error(`Request post file not exist!`);
         }
-        const options = Object.assign({ method: 'POST', uri: `${input.url}${exports.buildQueryString(input.query)}`, json: true, headers: input.headers }, input.config, { formData: data });
+        const options = {
+            method: 'POST',
+            uri: `${input.url}${exports.buildQueryString(input.query)}`,
+            json: true,
+            headers: input.headers,
+            ...input.config,
+            formData: data,
+        };
         options.formData[uploadKey] = fs.createReadStream(filePath);
         const result = await exports.callRequest(options);
         return result;

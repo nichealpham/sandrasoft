@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MongoUltility = void 0;
 const mongoose_1 = require("mongoose");
 class MongoUltility {
     static isObjectId(id) {

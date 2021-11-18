@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.splitPathAndFileNameFromUrl = void 0;
 function splitPathAndFileNameFromUrl(fullPath) {
     return {
         file: fullPath.slice(fullPath.lastIndexOf('/') + 1, fullPath.length),

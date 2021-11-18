@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseMiddlewares = void 0;
 const Ramda = require("ramda");
 exports.parseMiddlewares = (middlewares = {}) => {
     if (Ramda.isEmpty(middlewares)) {

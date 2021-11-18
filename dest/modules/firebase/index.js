@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FiresbaseApp = void 0;
 const firebase = require("firebase-admin");
 const FirestoreRepository_1 = require("./FirestoreRepository");
 const FirerayRepository_1 = require("./FirerayRepository");

@@ -1,6 +1,6 @@
-import * as express from 'express';
-import { ServerConfig } from './interfaces/server_config';
-import { ServerRoute } from './interfaces/server_route';
+import * as express from "express";
+import { ServerConfig } from "./interfaces/server_config";
+import { ServerRoute } from "./interfaces/server_route";
 declare class Server {
     private server;
     private serverConfig;

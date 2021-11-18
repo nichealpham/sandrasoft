@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FirerayRepository = void 0;
 const FirestoreRepository_1 = require("./FirestoreRepository");
 const ramda = require("ramda");
 class FirerayRepository {

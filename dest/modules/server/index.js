@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Server = void 0;
 const cors = require("cors");
 const ramda = require("ramda");
 const express = require("express");

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MongoCollection = void 0;
 const mongo_pagination_1 = require("./mongo_pagination");
 const mongo_ultility_1 = require("./mongo_ultility");
 class MongoCollection {

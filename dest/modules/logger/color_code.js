@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ColorCode = void 0;
 var ColorCode;
 (function (ColorCode) {
     ColorCode["error"] = "\u001B[31m";

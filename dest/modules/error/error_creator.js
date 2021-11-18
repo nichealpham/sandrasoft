@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ErrorCreator = void 0;
 class ErrorCreator {
 }
+exports.ErrorCreator = ErrorCreator;
 ErrorCreator.createCustomError = (config) => {
     const { errorCode, errorName } = config;
     return class CustomError extends Error {
@@ -15,5 +17,4 @@ ErrorCreator.createCustomError = (config) => {
         }
     };
 };
-exports.ErrorCreator = ErrorCreator;
 //# sourceMappingURL=error_creator.js.map

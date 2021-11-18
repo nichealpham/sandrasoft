@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FirestoreRepository = void 0;
 const crypto = require("crypto");
 class FirestoreRepository {
     constructor(path, firestore) {

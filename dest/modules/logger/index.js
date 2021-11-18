@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Logger = void 0;
 const color_code_1 = require("./color_code");
 class Logger {
     constructor(config) {

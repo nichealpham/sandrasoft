@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FileHelper = void 0;
 const https = require("https");
 const http = require("http");
 const zlib = require("zlib");

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.errorTerminalExecute = exports.errorServerStartListenning = exports.errorServerApplyRoute = exports.errorServerApplyRoutes = exports.errorServerApplyMiddleware = exports.errorServerApplyMiddlewares = exports.errorServerCreate = exports.errorInvalidParamaters = void 0;
 const error_creator_1 = require("./error_creator");
 exports.errorInvalidParamaters = error_creator_1.ErrorCreator.createCustomError({
     errorName: 'Invalid params',

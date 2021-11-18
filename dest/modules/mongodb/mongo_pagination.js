@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Pagination = void 0;
 class Pagination {
     constructor(page, limit) {
         if (!page || isNaN(page)) {

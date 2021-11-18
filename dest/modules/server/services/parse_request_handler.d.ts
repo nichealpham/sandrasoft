@@ -5,4 +5,4 @@ export declare const parseRequestHandler: (input: {
     pathName: string;
     routeConfig: ServerRoute;
     serverConfig: ServerConfig;
-}) => (req: Request, res: Response) => Promise<import("express-serve-static-core").Response>;
+}) => (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;

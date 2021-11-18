@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SystemHelper = void 0;
 const fs = require("fs");
 const rimraf = require("rimraf");
 const mkdirp = require("mkdirp");

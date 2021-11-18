@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.allowMultipleStorageUpload = exports.allowSingleStorageUpload = exports.disableFileUpload = exports.allowMultipleUploadMemory = exports.allowSingleUploadMemory = void 0;
 const multer = require("multer");
 exports.allowSingleUploadMemory = (uploadKeyName = 'file-upload') => {
     return multer({ storage: multer.memoryStorage() }).single(uploadKeyName);

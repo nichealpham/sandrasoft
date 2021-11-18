@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TerminalHelper = void 0;
 const child_process_1 = require("child_process");
 const logger_1 = require("../../logger");
 const error_1 = require("../../error");

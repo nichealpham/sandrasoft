@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.parseRequestHandler = void 0;
 const logger_1 = require("../../logger");
 exports.parseRequestHandler = (input) => {
     return async (req, res) => {

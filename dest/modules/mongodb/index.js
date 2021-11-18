@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MongoDb = exports.MongoUltility = exports.MongoCollection = void 0;
 const Mongoose = require("mongoose");
 const logger_1 = require("../logger");
 const mongo_collection_1 = require("./mongo_collection");
-exports.MongoCollection = mongo_collection_1.MongoCollection;
+Object.defineProperty(exports, "MongoCollection", { enumerable: true, get: function () { return mongo_collection_1.MongoCollection; } });
 const mongo_ultility_1 = require("./mongo_ultility");
-exports.MongoUltility = mongo_ultility_1.MongoUltility;
+Object.defineProperty(exports, "MongoUltility", { enumerable: true, get: function () { return mongo_ultility_1.MongoUltility; } });
 const connections = {};
 const collections = {};
 class MongoDb {
